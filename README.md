@@ -67,7 +67,8 @@ var Application = React.createClass({
 
 ### Component props
 - `menu` (React.Component) - Menu component
-*Will be expanded soon*
+
+*Will be extended soon*
 
 ### Special thanks
 Creating this component has been inspired by [@khanghoang](https://github.com/khanghoang)'s [RNSideMenu](https://github.com/khanghoang/RNSideMenu) example.
