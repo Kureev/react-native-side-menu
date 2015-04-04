@@ -73,5 +73,7 @@ var Application = React.createClass({
 ### Special thanks
 Creating this component has been inspired by [@khanghoang](https://github.com/khanghoang)'s [RNSideMenu](https://github.com/khanghoang/RNSideMenu) example.
 
+Also, thanks to [@ericvicenti](https://github.com/ericvicenti) for help with figuring out with `setNativeProps`
+
 ### Questions?
 Feel free to contact me in [twitter](https://twitter.com/kureevalexey) or [create an issue](https://github.com/Kureev/react-native-navbar/issues/new)
