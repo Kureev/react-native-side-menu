@@ -68,11 +68,11 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   componentWillMount: function() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
-      onPanResponderMove: this._handlePanResponderMove,
-      onPanResponderRelease: this._handlePanResponderEnd,
-      onPanResponderTerminate: this._handlePanResponderEnd,
+    this.responder = PanResponder.create({
+      onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
+      onPanResponderMove: this.handlePanResponderMove,
+      onPanResponderRelease: this.handlePanResponderEnd,
+      onPanResponderTerminate: this.handlePanResponderEnd,
     });    
   },
 
@@ -81,7 +81,7 @@ var SideMenu = React.createClass({
    * Works only if `sideMenu` is a ref to React.Component
    * @return {Void}
    */
-  _updatePosition: function() {
+  updatePosition: function() {
     this.sideMenu.setNativeProps({ left: this.offsetLeft });
   },
 
@@ -89,7 +89,7 @@ var SideMenu = React.createClass({
    * Permission to use responder 
    * @return {Boolean} true
    */
-  _handleStartShouldSetPanResponder: () => true,
+  handleStartShouldSetPanResponder: () => true,
 
   /**
    * Handler on responder move
@@ -97,11 +97,11 @@ var SideMenu = React.createClass({
    * @param  {Object} gestureState
    * @return {Void}
    */
-  _handlePanResponderMove: function(e: Object, gestureState: Object) {
+  handlePanResponderMove: function(e: Object, gestureState: Object) {
     this.offsetLeft = this._previousLeft + gestureState.dx; 
     
     if(this.offsetLeft > 0) {
-      this._updatePosition();
+      this.updatePosition();
     }
   },
 
@@ -111,7 +111,7 @@ var SideMenu = React.createClass({
    * @param  {Object} gestureState
    * @return {Void}
    */
-  _handlePanResponderEnd: function(e: Object, gestureState: Object) {
+  handlePanResponderEnd: function(e: Object, gestureState: Object) {
     LayoutAnimation.configureNext(config);
     
     if (shouldOpenMenu(gestureState.dx)) {
@@ -120,7 +120,7 @@ var SideMenu = React.createClass({
       this.offsetLeft = hiddenMenuOffset;
     }
 
-    this._updatePosition();
+    this.updatePosition();
     this._previousLeft = this.offsetLeft;
 
     var stateShow = this._previousLeft === 0 ? false : true; 
@@ -136,7 +136,7 @@ var SideMenu = React.createClass({
       <View 
         style={styles.frontView} 
         ref={(sideMenu) => this.sideMenu = sideMenu}
-        {...this._panResponder.panHandlers}>
+        {...this.responder.panHandlers}>
 
         {React.addons.cloneWithProps(this.props.children, {
            ref: (sideMenu) => this.sideMenu = sideMenu
