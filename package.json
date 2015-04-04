@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Kureev/react-native-side-menu/issues"
   },
-  "homepage": "https://github.com/Kureev/react-native-side-menu"
+  "homepage": "https://github.com/Kureev/react-native-side-menu",
+  "dependencies": {
+    "react-native": "^0.3.4"
+  }
 }
