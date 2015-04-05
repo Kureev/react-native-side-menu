@@ -1,6 +1,6 @@
 {
   "name": "react-native-side-menu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple customizable component to create side menu",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,8 @@
   },
   "keywords": [
     "react-native",
+    "react-component",
+    "ios",
     "sidebar"
   ],
   "author": "Alexey Kureev <kureev-mail@ya.ru> (https://github.com/Kureev)",
