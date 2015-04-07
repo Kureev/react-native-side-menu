@@ -20,19 +20,6 @@ npm install react-native-side-menu
 ```javascript
 var SideMenu = require('react-native-side-menu');
 
-var Menu = React.createClass({
-  render: function() {
-    return (
-      <View>
-        <Caption>Menu</Caption>
-        <MenuItem>About</MenuItem>
-        <MenuItem>Content</MenuItem>
-        <MenuItem>Contacts</MenuItem>
-      </View>
-    );
-  }
-});
-
 var ContentView = React.createClass({
   render: function() {
     return (
@@ -54,7 +41,7 @@ var ContentView = React.createClass({
 
 var Application = React.createClass({
   render: function() {
-    var menu = <Menu />;
+    var menu = <Menu navigator={navigator}/>;
 
     return (
       <SideMenu menu={menu}>
@@ -65,10 +52,36 @@ var Application = React.createClass({
 });
 ```
 
+Clicking on any menu item should cause closing menu. It can be done by using `menuActions` which are passed thru props to `menu` component. Example looks like this:
+
+```javascript
+var Menu = React.createClass({
+  about: function() {
+    this.props.menuActions.close();
+    this.props.navigator.push({...});
+  },
+
+  render: function() {
+    return (
+      <View>
+        <Caption>Menu</Caption>
+        <MenuItem onPress={this.about}>About</MenuItem>
+      </View>
+    );
+  }
+});
+```
+
+`menuActions` consists of following method(s):
+- `close` (Void) - Close menu
+
 ### Component props
 - `menu` (React.Component) - Menu component
+- `animation` (spring|linear|easeInOut) - Type of slide animation. Default is "linear".
+- `openMenuOffset` (Number) - Content view left margin if menu is opened
+- `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 
-*Will be extended soon*
+*In progress*
 
 ### Special thanks
 Creating this component has been inspired by [@khanghoang](https://github.com/khanghoang)'s [RNSideMenu](https://github.com/khanghoang/RNSideMenu) example.

@@ -1,12 +1,12 @@
 'use strict';
 
 var React = require('react-native');
+var queueAnimation = require('./animations');
 var window = require('Dimensions').get('window');
 
 var {
   StyleSheet,
   PanResponder,
-  LayoutAnimation,
   View,
 } = React;
 
@@ -36,32 +36,22 @@ var barrierForward = window.width / 4;
  * @param  {Number} dx Gesture offset from the left side of the screen
  * @return {Boolean}
  */
-function shouldOpenMenu(dx) {
+function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
 var SideMenu = React.createClass({
   /**
-   * Default left offset for content view
-   * @type {Number}
-   */
-  _previousLeft: 0,
-
-  /**
    * Current style `left` attribute
    * @type {Number}
    */
-  offsetLeft: 0,
+  left: 0,
 
   /**
-   * By default, menu is hidden
-   * @return {Object}
+   * Default left offset for content view
+   * @type {Number}
    */
-  getInitialState: function () {
-    return {
-      show: false,
-    }
-  },
+  prevLeft: 0,
 
   /**
    * Create pan responder before component render
@@ -72,7 +62,6 @@ var SideMenu = React.createClass({
       onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: this.handlePanResponderEnd,
-      onPanResponderTerminate: this.handlePanResponderEnd,
     });    
   },
 
@@ -82,7 +71,7 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   updatePosition: function() {
-    this.sideMenu.setNativeProps({ left: this.offsetLeft });
+    this.sideMenu.setNativeProps({ left: this.left });
   },
 
   /**
@@ -98,11 +87,33 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   handlePanResponderMove: function(e: Object, gestureState: Object) {
-    this.offsetLeft = this._previousLeft + gestureState.dx; 
+    this.left = this.prevLeft + gestureState.dx;
     
-    if(this.offsetLeft > 0) {
+    if (this.left > 0) {
       this.updatePosition();
     }
+  },
+
+  /**
+   * Open menu
+   * @return {Void}
+   */
+  openMenu: function() {
+    queueAnimation(this.props.animation);
+    this.left = this.props.openMenuOffset || openMenuOffset;
+    this.updatePosition();
+    this.prevLeft = this.left;
+  },
+
+  /**
+   * Close menu
+   * @return {Void}
+   */
+  closeMenu: function() {
+    queueAnimation(this.props.animation);
+    this.left = this.props.hiddenMenuOffset || hiddenMenuOffset;
+    this.updatePosition();
+    this.prevLeft = this.left;
   },
 
   /**
@@ -112,19 +123,12 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   handlePanResponderEnd: function(e: Object, gestureState: Object) {
-    LayoutAnimation.configureNext(config);
-    
-    if (shouldOpenMenu(gestureState.dx)) {
-      this.offsetLeft = openMenuOffset;
-    } else {
-      this.offsetLeft = hiddenMenuOffset;
-    }
+    shouldOpenMenu(this.left + gestureState.dx) ?
+      this.openMenu() :
+      this.closeMenu();
 
     this.updatePosition();
-    this._previousLeft = this.offsetLeft;
-
-    var stateShow = this._previousLeft === 0 ? false : true; 
-    this.setState({show: stateShow});
+    this.prevLeft = this.left;
   },
 
   /**
@@ -138,21 +142,25 @@ var SideMenu = React.createClass({
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
 
-        {React.addons.cloneWithProps(this.props.children, {
-           ref: (sideMenu) => this.sideMenu = sideMenu
-        })}
+        {this.props.children}
       </View>
     );
   },
 
   /**
-   * Get menu view. This view will be rendered under content view
+   * Get menu view. This view will be rendered under
+   * content view. Also, this function will decorate
+   * passed `menu` component with side menu API
    * @return {React.Component}
    */
   getMenuView: function() {
+    var menuActions = {
+      close: this.closeMenu
+    };
+
     return (
       <View style={styles.menu}>
-        {this.props.menu}
+        {React.addons.cloneWithProps(this.props.menu, { menuActions })}
       </View>
     );
   },
@@ -194,41 +202,5 @@ var styles = StyleSheet.create({
     height: window.height,
   }
 });
-
-var animations = {
-  layout: {
-    spring: {
-      duration: 500,
-      create: {
-        duration: 300,
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.spring,
-        springDamping: 0.7,
-      },
-    },
-    easeInEaseOut: {
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.scaleXY,
-      },
-      update: {
-        delay: 100,
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    },
-  },
-};
-
-
-var layoutAnimationConfigs = [
-  animations.layout.spring,
-  animations.layout.easeInEaseOut,
-];
-
-var config = layoutAnimationConfigs[0];
 
 module.exports = SideMenu;
