@@ -1,11 +1,11 @@
 'use strict';
 
 var React = require('react-native');
+var deviceScreen = require('Dimensions').get('window');
+var styles = require('./styles');
 var queueAnimation = require('./animations');
-var window = require('Dimensions').get('window');
 
 var {
-  StyleSheet,
   PanResponder,
   View,
 } = React;
@@ -15,7 +15,7 @@ var {
  * move content view from the left and release without opening it
  * @type {Number}
  */
-var openMenuOffset = window.width * 2 / 3;
+var openMenuOffset = deviceScreen.width * 2 / 3;
 
 /**
  * Content view offset in the `hidden` state
@@ -28,12 +28,12 @@ var hiddenMenuOffset = 0;
  * release without menu closing
  * @type {Number}
  */
-var barrierForward = window.width / 4;
+var barrierForward = deviceScreen.width / 4;
 
 /**
- * Check if the current gesture offset
- * bigger than allowed offset before opening menu
- * @param  {Number} dx Gesture offset from the left side of the screen
+ * Check if the current gesture offset bigger than allowed one
+ * before opening menu
+ * @param  {Number} dx Gesture offset from the left side of the window
  * @return {Boolean}
  */
 function shouldOpenMenu(dx: Number) {
@@ -43,12 +43,14 @@ function shouldOpenMenu(dx: Number) {
 var SideMenu = React.createClass({
   /**
    * Current style `left` attribute
+   * @todo Check if it's possible to avoid using `left`
    * @type {Number}
    */
   left: 0,
 
   /**
    * Default left offset for content view
+   * @todo Check if it's possible to avoid using `prevLeft`
    * @type {Number}
    */
   prevLeft: 0,
@@ -62,7 +64,7 @@ var SideMenu = React.createClass({
       onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: this.handlePanResponderEnd,
-    });    
+    });
   },
 
   /**
@@ -75,7 +77,7 @@ var SideMenu = React.createClass({
   },
 
   /**
-   * Permission to use responder 
+   * Permission to use responder
    * @return {Boolean} true
    */
   handleStartShouldSetPanResponder: () => true,
@@ -88,7 +90,7 @@ var SideMenu = React.createClass({
    */
   handlePanResponderMove: function(e: Object, gestureState: Object) {
     this.left = this.prevLeft + gestureState.dx;
-    
+
     if (this.left > 0) {
       this.updatePosition();
     }
@@ -123,9 +125,11 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   handlePanResponderEnd: function(e: Object, gestureState: Object) {
-    shouldOpenMenu(this.left + gestureState.dx) ?
-      this.openMenu() :
+    if (shouldOpenMenu(this.left + gestureState.dx)) {
+      this.openMenu();
+    } else {
       this.closeMenu();
+    }
 
     this.updatePosition();
     this.prevLeft = this.left;
@@ -137,8 +141,8 @@ var SideMenu = React.createClass({
    */
   getContentView: function() {
     return (
-      <View 
-        style={styles.frontView} 
+      <View
+        style={styles.frontView}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
 
@@ -176,30 +180,6 @@ var SideMenu = React.createClass({
         {this.getContentView()}
       </View>
     );
-  }
-});
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menu: {
-    flex: 1,
-    backgroundColor: "transparent",
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  frontView: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    backgroundColor: "#ffffff",
-    width: window.width,
-    height: window.height,
   }
 });
 
