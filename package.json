@@ -1,6 +1,6 @@
 {
   "name": "react-native-side-menu",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple customizable component to create side menu",
   "main": "index.js",
   "scripts": {
