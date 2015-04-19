@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/Kureev/react-native-side-menu",
   "dependencies": {
-    "react-native": "^0.3.4"
+    "react-native": "^0.4"
   }
 }
