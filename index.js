@@ -61,7 +61,7 @@ var SideMenu = React.createClass({
    */
   componentWillMount: function() {
     this.responder = PanResponder.create({
-      onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
+      onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: this.handlePanResponderEnd,
     });
@@ -80,7 +80,15 @@ var SideMenu = React.createClass({
    * Permission to use responder
    * @return {Boolean} true
    */
-  handleStartShouldSetPanResponder: () => true,
+  handleMoveShouldSetPanResponder: function(e: Object, gestureState: Object) {
+    var x = gestureState.dx;
+    var y = Math.round(Math.abs(gestureState.dy));
+
+    if (x != 0 && y < 10) {
+      return true;
+    }
+    return false;
+  },
 
   /**
    * Handler on responder move
