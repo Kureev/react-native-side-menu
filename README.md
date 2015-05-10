@@ -74,6 +74,7 @@ var Menu = React.createClass({
 
 `menuActions` consists of following method(s):
 - `close` (Void) - Close menu
+- `toggle` (Void) - Toggle menu (close / open)
 
 ### Component props
 - `menu` (React.Component) - Menu component
