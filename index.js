@@ -42,6 +42,12 @@ function shouldOpenMenu(dx: Number) {
 
 var SideMenu = React.createClass({
   /**
+   * Current state of the menu, whether it is open or not
+   * @type {Boolean}
+   */
+  isOpen: false,
+
+  /**
    * Current style `left` attribute
    * @todo Check if it's possible to avoid using `left`
    * @type {Number}
@@ -113,6 +119,7 @@ var SideMenu = React.createClass({
     this.left = this.props.openMenuOffset || openMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    this.isOpen = true;
   },
 
   /**
@@ -124,6 +131,19 @@ var SideMenu = React.createClass({
     this.left = this.props.hiddenMenuOffset || hiddenMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    this.isOpen = false;
+  },
+
+  /**
+   * Toggle menu
+   * @return {Void}
+   */
+  toggleMenu: function() {
+    if (this.isOpen) {
+      this.closeMenu();
+    } else {
+      this.openMenu();
+    }
   },
 
   /**
@@ -167,7 +187,8 @@ var SideMenu = React.createClass({
    */
   getMenuView: function() {
     var menuActions = {
-      close: this.closeMenu
+      close: this.closeMenu,
+      toggle: this.toggleMenu
     };
 
     return (
