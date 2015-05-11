@@ -37,7 +37,7 @@ var barrierForward = deviceScreen.width / 4;
  * @return {Boolean}
  */
 function shouldOpenMenu(dx: Number) {
-  return dx > barrierForward;
+    return dx > barrierForward;
 }
 
 var SideMenu = React.createClass({
@@ -62,15 +62,36 @@ var SideMenu = React.createClass({
   prevLeft: 0,
 
   /**
-   * Create pan responder before component render
+   * Creates PanResponders and links to appropriate functions
    * @return {Void}
    */
-  componentWillMount: function() {
+  createResponders: function() {
+    if (this.props.disableGestures || false) {
+      this.responder = PanResponder.create({});
+      return;
+    }
+
     this.responder = PanResponder.create({
-      onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
-      onPanResponderMove: this.handlePanResponderMove,
-      onPanResponderRelease: this.handlePanResponderEnd,
+        onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
+        onPanResponderMove: this.handlePanResponderMove,
+        onPanResponderRelease: this.handlePanResponderEnd,
     });
+  },
+
+  /**
+   * Set the initial responders
+   * @return {Void}
+   */
+  componentWillMount: function () {
+    this.createResponders();
+  },
+
+  /**
+   * Update responders on new props whenever possible
+   * @return {Void}
+   */
+  componentWillReceiveProps: function (nextProps) {
+    this.createResponders();
   },
 
   /**
@@ -188,7 +209,8 @@ var SideMenu = React.createClass({
   getMenuView: function() {
     var menuActions = {
       close: this.closeMenu,
-      toggle: this.toggleMenu
+      toggle: this.toggleMenu,
+      open: this.openMenu
     };
 
     return (
