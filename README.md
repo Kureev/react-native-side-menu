@@ -1,5 +1,4 @@
 ## Customizable side menu for react-native
-
 <p align="center">
     <img src ="http://oi61.tinypic.com/2n9l2dz.jpg" />
 </p>
@@ -75,12 +74,15 @@ var Menu = React.createClass({
 `menuActions` consists of following method(s):
 - `close` (Void) - Close menu
 - `toggle` (Void) - Toggle menu (close / open)
+- `open` (Void) - Open menu
 
 ### Component props
 - `menu` (React.Component) - Menu component
 - `animation` (spring|linear|easeInOut) - Type of slide animation. Default is "linear".
 - `openMenuOffset` (Number) - Content view left margin if menu is opened
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
+
+- `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
 
 *In progress*
 
