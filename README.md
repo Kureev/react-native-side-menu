@@ -81,6 +81,8 @@ var Menu = React.createClass({
 - `animation` (spring|linear|easeInOut) - Type of slide animation. Default is "linear".
 - `openMenuOffset` (Number) - Content view left margin if menu is opened
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
+- `toleranceX` (Number) - X axis tolerance
+- `toleranceY` (Number) - Y axis tolerance
 
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
 
