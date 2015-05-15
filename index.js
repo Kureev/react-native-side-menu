@@ -186,15 +186,30 @@ var SideMenu = React.createClass({
    * @return {React.Component}
    */
   getContentView: function() {
+    var menuActions = this.getMenuActions();
+
     return (
       <View
         style={styles.frontView}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
 
-        {this.props.children}
+        {React.addons.cloneWithProps(this.props.children, { menuActions })}
       </View>
     );
+  },
+
+  /**
+   * Get menu actions to expose it to
+   * menu and children components
+   * @return {Object} Public API methods
+   */
+  getMenuActions: function() {
+    return {
+      close: this.closeMenu,
+      toggle: this.toggleMenu,
+      open: this.openMenu
+    };
   },
 
   /**
@@ -204,11 +219,7 @@ var SideMenu = React.createClass({
    * @return {React.Component}
    */
   getMenuView: function() {
-    var menuActions = {
-      close: this.closeMenu,
-      toggle: this.toggleMenu,
-      open: this.openMenu
-    };
+    var menuActions = this.getMenuActions();
 
     return (
       <View style={styles.menu}>
