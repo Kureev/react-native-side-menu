@@ -108,13 +108,10 @@ var SideMenu = React.createClass({
    * @return {Boolean} true
    */
   handleMoveShouldSetPanResponder: function(e: Object, gestureState: Object) {
-    var x = gestureState.dx;
+    var x = Math.round(Math.abs(gestureState.dx));
     var y = Math.round(Math.abs(gestureState.dy));
 
-    if (x != 0 && y < 10) {
-      return true;
-    }
-    return false;
+    return x != this.props.toleranceX && y < this.props.toleranceY;
   },
 
   /**
@@ -233,5 +230,15 @@ var SideMenu = React.createClass({
     );
   }
 });
+
+SideMenu.propTypes = {
+  toleranceX: React.PropTypes.number,
+  toleranceY: React.PropTypes.number
+}
+
+SideMenu.defaultProps = {
+  toleranceY: 10,
+  toleranceX: 10
+};
 
 module.exports = SideMenu;
