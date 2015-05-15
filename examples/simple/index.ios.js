@@ -14,7 +14,8 @@ var {
   Text,
   View,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } = React;
 
 var Menu = React.createClass({
@@ -37,6 +38,17 @@ var Menu = React.createClass({
   }
 });
 
+var Button = React.createClass({
+  render: function() {
+    return (
+      <TouchableOpacity
+        onPress={this.props.menuActions.toggle}>
+        <Text style={this.props.style}>{this.props.children}</Text>
+      </TouchableOpacity>
+    );
+  }
+})
+
 var simple = React.createClass({
   render: function() {
     return (
@@ -53,6 +65,7 @@ var simple = React.createClass({
             Cmd+Control+Z for dev menu
           </Text>
         </View>
+        <Button style={styles.button}>Open menu</Button>
       </SideMenu>
     );
   }
@@ -65,6 +78,12 @@ var styles = StyleSheet.create({
     height: window.height,
     backgroundColor: 'gray',
     padding: 20
+  },
+  button: {
+    position: 'absolute',
+    bottom: 50,
+    backgroundColor: 'red',
+    borderRadius: 20,
   },
   caption: {
     fontSize: 20,

@@ -62,14 +62,6 @@ var SideMenu = React.createClass({
   prevLeft: 0,
 
   /**
-   * Child context types
-   * @type {Object}
-   */
-  childContextTypes: {
-    menuActions: React.PropTypes.object
-  },
-
-  /**
    * Creates PanResponders and links to appropriate functions
    * @return {Void}
    */
@@ -190,29 +182,23 @@ var SideMenu = React.createClass({
   },
 
   /**
-   * Get child context object
-   * @return {Object} Object that could
-   * be accessed from child components
-   */
-  getChildContext: function() {
-    return {
-      menuActions: this.getMenuActions()
-    };
-  },
-
-  /**
    * Get content view. This view will be rendered over menu
    * @return {React.Component}
    */
   getContentView: function() {
+    var getMenuActions = this.getMenuActions.bind(this);
     return (
       <View
         style={styles.frontView}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
 
-        {this.props.children}
-      </View>,
+        {React.Children.map(this.props.children, function(child) {
+          return React.cloneElement(child, {
+            menuActions: getMenuActions()
+          });
+        })}
+      </View>
     );
   },
 
