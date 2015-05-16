@@ -65,8 +65,8 @@ var SideMenu = React.createClass({
    * Creates PanResponders and links to appropriate functions
    * @return {Void}
    */
-  createResponders: function() {
-    if (this.props.disableGestures || false) {
+  createResponders: function(disableGestures) {
+    if (disableGestures || false) {
       this.responder = PanResponder.create({});
       return;
     }
@@ -83,7 +83,7 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   componentWillMount: function () {
-    this.createResponders();
+    this.createResponders(this.props.disableGestures);
   },
 
   /**
@@ -91,7 +91,7 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   componentWillReceiveProps: function (nextProps) {
-    this.createResponders();
+    this.createResponders(nextProps.disableGestures);
   },
 
   /**
