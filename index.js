@@ -186,7 +186,7 @@ var SideMenu = React.createClass({
    * @return {React.Component}
    */
   getContentView: function() {
-    var getMenuActions = this.getMenuActions.bind(this);
+    var getMenuActions = this.getMenuActions;
     return (
       <View
         style={styles.frontView}
