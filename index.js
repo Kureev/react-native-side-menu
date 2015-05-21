@@ -47,6 +47,12 @@ function noop() {}
 
 var SideMenu = React.createClass({
   /**
+   * previous state of the menu, whether it is open or not
+   * @type {Boolean}
+   */
+  prevState: false,
+
+  /**
    * Current state of the menu, whether it is open or not
    * @type {Boolean}
    */
@@ -134,6 +140,17 @@ var SideMenu = React.createClass({
   },
 
   /**
+   * determins whether onChange on props needs to be called or not.
+   * @return {Void}
+   */
+  isChanged: function () {
+    if (this.prevState != this.isOpen) {
+      this.prevState = this.isOpen;
+      this.props.onChange();
+    }
+  },
+
+  /**
    * Open menu
    * @return {Void}
    */
@@ -143,7 +160,7 @@ var SideMenu = React.createClass({
     this.updatePosition();
     this.prevLeft = this.left;
     this.isOpen = true;
-    this.props.onChange();
+    this.isChanged();
   },
 
   /**
@@ -156,7 +173,7 @@ var SideMenu = React.createClass({
     this.updatePosition();
     this.prevLeft = this.left;
     this.isOpen = false;
-    this.props.onChange();
+    this.isChanged();
   },
 
   /**
