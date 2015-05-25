@@ -13,16 +13,19 @@ var animations = {
       update: {
         type: LayoutAnimation.Types.spring,
         springDamping: 0.7,
+        property: LayoutAnimation.Properties.opacity,
       },
     },
     linear: {
       duration: 300,
       create: {
         type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
       },
       update: {
         type: LayoutAnimation.Types.linear,
         springDamping: 0.7,
+        property: LayoutAnimation.Properties.opacity,
       },
     },
     easeInEaseOut: {
@@ -34,6 +37,7 @@ var animations = {
       update: {
         delay: 100,
         type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
       },
     },
   },
