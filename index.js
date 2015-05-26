@@ -40,7 +40,13 @@ function shouldOpenMenu(dx: Number) {
     return dx > barrierForward;
 }
 
+/**
+ * no operation function. does nothing.
+ */
+function noop() {}
+
 var SideMenu = React.createClass({
+
   /**
    * Current state of the menu, whether it is open or not
    * @type {Boolean}
@@ -137,6 +143,9 @@ var SideMenu = React.createClass({
     this.left = this.props.openMenuOffset || openMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    if (!this.isOpen) {
+      this.props.onChange();
+    }
     this.isOpen = true;
   },
 
@@ -149,6 +158,9 @@ var SideMenu = React.createClass({
     this.left = this.props.hiddenMenuOffset || hiddenMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    if (this.isOpen) {
+      this.props.onChange();
+    }
     this.isOpen = false;
   },
 
@@ -247,12 +259,14 @@ var SideMenu = React.createClass({
 
 SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
-  toleranceY: React.PropTypes.number
+  toleranceY: React.PropTypes.number,
+  onChange: React.PropTypes.func
 }
 
 SideMenu.defaultProps = {
   toleranceY: 10,
-  toleranceX: 10
+  toleranceX: 10,
+  onChange: noop
 };
 
 module.exports = SideMenu;
