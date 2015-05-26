@@ -111,7 +111,7 @@ var SideMenu = React.createClass({
     var x = Math.round(Math.abs(gestureState.dx));
     var y = Math.round(Math.abs(gestureState.dy));
 
-    return x != this.props.toleranceX && y < this.props.toleranceY;
+    return x > this.props.toleranceX && y < this.props.toleranceY;
   },
 
   /**
