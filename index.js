@@ -46,11 +46,6 @@ function shouldOpenMenu(dx: Number) {
 function noop() {}
 
 var SideMenu = React.createClass({
-  /**
-   * previous state of the menu, whether it is open or not
-   * @type {Boolean}
-   */
-  prevState: false,
 
   /**
    * Current state of the menu, whether it is open or not
@@ -140,17 +135,6 @@ var SideMenu = React.createClass({
   },
 
   /**
-   * determins whether onChange on props needs to be called or not.
-   * @return {Void}
-   */
-  isChanged: function () {
-    if (this.prevState != this.isOpen) {
-      this.prevState = this.isOpen;
-      this.props.onChange();
-    }
-  },
-
-  /**
    * Open menu
    * @return {Void}
    */
@@ -159,8 +143,10 @@ var SideMenu = React.createClass({
     this.left = this.props.openMenuOffset || openMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    if (!this.isOpen) {
+      this.props.onChange();
+    }
     this.isOpen = true;
-    this.isChanged();
   },
 
   /**
@@ -172,8 +158,10 @@ var SideMenu = React.createClass({
     this.left = this.props.hiddenMenuOffset || hiddenMenuOffset;
     this.updatePosition();
     this.prevLeft = this.left;
+    if (this.isOpen) {
+      this.props.onChange();
+    }
     this.isOpen = false;
-    this.isChanged();
   },
 
   /**
