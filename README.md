@@ -83,8 +83,8 @@ var Menu = React.createClass({
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
-
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
+- `onChange` (Function) - Callback on menu open/close
 
 *In progress*
 
