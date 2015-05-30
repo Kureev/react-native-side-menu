@@ -85,6 +85,7 @@ var Menu = React.createClass({
 - `toleranceY` (Number) - Y axis tolerance
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
 - `onChange` (Function) - Callback on menu open/close
+- `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 
 *In progress*
 
