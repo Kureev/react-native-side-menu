@@ -203,7 +203,7 @@ var SideMenu = React.createClass({
     var shouldOpen = this.menuPositionMultiplier() *
       (this.left + gestureState.dx);
 
-    if (shouldOpenMenu(shouldMenuOpen)) {
+    if (shouldOpenMenu(shouldOpen)) {
       this.openMenu();
     } else {
       this.closeMenu();
