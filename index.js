@@ -129,9 +129,17 @@ var SideMenu = React.createClass({
   handlePanResponderMove: function(e: Object, gestureState: Object) {
     this.left = this.prevLeft + gestureState.dx;
 
-    if (this.left > 0) {
+    if ((this.menuPositionMultiplier() * this.left) > 0) {
       this.updatePosition();
     }
+  },
+
+  /**
+   * Returns 1 or -1 depending on the menuPosition
+   * @return {Number}
+   */
+  menuPositionMultiplier: function() {
+    return this.props.menuPosition === "right" ? -1 : 1;
   },
 
   /**
@@ -140,7 +148,7 @@ var SideMenu = React.createClass({
    */
   openMenu: function() {
     queueAnimation(this.props.animation);
-    this.left = this.props.openMenuOffset || openMenuOffset;
+    this.left = this.menuPositionMultiplier() * (this.props.openMenuOffset || openMenuOffset);
     this.updatePosition();
     this.prevLeft = this.left;
     if (!this.isOpen) {
@@ -155,7 +163,7 @@ var SideMenu = React.createClass({
    */
   closeMenu: function() {
     queueAnimation(this.props.animation);
-    this.left = this.props.hiddenMenuOffset || hiddenMenuOffset;
+    this.left = this.menuPositionMultiplier() * (this.props.hiddenMenuOffset || hiddenMenuOffset);
     this.updatePosition();
     this.prevLeft = this.left;
     if (this.isOpen) {
@@ -183,7 +191,7 @@ var SideMenu = React.createClass({
    * @return {Void}
    */
   handlePanResponderEnd: function(e: Object, gestureState: Object) {
-    if (shouldOpenMenu(this.left + gestureState.dx)) {
+    if (shouldOpenMenu(this.menuPositionMultiplier() * (this.left + gestureState.dx);)) {
       this.openMenu();
     } else {
       this.closeMenu();
