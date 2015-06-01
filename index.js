@@ -8,6 +8,7 @@ var queueAnimation = require('./animations');
 var {
   PanResponder,
   View,
+  TouchableWithoutFeedback
 } = React;
 
 /**
@@ -160,6 +161,9 @@ var SideMenu = React.createClass({
     }
 
     this.isOpen = true;
+
+    // Force update to make the overlay appear (if touchToClose is set)
+    this.props.touchToClose && this.forceUpdate();
   },
 
   /**
@@ -179,6 +183,9 @@ var SideMenu = React.createClass({
     }
 
     this.isOpen = false;
+
+    // Force update to make the overlay disappear (if touchToClose is set)
+    this.props.touchToClose && this.forceUpdate();
   },
 
   /**
@@ -213,6 +220,10 @@ var SideMenu = React.createClass({
     this.prevLeft = this.left;
   },
 
+  handleOverlayPress: function(e: Object) {
+    this.closeMenu();
+  },
+
   /**
    * Get content view. This view will be rendered over menu
    * @return {React.Component}
@@ -230,6 +241,12 @@ var SideMenu = React.createClass({
             menuActions: getMenuActions
           });
         })}
+
+        {this.isOpen && this.props.touchToClose &&
+          <TouchableWithoutFeedback onPress={this.handleOverlayPress}>
+            <View style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'transparent'}} />
+          </TouchableWithoutFeedback>
+        }
       </View>
     );
   },
@@ -280,13 +297,15 @@ var SideMenu = React.createClass({
 SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  onChange: React.PropTypes.func
+  onChange: React.PropTypes.func,
+  touchToClose: React.PropTypes.boolean
 }
 
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  onChange: noop
+  onChange: noop,
+  touchToClose: false
 };
 
 module.exports = SideMenu;
