@@ -23,7 +23,7 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    backgroundColor: '#ffffff',
+    backgroundColor: 'transparent',
     width: deviceScreen.width,
     height: deviceScreen.height,
   }
