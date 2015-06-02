@@ -230,23 +230,30 @@ var SideMenu = React.createClass({
    */
   getContentView: function() {
     var getMenuActions = this.getMenuActions();
+
+    var overlay = null;
+
+    if (this.isOpen && this.props.touchToClose) {
+      overlay = (
+        <TouchableWithoutFeedback onPress={this.handleOverlayPress}>
+          <View style={styles.overlay} />
+        </TouchableWithoutFeedback>
+      );
+    }
+
+    var children = React.Children.map(this.props.children, function(child) {
+      return React.cloneElement(child, {
+        menuActions: getMenuActions
+      });
+    });
+
     return (
       <View
         style={styles.frontView}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
-
-        {React.Children.map(this.props.children, function(child) {
-          return React.cloneElement(child, {
-            menuActions: getMenuActions
-          });
-        })}
-
-        {this.isOpen && this.props.touchToClose &&
-          <TouchableWithoutFeedback onPress={this.handleOverlayPress}>
-            <View style={{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'transparent'}} />
-          </TouchableWithoutFeedback>
-        }
+        {children}
+        {overlay}
       </View>
     );
   },

@@ -26,5 +26,13 @@ module.exports = StyleSheet.create({
     backgroundColor: 'transparent',
     width: deviceScreen.width,
     height: deviceScreen.height,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'transparent'
   }
 });
