@@ -305,7 +305,7 @@ SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
-  touchToClose: React.PropTypes.boolean
+  touchToClose: React.PropTypes.bool
 }
 
 SideMenu.defaultProps = {
