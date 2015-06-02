@@ -61,8 +61,7 @@ var simple = React.createClass({
 
   getInitialState: function() {
     return {
-      touchToClose: false,
-      isOpen: false
+      touchToClose: false
     };
   },
 
@@ -72,11 +71,12 @@ var simple = React.createClass({
     });
   },
 
-  handleChange: function() {
-    this.setState({
-      isOpen: !this.state.isOpen,
-      touchToClose: this.state.touchToClose ? false : this.state.touchToClose
-    });
+  handleChange: function(isOpen) {
+    if (!isOpen) { // when it closes, reset touchToClose
+      this.setState({
+        touchToClose: false
+      });
+    }
   },
 
   render: function() {
