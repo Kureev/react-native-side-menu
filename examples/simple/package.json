@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "react-native": "^0.4",
-    "react-native-side-menu": "^0.5"
+    "react-native-side-menu": "*"
   }
 }
