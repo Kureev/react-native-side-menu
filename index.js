@@ -157,7 +157,7 @@ var SideMenu = React.createClass({
     this.prevLeft = this.left;
 
     if (!this.isOpen) {
-      this.props.onChange();
+      this.props.onChange(this.isOpen);
     }
 
     this.isOpen = true;
@@ -179,7 +179,7 @@ var SideMenu = React.createClass({
     this.prevLeft = this.left;
 
     if (this.isOpen) {
-      this.props.onChange();
+      this.props.onChange(this.isOpen);
     }
 
     this.isOpen = false;
@@ -210,7 +210,7 @@ var SideMenu = React.createClass({
     var shouldOpen = this.menuPositionMultiplier() *
       (this.left + gestureState.dx);
 
-    if (shouldOpenMenu(shouldMenuOpen)) {
+    if (shouldOpenMenu(shouldOpen)) {
       this.openMenu();
     } else {
       this.closeMenu();
