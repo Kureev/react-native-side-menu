@@ -8,6 +8,7 @@ var queueAnimation = require('./animations');
 var {
   PanResponder,
   View,
+  TouchableWithoutFeedback
 } = React;
 
 /**
@@ -160,6 +161,9 @@ var SideMenu = React.createClass({
     }
 
     this.isOpen = true;
+
+    // Force update to make the overlay appear (if touchToClose is set)
+    this.props.touchToClose && this.forceUpdate();
   },
 
   /**
@@ -179,6 +183,9 @@ var SideMenu = React.createClass({
     }
 
     this.isOpen = false;
+
+    // Force update to make the overlay disappear (if touchToClose is set)
+    this.props.touchToClose && this.forceUpdate();
   },
 
   /**
@@ -213,23 +220,40 @@ var SideMenu = React.createClass({
     this.prevLeft = this.left;
   },
 
+  handleOverlayPress: function(e: Object) {
+    this.closeMenu();
+  },
+
   /**
    * Get content view. This view will be rendered over menu
    * @return {React.Component}
    */
   getContentView: function() {
     var getMenuActions = this.getMenuActions();
+
+    var overlay = null;
+
+    if (this.isOpen && this.props.touchToClose) {
+      overlay = (
+        <TouchableWithoutFeedback onPress={this.handleOverlayPress}>
+          <View style={styles.overlay} />
+        </TouchableWithoutFeedback>
+      );
+    }
+
+    var children = React.Children.map(this.props.children, function(child) {
+      return React.cloneElement(child, {
+        menuActions: getMenuActions
+      });
+    });
+
     return (
       <View
         style={styles.frontView}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
-
-        {React.Children.map(this.props.children, function(child) {
-          return React.cloneElement(child, {
-            menuActions: getMenuActions
-          });
-        })}
+        {children}
+        {overlay}
       </View>
     );
   },
@@ -280,13 +304,15 @@ var SideMenu = React.createClass({
 SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  onChange: React.PropTypes.func
+  onChange: React.PropTypes.func,
+  touchToClose: React.PropTypes.boolean
 }
 
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  onChange: noop
+  onChange: noop,
+  touchToClose: false
 };
 
 module.exports = SideMenu;

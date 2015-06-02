@@ -39,10 +39,18 @@ var Menu = React.createClass({
 });
 
 var Button = React.createClass({
+
+  handlePress: function(e) {
+    this.props.menuActions.toggle();
+    if (this.props.onPress) {
+      this.props.onPress(e);
+    }
+  },
+
   render: function() {
     return (
       <TouchableOpacity
-        onPress={this.props.menuActions.toggle}>
+        onPress={this.handlePress}>
         <Text style={this.props.style}>{this.props.children}</Text>
       </TouchableOpacity>
     );
@@ -50,9 +58,30 @@ var Button = React.createClass({
 })
 
 var simple = React.createClass({
+
+  getInitialState: function() {
+    return {
+      touchToClose: false
+    };
+  },
+
+  handleOpenWithTouchToClose: function() {
+    this.setState({
+      touchToClose: true
+    });
+  },
+
+  handleChange: function(isOpen) {
+    if (!isOpen) { // when it closes, reset touchToClose
+      this.setState({
+        touchToClose: false
+      });
+    }
+  },
+
   render: function() {
     return (
-      <SideMenu menu={<Menu />}>
+      <SideMenu menu={<Menu />} touchToClose={this.state.touchToClose} onChange={this.handleChange}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!
@@ -65,7 +94,8 @@ var simple = React.createClass({
             Cmd+Control+Z for dev menu
           </Text>
         </View>
-        <Button style={styles.button}>Open menu</Button>
+        <Button style={styles.button}>Toggle menu</Button>
+        <Button style={styles.button2} onPress={this.handleOpenWithTouchToClose}>Open menu (Overlay Closes)</Button>
       </SideMenu>
     );
   }
@@ -82,6 +112,12 @@ var styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: 50,
+    backgroundColor: 'red',
+    borderRadius: 20,
+  },
+  button2: {
+    position: 'absolute',
+    bottom: 20,
     backgroundColor: 'red',
     borderRadius: 20,
   },
