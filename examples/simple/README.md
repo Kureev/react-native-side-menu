@@ -3,7 +3,7 @@
 ### Install from git
 First of all, clone repo to your computer
 ```bash
-$ git clone git@github.com:Kureev/react-native-side-menu.git
+$ git clone https://github.com/Kureev/react-native-side-menu.git
 ```
 Then install all dependencies
 ```bash
