@@ -158,11 +158,11 @@ var SideMenu = React.createClass({
 
     if (!this.isOpen) {
       this.props.onChange(this.isOpen);
+
+      this.isOpen = true;
       // Force update to make the overlay appear (if touchToClose is set)
       this.props.touchToClose && this.forceUpdate();
     }
-
-    this.isOpen = true;
   },
 
   /**
@@ -179,11 +179,11 @@ var SideMenu = React.createClass({
 
     if (this.isOpen) {
       this.props.onChange(this.isOpen);
+
+      this.isOpen = false;
       // Force update to make the overlay disappear (if touchToClose is set)
       this.props.touchToClose && this.forceUpdate();
     }
-
-    this.isOpen = false;
   },
 
   /**
