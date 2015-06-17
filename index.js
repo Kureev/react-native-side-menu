@@ -79,9 +79,9 @@ class SideMenu extends Component {
     }
 
     this.responder = PanResponder.create({
-        onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder,
-        onPanResponderMove: this.handlePanResponderMove,
-        onPanResponderRelease: this.handlePanResponderEnd,
+        onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
+        onPanResponderMove: this.handlePanResponderMove.bind(this),
+        onPanResponderRelease: this.handlePanResponderEnd.bind(this),
     });
   }
 
@@ -238,7 +238,7 @@ class SideMenu extends Component {
 
     if (this.isOpen && this.props.touchToClose) {
       overlay = (
-        <TouchableWithoutFeedback onPress={this.handleOverlayPress}>
+        <TouchableWithoutFeedback onPress={this.handleOverlayPress.bind(this)}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -268,9 +268,9 @@ class SideMenu extends Component {
    */
   getMenuActions() {
     return {
-      close: this.closeMenu,
-      toggle: this.toggleMenu,
-      open: this.openMenu,
+      close: this.closeMenu.bind(this),
+      toggle: this.toggleMenu.bind(this),
+      open: this.openMenu.bind(this),
     };
   }
 
