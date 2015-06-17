@@ -6,7 +6,7 @@
 
 var React = require('react-native');
 var SideMenu = require('react-native-side-menu');
-var window = require('Dimensions').get('window');
+var Menu = require('./Menu');
 
 var {
   AppRegistry,
@@ -15,73 +15,57 @@ var {
   View,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Component
 } = React;
 
-var Menu = React.createClass({
-  render: function() {
-    return (
-      <ScrollView style={styles.menu}>
-        <View style={styles.avatarContainer}>
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: 'http://pickaface.net/includes/themes/clean/img/slide2.png'
-            }}/>
-          <Text style={{ position: 'absolute', left: 70, top: 20 }}>Your name</Text>
-        </View>
-
-        <Text style={styles.item}>About</Text>
-        <Text style={styles.item}>Contacts</Text>
-      </ScrollView>
-    );
-  }
-});
-
-var Button = React.createClass({
-
-  handlePress: function(e) {
+class Button extends Component {
+  handlePress(e) {
     this.props.menuActions.toggle();
     if (this.props.onPress) {
       this.props.onPress(e);
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <TouchableOpacity
-        onPress={this.handlePress}>
+        onPress={this.handlePress.bind(this)}>
         <Text style={this.props.style}>{this.props.children}</Text>
       </TouchableOpacity>
     );
   }
-})
+}
 
-var simple = React.createClass({
+class Simple extends Component {
+  constructor(props) {
+    super(props);
 
-  getInitialState: function() {
-    return {
+    this.state = {
       touchToClose: false
     };
-  },
+  }
 
-  handleOpenWithTouchToClose: function() {
+  handleOpenWithTouchToClose() {
     this.setState({
       touchToClose: true
     });
-  },
+  }
 
-  handleChange: function(isOpen) {
-    if (!isOpen) { // when it closes, reset touchToClose
+  handleChange(isOpen) {
+    if (!isOpen) {
       this.setState({
         touchToClose: false
       });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
-      <SideMenu menu={<Menu />} touchToClose={this.state.touchToClose} onChange={this.handleChange}>
+      <SideMenu
+        menu={<Menu />}
+        touchToClose={this.state.touchToClose}
+        onChange={this.handleChange.bind(this)}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!
@@ -94,21 +78,19 @@ var simple = React.createClass({
             Cmd+Control+Z for dev menu
           </Text>
         </View>
-        <Button style={styles.button}>Toggle menu</Button>
-        <Button style={styles.button2} onPress={this.handleOpenWithTouchToClose}>Open menu (Overlay Closes)</Button>
+        <Button style={styles.button}>
+          Toggle menu
+        </Button>
+        <Button style={styles.button2}
+          onPress={this.handleOpenWithTouchToClose.bind(this)}>
+          Open menu (Overlay Closes)
+        </Button>
       </SideMenu>
     );
   }
-});
+}
 
 var styles = StyleSheet.create({
-  menu: {
-    flex: 1,
-    width: window.width,
-    height: window.height,
-    backgroundColor: 'gray',
-    padding: 20
-  },
   button: {
     position: 'absolute',
     bottom: 50,
@@ -125,21 +107,6 @@ var styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     alignItems: 'center',
-  },
-  avatarContainer: {
-    marginBottom: 20,
-    marginTop: 20
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    flex: 1
-  },
-  item: {
-    fontSize: 14,
-    fontWeight: '300',
-    paddingTop: 5,
   },
   container: {
     flex: 1,
@@ -159,4 +126,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('simple', () => simple);
+AppRegistry.registerComponent('simple', () => Simple);
