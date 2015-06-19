@@ -47,6 +47,7 @@ function noop() {}
 
 class SideMenu extends Component {
   constructor(props) {
+    super(props);
     /**
      * Current state of the menu, whether it is open or not
      * @type {Boolean}
