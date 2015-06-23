@@ -286,7 +286,7 @@ class SideMenu extends Component {
     var menuActions = this.getMenuActions();
 
     return (
-      <View style={styles.menu}>
+      <View style={[styles.menu, this.props.menuWrapperStyle]}>
         {React.addons.cloneWithProps(this.props.menu, { menuActions, })}
       </View>
     );
@@ -298,7 +298,7 @@ class SideMenu extends Component {
    */
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         {this.getMenuView()}
         {this.getContentView()}
       </View>

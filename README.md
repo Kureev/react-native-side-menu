@@ -87,6 +87,8 @@ var Menu = React.createClass({
 - `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument.
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 - `touchToClose` (Bool) - Allows for touching the partially hidden view to close the menu. Defaults to `false`.
+- `menuWrapperStyle` (Object) - Allows for overriding the menu styles.
+- `containerStyle` (Object) - Allows for overriding the container styles.
 
 *In progress*
 
