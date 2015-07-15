@@ -68,6 +68,13 @@ class SideMenu extends Component {
      * @type {Number}
      */
     this.prevLeft = 0;
+
+    /**
+     * keep track of lastImmediate value to prevent calling
+     * onImmediateChange twice with the same value
+     * @type {Number}
+     */
+    this.prevImmediate = 0;
   }
 
   /**
@@ -109,6 +116,13 @@ class SideMenu extends Component {
    * @return {Void}
    */
   updatePosition() {
+    //we need this condition to make sure that
+    //it doesn't call onImmediateChange twice.
+    if (this.left != this.prevImmediate) {
+      this.prevImmediate = this.left;
+      this.props.onImmediateChange(this.left);
+    }
+
     this.sideMenu.setNativeProps({ left: this.left, });
   }
 
@@ -150,6 +164,8 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu() {
+    this.props.onImmediateChange(this.left);
+
     queueAnimation(this.props.animation);
 
     this.left = this.menuPositionMultiplier() *
@@ -175,6 +191,8 @@ class SideMenu extends Component {
    * @return {Void}
    */
   closeMenu() {
+    this.props.onImmediateChange(this.left);
+
     queueAnimation(this.props.animation);
     this.left = this.menuPositionMultiplier() *
       (this.props.hiddenMenuOffset || hiddenMenuOffset);
@@ -310,6 +328,7 @@ SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
+  onImmediateChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
 };
 
@@ -317,6 +336,7 @@ SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   onChange: noop,
+  onImmediateChange: noop,
   touchToClose: false,
 };
 
