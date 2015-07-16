@@ -1,14 +1,15 @@
-var React = require('react-native');
-var deviceScreen = require('Dimensions').get('window');
 var styles = require('./styles');
 var queueAnimation = require('./animations');
 
-var {
+var React, {
   PanResponder,
   View,
   TouchableWithoutFeedback,
   Component,
-} = React;
+  Dimensions,
+} = require('react-native');
+
+var deviceScreen = Dimensions.get('window');
 
 /**
  * Default open menu offset. Describes a size of the amount you can
@@ -48,7 +49,7 @@ function noop() {}
 class SideMenu extends Component {
   constructor(props) {
     super(props);
-    
+
     /**
      * Current state of the menu, whether it is open or not
      * @type {Boolean}
