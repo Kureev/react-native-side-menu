@@ -85,6 +85,7 @@ var Menu = React.createClass({
 - `toleranceY` (Number) - Y axis tolerance
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
 - `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument.
+- `onImmediateChange` (Function) - Callback on every step with a current position of menu.
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 - `touchToClose` (Bool) - Allows for touching the partially hidden view to close the menu. Defaults to `false`.
 
