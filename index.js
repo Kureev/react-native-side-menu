@@ -1,35 +1,34 @@
-var styles = require('./styles');
-var queueAnimation = require('./animations');
+const styles = require('./styles');
+const queueAnimation = require('./animations');
+const React = require('react-native');
+const deviceScreen = require('Dimensions').get('window');
 
-var React, {
+const {
   PanResponder,
   View,
   TouchableWithoutFeedback,
   Component,
-  Dimensions,
-} = require('react-native');
-
-var deviceScreen = Dimensions.get('window');
+} = React;
 
 /**
  * Default open menu offset. Describes a size of the amount you can
  * move content view from the left and release without opening it
  * @type {Number}
  */
-var openMenuOffset = deviceScreen.width * 2 / 3;
+const openMenuOffset = deviceScreen.width * 2 / 3;
 
 /**
  * Content view offset in the `hidden` state
  * @type {Number}
  */
-var hiddenMenuOffset = 0;
+const hiddenMenuOffset = 0;
 
 /**
  * Size of the amount you can move content view in the opened menu state and
  * release without menu closing
  * @type {Number}
  */
-var barrierForward = deviceScreen.width / 4;
+const barrierForward = deviceScreen.width / 4;
 
 /**
  * Check if the current gesture offset bigger than allowed one
@@ -41,35 +40,26 @@ function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
-/**
- * no operation function. does nothing.
- */
-function noop() {}
-
 class SideMenu extends Component {
-  constructor(props) {
-    super(props);
+  /**
+   * Current state of the menu, whether it is open or not
+   * @type {Boolean}
+   */
+  isOpen = false
 
-    /**
-     * Current state of the menu, whether it is open or not
-     * @type {Boolean}
-     */
-    this.isOpen = false;
+  /**
+   * Current style `left` attribute
+   * @todo Check if it's possible to avoid using `left`
+   * @type {Number}
+   */
+  left = 0
 
-    /**
-     * Current style `left` attribute
-     * @todo Check if it's possible to avoid using `left`
-     * @type {Number}
-     */
-    this.left = 0;
-
-    /**
-     * Default left offset for content view
-     * @todo Check if it's possible to avoid using `prevLeft`
-     * @type {Number}
-     */
-    this.prevLeft = 0;
-  }
+  /**
+   * Default left offset for content view
+   * @todo Check if it's possible to avoid using `prevLeft`
+   * @type {Number}
+   */
+  prevLeft = 0
 
   /**
    * Creates PanResponders and links to appropriate functions
@@ -118,8 +108,8 @@ class SideMenu extends Component {
    * @return {Boolean} true
    */
   handleMoveShouldSetPanResponder(e: Object, gestureState: Object) {
-    var x = Math.round(Math.abs(gestureState.dx));
-    var y = Math.round(Math.abs(gestureState.dy));
+    const x = Math.round(Math.abs(gestureState.dx));
+    const y = Math.round(Math.abs(gestureState.dy));
 
     return x > this.props.toleranceX && y < this.props.toleranceY;
   }
@@ -213,7 +203,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderEnd(e: Object, gestureState: Object) {
-    var shouldOpen = this.menuPositionMultiplier() *
+    const shouldOpen = this.menuPositionMultiplier() *
       (this.left + gestureState.dx);
 
     if (shouldOpenMenu(shouldOpen)) {
@@ -235,9 +225,9 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   getContentView() {
-    var getMenuActions = this.getMenuActions();
+    const menuActions = this.getMenuActions();
 
-    var overlay = null;
+    let overlay = null;
 
     if (this.isOpen && this.props.touchToClose) {
       overlay = (
@@ -247,11 +237,8 @@ class SideMenu extends Component {
       );
     }
 
-    var children = React.Children.map(this.props.children, (child) => {
-      return React.cloneElement(child, {
-        menuActions: getMenuActions,
-      });
-    });
+    const children = React.Children.map(this.props.children,
+      (child) => React.cloneElement(child, { menuActions, }));
 
     return (
       <View
@@ -284,7 +271,7 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   getMenuView() {
-    var menuActions = this.getMenuActions();
+    const menuActions = this.getMenuActions();
 
     return (
       <View style={styles.menu}>
@@ -317,7 +304,7 @@ SideMenu.propTypes = {
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  onChange: noop,
+  onChange: () => ({}),
   touchToClose: false,
 };
 

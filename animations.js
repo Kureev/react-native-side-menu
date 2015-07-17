@@ -49,11 +49,11 @@ var layoutAnimationConfigs = {
   'easeInOut': animations.layout.easeInEaseOut,
 };
 
-module.exports = function(animation) {
+module.exports = function setAnimation(animation) {
   var _animation = layoutAnimationConfigs[animation];
   if (!_animation) {
     _animation = layoutAnimationConfigs[DEFAULT_ANIMATION];
   }
-  
+
   LayoutAnimation.configureNext(_animation);
-}
+};
