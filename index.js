@@ -1,13 +1,14 @@
 var styles = require('./styles');
 var queueAnimation = require('./animations');
 
-var React, {
+var React = require('react-native');
+var {
   PanResponder,
   View,
   TouchableWithoutFeedback,
   Component,
   Dimensions,
-} = require('react-native');
+} = React;
 
 var deviceScreen = Dimensions.get('window');
 
