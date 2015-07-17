@@ -1,14 +1,8 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-'use strict';
+const React = require('react-native');
+const SideMenu = require('react-native-side-menu');
+const Menu = require('./Menu');
 
-var React = require('react-native');
-var SideMenu = require('react-native-side-menu');
-var Menu = require('./Menu');
-
-var {
+const {
   AppRegistry,
   StyleSheet,
   Text,
@@ -19,78 +13,7 @@ var {
   Component
 } = React;
 
-class Button extends Component {
-  handlePress(e) {
-    this.props.menuActions.toggle();
-    if (this.props.onPress) {
-      this.props.onPress(e);
-    }
-  }
-
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={this.handlePress.bind(this)}>
-        <Text style={this.props.style}>{this.props.children}</Text>
-      </TouchableOpacity>
-    );
-  }
-}
-
-class Simple extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      touchToClose: false
-    };
-  }
-
-  handleOpenWithTouchToClose() {
-    this.setState({
-      touchToClose: true
-    });
-  }
-
-  handleChange(isOpen) {
-    if (!isOpen) {
-      this.setState({
-        touchToClose: false
-      });
-    }
-  }
-
-  render() {
-    return (
-      <SideMenu
-        menu={<Menu />}
-        touchToClose={this.state.touchToClose}
-        onChange={this.handleChange.bind(this)}>
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-            Welcome to React Native!
-          </Text>
-          <Text style={styles.instructions}>
-            To get started, edit index.ios.js
-          </Text>
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+Control+Z for dev menu
-          </Text>
-        </View>
-        <Button style={styles.button}>
-          Toggle menu
-        </Button>
-        <Button style={styles.button2}
-          onPress={this.handleOpenWithTouchToClose.bind(this)}>
-          Open menu (Overlay Closes)
-        </Button>
-      </SideMenu>
-    );
-  }
-}
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: 50,
@@ -125,5 +48,76 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+class Button extends Component {
+  handlePress(e) {
+    this.props.menuActions.toggle();
+    if (this.props.onPress) {
+      this.props.onPress(e);
+    }
+  }
+
+  render() {
+    return (
+      <TouchableOpacity
+        onPress={this.handlePress.bind(this)}>
+        <Text style={this.props.style}>{this.props.children}</Text>
+      </TouchableOpacity>
+    );
+  }
+}
+
+class Simple extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      touchToClose: false,
+    };
+  }
+
+  handleOpenWithTouchToClose() {
+    this.setState({
+      touchToClose: true,
+    });
+  }
+
+  handleChange(isOpen) {
+    if (!isOpen) {
+      this.setState({
+        touchToClose: false,
+      });
+    }
+  }
+
+  render() {
+    return (
+      <SideMenu
+        menu={<Menu />}
+        touchToClose={this.state.touchToClose}
+        onChange={this.handleChange.bind(this)}>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Welcome to React Native!
+          </Text>
+          <Text style={styles.instructions}>
+            To get started, edit index.ios.js
+          </Text>
+          <Text style={styles.instructions}>
+            Press Cmd+R to reload,{'\n'}
+            Cmd+Control+Z for dev menu
+          </Text>
+        </View>
+        <Button style={styles.button}>
+          Toggle menu
+        </Button>
+        <Button style={styles.button2}
+          onPress={this.handleOpenWithTouchToClose.bind(this)}>
+          Open menu (Overlay Closes)
+        </Button>
+      </SideMenu>
+    );
+  }
+}
 
 AppRegistry.registerComponent('simple', () => Simple);
