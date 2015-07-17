@@ -41,25 +41,28 @@ function shouldOpenMenu(dx: Number) {
 }
 
 class SideMenu extends Component {
-  /**
-   * Current state of the menu, whether it is open or not
-   * @type {Boolean}
-   */
-  isOpen = false
+  constructor(props) {
+    super(props);
+    /**
+     * Current state of the menu, whether it is open or not
+     * @type {Boolean}
+     */
+    this.isOpen = false;
 
-  /**
-   * Current style `left` attribute
-   * @todo Check if it's possible to avoid using `left`
-   * @type {Number}
-   */
-  left = 0
+    /**
+     * Current style `left` attribute
+     * @todo Check if it's possible to avoid using `left`
+     * @type {Number}
+     */
+    this.left = 0;
 
-  /**
-   * Default left offset for content view
-   * @todo Check if it's possible to avoid using `prevLeft`
-   * @type {Number}
-   */
-  prevLeft = 0
+    /**
+     * Default left offset for content view
+     * @todo Check if it's possible to avoid using `prevLeft`
+     * @type {Number}
+     */
+    this.prevLeft = 0;
+  }
 
   /**
    * Creates PanResponders and links to appropriate functions
