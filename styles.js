@@ -1,9 +1,11 @@
 var React = require('react-native');
-var deviceScreen = require('Dimensions').get('window');
 
 var {
   StyleSheet,
+  Dimensions,
 } = React;
+
+var deviceScreen = Dimensions.get('window');
 
 module.exports = StyleSheet.create({
   container: {
