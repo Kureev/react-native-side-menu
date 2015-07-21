@@ -1,4 +1,5 @@
 const React = require('react-native');
+const Dimensions = require('Dimensions');
 const {
   StyleSheet,
   ScrollView,
@@ -6,7 +7,6 @@ const {
   Image,
   Text,
   Component,
-  Dimensions,
 } = React;
 
 const window = Dimensions.get('window');
