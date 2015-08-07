@@ -1,7 +1,8 @@
 const styles = require('./styles');
 const queueAnimation = require('./animations');
 const React = require('react-native');
-const deviceScreen = require('Dimensions').get('window');
+const { Dimensions, } = React;
+const deviceScreen = Dimensions.get('window');
 
 const {
   PanResponder,
@@ -64,37 +65,17 @@ class SideMenu extends Component {
     this.prevLeft = 0;
   }
 
-  /**
-   * Creates PanResponders and links to appropriate functions
-   * @return {Void}
-   */
-  createResponders(disableGestures) {
-    if (disableGestures || false) {
-      this.responder = PanResponder.create({});
-      return;
-    }
-
-    this.responder = PanResponder.create({
-        onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
-        onPanResponderMove: this.handlePanResponderMove.bind(this),
-        onPanResponderRelease: this.handlePanResponderEnd.bind(this),
-    });
-  }
 
   /**
    * Set the initial responders
    * @return {Void}
    */
   componentWillMount() {
-    this.createResponders(this.props.disableGestures);
-  }
-
-  /**
-   * Update responders on new props whenever possible
-   * @return {Void}
-   */
-  componentWillReceiveProps(nextProps) {
-    this.createResponders(nextProps.disableGestures);
+    this.responder = PanResponder.create({
+      onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
+      onPanResponderMove: this.handlePanResponderMove.bind(this),
+      onPanResponderRelease: this.handlePanResponderEnd.bind(this),
+    });
   }
 
   /**
@@ -107,14 +88,32 @@ class SideMenu extends Component {
   }
 
   /**
+   * Determines if gestures are enabled, based off of disableGestures prop
+   * @return {Boolean}
+   */
+  gesturesAreEnabled() {
+    let { disableGestures, } = this.props;
+
+    if (typeof disableGestures === 'function') {
+      return !disableGestures();
+    } else {
+      return !disableGestures;
+    }
+  }
+
+  /**
    * Permission to use responder
-   * @return {Boolean} true
+   * @return {Boolean}
    */
   handleMoveShouldSetPanResponder(e: Object, gestureState: Object) {
-    const x = Math.round(Math.abs(gestureState.dx));
-    const y = Math.round(Math.abs(gestureState.dy));
+    if (this.gesturesAreEnabled()) {
+      const x = Math.round(Math.abs(gestureState.dx));
+      const y = Math.round(Math.abs(gestureState.dy));
 
-    return x > this.props.toleranceX && y < this.props.toleranceY;
+      return x > this.props.toleranceX && y < this.props.toleranceY;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -302,6 +301,7 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
+  disableGestures: React.PropTypes.oneOf([React.PropTypes.func, React.PropTypes.bool]),
 };
 
 SideMenu.defaultProps = {
