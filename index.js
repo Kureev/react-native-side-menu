@@ -301,7 +301,7 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
-  disableGestures: React.PropTypes.oneOf([React.PropTypes.func, React.PropTypes.bool]),
+  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool]),
 };
 
 SideMenu.defaultProps = {
