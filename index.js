@@ -143,7 +143,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu() {
-    if (this.isOpen) {
+    if (this.left === this.prevLeft && this.isOpen) {
       return;
     }
 
@@ -172,7 +172,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   closeMenu() {
-    if (!this.isOpen) {
+    if (this.left === this.prevLeft && !this.isOpen) {
       return;
     }
 
