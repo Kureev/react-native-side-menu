@@ -143,6 +143,10 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu() {
+    if (this.left === this.prevLeft && this.isOpen) {
+      return;
+    }
+
     queueAnimation(this.props.animation);
 
     this.left = this.menuPositionMultiplier() *
@@ -168,6 +172,10 @@ class SideMenu extends Component {
    * @return {Void}
    */
   closeMenu() {
+    if (this.left === this.prevLeft && !this.isOpen) {
+      return;
+    }
+
     queueAnimation(this.props.animation);
     this.left = this.menuPositionMultiplier() *
       (this.props.hiddenMenuOffset || hiddenMenuOffset);
