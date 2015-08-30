@@ -78,14 +78,16 @@ var Menu = React.createClass({
 
 ### Component props
 - `menu` (React.Component) - Menu component
-- `animation` (spring|linear|easeInOut) - Type of slide animation. Default is "linear".
 - `openMenuOffset` (Number) - Content view left margin if menu is opened
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
-- `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument.
+- `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
+- `animationFunction` (Function) - Function that accept 2 arguments (prop, value):
+  - `prop` you should use at the place you specify parameter to animate;
+  - `value` you should use to specify the final value of `prop`;
 - `touchToClose` (Bool) - Allows for touching the partially hidden view to close the menu. Defaults to `false`.
 
 *In progress*
