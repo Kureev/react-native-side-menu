@@ -294,10 +294,10 @@ SideMenu.defaultProps = {
   toleranceX: 10,
   touchToClose: false,
   onChange: () => {},
-  animationStyle: function(prop) {
+  animationStyle: function(value) {
     return {
       transform: [{
-        translateX: prop,
+        translateX: value,
       }],
     };
   },
