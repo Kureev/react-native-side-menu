@@ -228,11 +228,7 @@ class SideMenu extends Component {
 
     return (
       <Animated.View
-        style={[styles.frontView, {
-          transform: [{
-            translateX: this.state.left,
-          }],
-        }, ]}
+        style={[styles.frontView, this.props.animationStyle(this.state.left)]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {children}
@@ -298,6 +294,13 @@ SideMenu.defaultProps = {
   toleranceX: 10,
   touchToClose: false,
   onChange: () => {},
+  animationStyle: function(prop) {
+    return {
+      transform: [{
+        translateX: prop,
+      }],
+    };
+  },
   animationFunction: (prop, value) => {
     return Animated.spring(
       prop,
