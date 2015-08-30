@@ -1,7 +1,6 @@
 const styles = require('./styles');
-const queueAnimation = require('./animations');
 const React = require('react-native');
-const { Dimensions, } = React;
+const { Dimensions, Animated, } = React;
 const deviceScreen = Dimensions.get('window');
 
 const {
@@ -51,18 +50,15 @@ class SideMenu extends Component {
     this.isOpen = false;
 
     /**
-     * Current style `left` attribute
-     * @todo Check if it's possible to avoid using `left`
-     * @type {Number}
-     */
-    this.left = 0;
-
-    /**
      * Default left offset for content view
      * @todo Check if it's possible to avoid using `prevLeft`
      * @type {Number}
      */
     this.prevLeft = 0;
+
+    this.state = {
+      left: new Animated.Value(0),
+    };
   }
 
 
@@ -76,15 +72,6 @@ class SideMenu extends Component {
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
     });
-  }
-
-  /**
-   * Change `left` style attribute
-   * Works only if `sideMenu` is a ref to React.Component
-   * @return {Void}
-   */
-  updatePosition() {
-    this.sideMenu.setNativeProps({ left: this.left, });
   }
 
   /**
@@ -123,10 +110,28 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderMove(e: Object, gestureState: Object) {
-    this.left = this.prevLeft + gestureState.dx;
+    if (this.menuPositionMultiplier() *
+      this.state.left.__getValue() + gestureState.dx >= 0) {
+      this.state.left.setValue(this.prevLeft + gestureState.dx);
+    }
+  }
 
-    if ((this.menuPositionMultiplier() * this.left) > 0) {
-      this.updatePosition();
+  /**
+   * Handler on responder move ending
+   * @param  {Synthetic Event} e
+   * @param  {Object} gestureState
+   * @return {Void}
+   */
+  handlePanResponderEnd(e: Object, gestureState: Object) {
+    const currentLeft = this.state.left.__getValue();
+
+    const shouldOpen = this.menuPositionMultiplier() *
+      (currentLeft + gestureState.dx);
+
+    if (shouldOpenMenu(shouldOpen)) {
+      this.openMenu();
+    } else {
+      this.closeMenu();
     }
   }
 
@@ -143,13 +148,14 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu() {
-    queueAnimation(this.props.animation);
-
-    this.left = this.menuPositionMultiplier() *
+    const openOffset = this.menuPositionMultiplier() *
       (this.props.openMenuOffset || openMenuOffset);
 
-    this.updatePosition();
-    this.prevLeft = this.left;
+    this.props
+      .animationFunction(this.state.left, openOffset)
+      .start();
+
+    this.prevLeft = openOffset;
 
     if (!this.isOpen) {
       this.props.onChange(this.isOpen);
@@ -168,12 +174,14 @@ class SideMenu extends Component {
    * @return {Void}
    */
   closeMenu() {
-    queueAnimation(this.props.animation);
-    this.left = this.menuPositionMultiplier() *
+    const closeOffset = this.menuPositionMultiplier() *
       (this.props.hiddenMenuOffset || hiddenMenuOffset);
 
-    this.updatePosition();
-    this.prevLeft = this.left;
+    this.props
+      .animationFunction(this.state.left, closeOffset)
+      .start();
+
+    this.prevLeft = closeOffset;
 
     if (this.isOpen) {
       this.props.onChange(this.isOpen);
@@ -199,30 +207,6 @@ class SideMenu extends Component {
   }
 
   /**
-   * Handler on responder move ending
-   * @param  {Synthetic Event} e
-   * @param  {Object} gestureState
-   * @return {Void}
-   */
-  handlePanResponderEnd(e: Object, gestureState: Object) {
-    const shouldOpen = this.menuPositionMultiplier() *
-      (this.left + gestureState.dx);
-
-    if (shouldOpenMenu(shouldOpen)) {
-      this.openMenu();
-    } else {
-      this.closeMenu();
-    }
-
-    this.updatePosition();
-    this.prevLeft = this.left;
-  }
-
-  handleOverlayPress(e: Object) {
-    this.closeMenu();
-  }
-
-  /**
    * Get content view. This view will be rendered over menu
    * @return {React.Component}
    */
@@ -233,7 +217,7 @@ class SideMenu extends Component {
 
     if (this.isOpen && this.props.touchToClose) {
       overlay = (
-        <TouchableWithoutFeedback onPress={this.handleOverlayPress.bind(this)}>
+        <TouchableWithoutFeedback onPress={this.closeMenu.bind(this)}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -243,13 +227,17 @@ class SideMenu extends Component {
       (child) => React.cloneElement(child, { menuActions, }));
 
     return (
-      <View
-        style={styles.frontView}
+      <Animated.View
+        style={[styles.frontView, {
+          transform: [{
+            translateX: this.state.left,
+          }],
+        }, ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {children}
         {overlay}
-      </View>
+      </Animated.View>
     );
   }
 
@@ -301,14 +289,24 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool]),
+  disableGestures: React.PropTypes.oneOf([React.PropTypes.func, React.PropTypes.bool]),
+  animationFunction: React.PropTypes.func,
 };
 
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  onChange: () => ({}),
   touchToClose: false,
+  onChange: () => {},
+  animationFunction: (prop, value) => {
+    return Animated.spring(
+      prop,
+      {
+        toValue: value,
+        friction: 8,
+      }
+    )
+  }
 };
 
 module.exports = SideMenu;
