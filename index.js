@@ -68,6 +68,7 @@ class SideMenu extends Component {
    */
   componentWillMount() {
     this.responder = PanResponder.create({
+      onStartShouldSetResponderCapture: this.props.onStartShouldSetResponderCapture.bind(this),
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
@@ -83,9 +84,9 @@ class SideMenu extends Component {
 
     if (typeof disableGestures === 'function') {
       return !disableGestures();
-    } else {
-      return !disableGestures;
     }
+
+    return !disableGestures;
   }
 
   /**
@@ -98,9 +99,9 @@ class SideMenu extends Component {
       const y = Math.round(Math.abs(gestureState.dy));
 
       return x > this.props.toleranceX && y < this.props.toleranceY;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   /**
@@ -228,7 +229,7 @@ class SideMenu extends Component {
 
     return (
       <Animated.View
-        style={[styles.frontView, this.props.animationStyle(this.state.left)]}
+        style={[styles.frontView, this.props.animationStyle(this.state.left), ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {children}
@@ -285,20 +286,22 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool]),
+  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
+  onStartShouldSetResponderCapture: React.PropTypes.func,
 };
 
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   touchToClose: false,
+  onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
-  animationStyle: function(value) {
+  animationStyle: (value) => {
     return {
       transform: [{
         translateX: value,
-      }],
+      }, ],
     };
   },
   animationFunction: (prop, value) => {
@@ -308,8 +311,8 @@ SideMenu.defaultProps = {
         toValue: value,
         friction: 8,
       }
-    )
-  }
+    );
+  },
 };
 
 module.exports = SideMenu;
