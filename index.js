@@ -59,6 +59,10 @@ class SideMenu extends Component {
     this.state = {
       left: new Animated.Value(0),
     };
+    
+    //we need to call animationFunction to make sure that user has enough time to add its own 
+    //listeners to Animated api.
+    props.animationFunction(this.state.left, 0);
   }
 
 
