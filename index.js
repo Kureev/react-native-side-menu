@@ -61,6 +61,11 @@ class SideMenu extends Component {
     };
   }
 
+  getChildContext() {
+    return {
+      menuActions: this.getMenuActions(),
+    };
+  }
 
   /**
    * Set the initial responders
@@ -212,8 +217,6 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   getContentView() {
-    const menuActions = this.getMenuActions();
-
     let overlay = null;
 
     if (this.isOpen && this.props.touchToClose) {
@@ -224,15 +227,12 @@ class SideMenu extends Component {
       );
     }
 
-    const children = React.Children.map(this.props.children,
-      (child) => React.cloneElement(child, { menuActions, }));
-
     return (
       <Animated.View
         style={[styles.frontView, this.props.animationStyle(this.state.left), ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
-        {children}
+        {this.props.children}
         {overlay}
       </Animated.View>
     );
@@ -252,34 +252,24 @@ class SideMenu extends Component {
   }
 
   /**
-   * Get menu view. This view will be rendered under
-   * content view. Also, this function will decorate
-   * passed `menu` component with side menu API
-   * @return {React.Component}
-   */
-  getMenuView() {
-    const menuActions = this.getMenuActions();
-
-    return (
-      <View style={styles.menu}>
-        {React.addons.cloneWithProps(this.props.menu, { menuActions, })}
-      </View>
-    );
-  }
-
-  /**
    * Compose and render menu and content view
    * @return {React.Component}
    */
   render() {
     return (
       <View style={styles.container}>
-        {this.getMenuView()}
+        <View style={styles.menu}>
+          {this.props.menu}
+        </View>
         {this.getContentView()}
       </View>
     );
   }
 }
+
+SideMenu.childContextTypes = {
+  menuActions: React.PropTypes.object.isRequired,
+};
 
 SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
