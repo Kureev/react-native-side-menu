@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
 
 class Button extends Component {
   handlePress(e) {
-    console.log(this.context)
     this.context.menuActions.toggle();
     if (this.props.onPress) {
       this.props.onPress(e);
