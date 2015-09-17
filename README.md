@@ -6,6 +6,7 @@
 ### Content
 - [Installation](#installation)
 - [Usage example](#usage-example)
+- [Managing menu state](#managing-menu-state)
 - [Component props](#component-props)
 - [Special thanks](#special-thanks)
 - [Questions?](#questions)
@@ -50,31 +51,42 @@ var Application = React.createClass({
   }
 });
 ```
-
-Clicking on any menu item should cause closing menu. It can be done by using `menuActions` which are passed thru props to `menu` component. Example looks like this:
-
-```javascript
-var Menu = React.createClass({
-  about: function() {
-    this.props.menuActions.close();
-    this.props.navigator.push({...});
-  },
-
-  render: function() {
-    return (
-      <View>
-        <Text>Menu</Text>
-        <Text onPress={this.about}>About</Text>
-      </View>
-    );
-  }
-});
-```
+### Managing menu state
+Managing menu state works thru the exposed `menuActions`. To access `menuActions`, you need to use context. (there is an [awesome article](https://www.tildedave.com/2014/11/15/introduction-to-contexts-in-react-js.html) for that).
 
 `menuActions` consists of following method(s):
 - `close` (Void) - Close menu
 - `toggle` (Void) - Toggle menu (close / open)
 - `open` (Void) - Open menu
+
+Usage example:
+```javascript
+class Button extends Component {
+  handlePress(e) {
+    this.context.menuActions.toggle();
+    if (this.props.onPress) {
+      this.props.onPress(e);
+    }
+  }
+
+  render() {
+    return (
+      <TouchableOpacity
+        onPress={this.handlePress.bind(this)}>
+        <Text style={this.props.style}>{this.props.children}</Text>
+      </TouchableOpacity>
+    );
+  }
+}
+
+/**
+ * This part is very important. Without it you wouldn't be able to access `menuActions`
+ * @type {Object}
+ */
+Button.contextTypes = {
+  menuActions: React.PropTypes.object.isRequired
+};
+```
 
 ### Component props
 - `menu` (React.Component) - Menu component
