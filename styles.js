@@ -19,7 +19,7 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    width: deviceScreen.width,
+    width: deviceScreen.width * 2 / 3,
     height: deviceScreen.height,
   },
   frontView: {
