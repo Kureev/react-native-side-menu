@@ -28,8 +28,6 @@ module.exports = StyleSheet.create({
     left: 0,
     top: 0,
     backgroundColor: 'transparent',
-    width: deviceScreen.width,
-    height: deviceScreen.height,
   },
   overlay: {
     position: 'absolute',
