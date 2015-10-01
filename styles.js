@@ -2,10 +2,7 @@ var React = require('react-native');
 
 var {
   StyleSheet,
-  Dimensions,
 } = React;
-
-var deviceScreen = Dimensions.get('window');
 
 module.exports = StyleSheet.create({
   container: {
@@ -19,8 +16,6 @@ module.exports = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    width: deviceScreen.width,
-    height: deviceScreen.height,
   },
   frontView: {
     flex: 1,
