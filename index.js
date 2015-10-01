@@ -228,9 +228,11 @@ class SideMenu extends Component {
       );
     }
 
+    const {width, height} = this.state;
+
     return (
       <Animated.View
-        style={[styles.frontView, this.props.animationStyle(this.state.left), ]}
+        style={[styles.frontView, {width, height}, this.props.animationStyle(this.state.left), ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {this.props.children}
@@ -252,13 +254,18 @@ class SideMenu extends Component {
     };
   }
 
+  onLayoutChange(e) {
+    const {width, height} = e.nativeEvent.layout;
+    this.setState({width, height});
+  }
+
   /**
    * Compose and render menu and content view
    * @return {React.Component}
    */
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
         <View style={styles.menu}>
           {this.props.menu}
         </View>
