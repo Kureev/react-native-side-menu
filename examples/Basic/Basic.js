@@ -3,12 +3,9 @@ const SideMenu = require('react-native-side-menu');
 const Menu = require('./Menu');
 
 const {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
-  Image,
-  ScrollView,
   TouchableOpacity,
   Component
 } = React;
