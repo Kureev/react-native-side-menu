@@ -114,9 +114,11 @@ class SideMenu extends Component {
       if (this.isOpen) {
         return touchMoved;
       } else {
-        const withinEdgeHitWidth = gestureState.moveX < this.props.edgeHitWidth;
-        const swipingRight = gestureState.dx > 0;
-        return withinEdgeHitWidth && touchMoved && swipingRight;
+        const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
+            gestureState.moveX > (deviceScreen.width - edgeHitWidth) :
+            gestureState.moveX < edgeHitWidth;
+        const swipingToOpen = (this.menuPositionMultiplier() * gestureState.dx) > 0;
+        return withinEdgeHitWidth && touchMoved && swipingToOpen;
       }
     }
 
@@ -296,7 +298,7 @@ SideMenu.childContextTypes = {
 SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  edgeHitWidth: React.PropTypes.number,
+  menuPosition: React.PropTypes.oneOf(['left', 'right']),
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
@@ -307,7 +309,6 @@ SideMenu.propTypes = {
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  edgeHitWidth: edgeHitWidth,
   touchToClose: false,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
