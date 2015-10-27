@@ -181,9 +181,8 @@ class SideMenu extends Component {
     this.prevLeft = openOffset;
 
     if (!this.isOpen) {
-      this.props.onChange(this.isOpen);
-
       this.isOpen = true;
+      this.props.onChange(this.isOpen);
 
       // Force update to make the overlay appear (if touchToClose is set)
       if (this.props.touchToClose) {
@@ -207,9 +206,9 @@ class SideMenu extends Component {
     this.prevLeft = closeOffset;
 
     if (this.isOpen) {
+      this.isOpen = false;
       this.props.onChange(this.isOpen);
 
-      this.isOpen = false;
       // Force update to make the overlay disappear (if touchToClose is set)
       if (this.props.touchToClose) {
         this.forceUpdate();
