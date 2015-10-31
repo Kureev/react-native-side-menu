@@ -238,7 +238,7 @@ class SideMenu extends Component {
     if (this.isOpen && this.props.touchToClose) {
       overlay = (
         <TouchableWithoutFeedback onPress={this.closeMenu.bind(this)}>
-          <View style={styles.overlay} />
+          <View style={[styles.overlay, this.props.styles.overlay, ]} />
         </TouchableWithoutFeedback>
       );
     }
@@ -247,7 +247,7 @@ class SideMenu extends Component {
 
     return (
       <Animated.View
-        style={[styles.frontView, {width, height}, this.props.animationStyle(this.state.left), ]}
+        style={[styles.frontView, {width, height}, this.props.animationStyle(this.state.left), this.props.styles.frontView, ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {this.props.children}
@@ -280,8 +280,8 @@ class SideMenu extends Component {
    */
   render() {
     return (
-      <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
-        <View style={styles.menu}>
+      <View style={[styles.container, this.props.styles.container, ]} onLayout={this.onLayoutChange.bind(this)}>
+        <View style={[styles.menu, this.props.styles.menu, ]}>
           {this.props.menu}
         </View>
         {this.getContentView()}
@@ -295,6 +295,7 @@ SideMenu.childContextTypes = {
 };
 
 SideMenu.propTypes = {
+  styles: React.PropTypes.object,
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right']),
@@ -306,6 +307,7 @@ SideMenu.propTypes = {
 };
 
 SideMenu.defaultProps = {
+  styles: {},
   toleranceY: 10,
   toleranceX: 10,
   touchToClose: false,
