@@ -90,7 +90,7 @@ Button.contextTypes = {
 
 ### Component props
 - `menu` (React.Component) - Menu component
-- `openMenuOffset` (Number) - Content view left margin if menu is opened
+- `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width.
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
