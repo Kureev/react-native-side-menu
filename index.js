@@ -24,13 +24,6 @@ const openMenuOffset = deviceScreen.width * 2 / 3;
 const hiddenMenuOffset = 0;
 
 /**
- * Default edge hit width for determining whether a swipe can be claimed as
- * a swipe to open the menu
- * @type {Number}
- */
-const edgeHitWidth = 60;
-
-/**
  * Size of the amount you can move content view in the opened menu state and
  * release without menu closing
  * @type {Number}
@@ -115,8 +108,8 @@ class SideMenu extends Component {
         return touchMoved;
       } else {
         const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
-            gestureState.moveX > (deviceScreen.width - edgeHitWidth) :
-            gestureState.moveX < edgeHitWidth;
+            gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
+            gestureState.moveX < this.props.edgeHitWidth;
         const swipingToOpen = (this.menuPositionMultiplier() * gestureState.dx) > 0;
         return withinEdgeHitWidth && touchMoved && swipingToOpen;
       }
@@ -295,6 +288,7 @@ SideMenu.childContextTypes = {
 };
 
 SideMenu.propTypes = {
+  edgeHitWidth: React.PropTypes.number,
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right']),
@@ -308,6 +302,7 @@ SideMenu.propTypes = {
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
+  edgeHitWidth: 60,
   touchToClose: false,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
