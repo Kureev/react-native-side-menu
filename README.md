@@ -92,6 +92,7 @@ Button.contextTypes = {
 - `menu` (React.Component) - Menu component
 - `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width.
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
+- `edgeHitWidth` (Number) - Edge distance on content view to open side menu
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
