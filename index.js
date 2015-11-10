@@ -170,7 +170,7 @@ class SideMenu extends Component {
     this.props
       .animationFunction(this.state.left, openOffset)
       .start(() => {
-        this.props.onChange(this.isOpen, byGesture);
+        this.props.onChange(this.isOpen, !!byGesture);
       });
 
     this.prevLeft = openOffset;
@@ -196,7 +196,7 @@ class SideMenu extends Component {
     this.props
       .animationFunction(this.state.left, closeOffset)
       .start(() => {
-        this.props.onChange(this.isOpen, byGesture);
+        this.props.onChange(this.isOpen, !!byGesture);
       });
 
     this.prevLeft = closeOffset;
