@@ -125,9 +125,18 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderMove(e: Object, gestureState: Object) {
-    if (this.menuPositionMultiplier() * 
-      (this.state.left.__getValue() + gestureState.dx ) >= 0 ) {
+    const currentLeft = this.prevLeft + gestureState.dx;
 
+    let shouldPan = false;
+
+    if ((this.props.menuPosition === 'left' &&
+        (currentLeft >= 0 && currentLeft <= this.props.openMenuOffset)) ||
+        (this.props.menuPosition === 'right' &&
+        (currentLeft <= 0 && currentLeft >= -this.props.openMenuOffset))) {
+      shouldPan = true;
+    }
+
+    if (shouldPan) {
       this.state.left.setValue(this.prevLeft + gestureState.dx);
     }
   }
@@ -306,6 +315,7 @@ SideMenu.defaultProps = {
   toleranceX: 10,
   edgeHitWidth: 60,
   touchToClose: false,
+  menuPosition: 'left',
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
   animationStyle: (value) => {
