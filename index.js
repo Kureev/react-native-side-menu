@@ -145,9 +145,9 @@ class SideMenu extends Component {
       (currentLeft + gestureState.dx);
 
     if (shouldOpenMenu(shouldOpen)) {
-      this.openMenu();
+      this.openMenu(true);
     } else {
-      this.closeMenu();
+      this.closeMenu(true);
     }
   }
 
@@ -163,19 +163,20 @@ class SideMenu extends Component {
    * Open menu
    * @return {Void}
    */
-  openMenu() {
+  openMenu(byGesture) {
     const openOffset = this.menuPositionMultiplier() *
       (this.props.openMenuOffset || openMenuOffset);
 
     this.props
       .animationFunction(this.state.left, openOffset)
-      .start();
+      .start(() => {
+        this.props.onChange(this.isOpen, byGesture);
+      });
 
     this.prevLeft = openOffset;
 
     if (!this.isOpen) {
       this.isOpen = true;
-      this.props.onChange(this.isOpen);
 
       // Force update to make the overlay appear (if touchToClose is set)
       if (this.props.touchToClose) {
@@ -188,19 +189,20 @@ class SideMenu extends Component {
    * Close menu
    * @return {Void}
    */
-  closeMenu() {
+  closeMenu(byGesture) {
     const closeOffset = this.menuPositionMultiplier() *
       (this.props.hiddenMenuOffset || hiddenMenuOffset);
 
     this.props
       .animationFunction(this.state.left, closeOffset)
-      .start();
+      .start(() => {
+        this.props.onChange(this.isOpen, byGesture);
+      });
 
     this.prevLeft = closeOffset;
 
     if (this.isOpen) {
       this.isOpen = false;
-      this.props.onChange(this.isOpen);
 
       // Force update to make the overlay disappear (if touchToClose is set)
       if (this.props.touchToClose) {
