@@ -105,6 +105,7 @@ Button.contextTypes = {
 - `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
   - `value` you should use at the place you need current value of animated parameter (left offset of content view)
 - `touchToClose` (Bool) - Allows for touching the partially hidden view to close the menu. Defaults to `false`.
+- `defaultOpen` (Bool) - Allows for opening the side menu by default when it's rendered for the first time. Defaults to `false`.
 
 *In progress*
 
