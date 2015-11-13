@@ -6,7 +6,7 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "react-native": "^0.11.0",
-    "react-native-side-menu": "Kureev/react-native-side-menu#master"
+    "react-native": "^0.14.0",
+    "react-native-side-menu": "Kureev/react-native-side-menu#bug/side-menu-shows-first"
   }
 }
