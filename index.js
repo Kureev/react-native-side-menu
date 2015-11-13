@@ -81,6 +81,17 @@ class SideMenu extends Component {
   }
 
   /**
+   * Open the menu if defaultOpen is set to true
+   * @return {Void}
+   */
+
+  componentDidMount() {
+    if (this.props.defaultOpen) {
+      this.openMenu();
+    }
+  }
+
+  /**
    * Determines if gestures are enabled, based off of disableGestures prop
    * @return {Boolean}
    */
@@ -297,6 +308,7 @@ SideMenu.propTypes = {
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
+  defaultOpen: React.PropTypes.bool,
 };
 
 SideMenu.defaultProps = {
@@ -322,6 +334,7 @@ SideMenu.defaultProps = {
       }
     );
   },
+  defaultOpen: false,
 };
 
 module.exports = SideMenu;
