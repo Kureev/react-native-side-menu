@@ -104,15 +104,16 @@ class SideMenu extends Component {
       const y = Math.round(Math.abs(gestureState.dy));
 
       const touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
+
       if (this.isOpen) {
         return touchMoved;
-      } else {
-        const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
-            gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
-            gestureState.moveX < this.props.edgeHitWidth;
-        const swipingToOpen = (this.menuPositionMultiplier() * gestureState.dx) > 0;
-        return withinEdgeHitWidth && touchMoved && swipingToOpen;
       }
+
+      const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
+          gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
+          gestureState.moveX < this.props.edgeHitWidth;
+      const swipingToOpen = (this.menuPositionMultiplier() * gestureState.dx) > 0;
+      return withinEdgeHitWidth && touchMoved && swipingToOpen;
     }
 
     return false;
@@ -125,7 +126,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderMove(e: Object, gestureState: Object) {
-    if (this.menuPositionMultiplier() * 
+    if (this.menuPositionMultiplier() *
       (this.state.left.__getValue() + gestureState.dx ) >= 0 ) {
 
       this.state.left.setValue(this.prevLeft + gestureState.dx);
@@ -236,11 +237,11 @@ class SideMenu extends Component {
       );
     }
 
-    const {width, height} = this.state;
+    const { width, height, } = this.state;
 
     return (
       <Animated.View
-        style={[styles.frontView, {width, height}, this.props.animationStyle(this.state.left), ]}
+        style={[styles.frontView, { width, height, }, this.props.animationStyle(this.state.left), ]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {this.props.children}
@@ -263,8 +264,8 @@ class SideMenu extends Component {
   }
 
   onLayoutChange(e) {
-    const {width, height} = e.nativeEvent.layout;
-    this.setState({width, height});
+    const { width, height, } = e.nativeEvent.layout;
+    this.setState({ width, height, });
   }
 
   /**
@@ -291,7 +292,7 @@ SideMenu.propTypes = {
   edgeHitWidth: React.PropTypes.number,
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  menuPosition: React.PropTypes.oneOf(['left', 'right']),
+  menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
