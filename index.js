@@ -57,6 +57,7 @@ class SideMenu extends Component {
     this.prevLeft = 0;
 
     this.state = {
+      renderMenu: false,
       left: new Animated.Value(0),
     };
   }
@@ -77,6 +78,12 @@ class SideMenu extends Component {
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
+    });
+  }
+
+  componentDidMount() {
+    this.setState({
+      renderMenu: true,
     });
   }
 
@@ -273,9 +280,14 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   render() {
+    const menuStyle = [
+      styles.menu,
+      { opacity: this.state.renderMenu ? 1 : 0, },
+    ];
+
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
-        <View style={styles.menu}>
+        <View style={menuStyle} ref={(ref) => this.menuRef = ref}>
           {this.props.menu}
         </View>
         {this.getContentView()}
