@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Kureev/react-native-side-menu.git"
+    "url": "git@github.com:react-native-fellowship/react-native-side-menu.git"
   },
   "keywords": [
     "react-native",
@@ -19,10 +19,10 @@
   "author": "Alexey Kureev <kureev-mail@ya.ru> (https://github.com/Kureev)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Kureev/react-native-side-menu/issues"
+    "url": "https://github.com/react-native-fellowship/react-native-side-menu/issues"
   },
-  "homepage": "https://github.com/Kureev/react-native-side-menu",
+  "homepage": "https://github.com/react-native-fellowship/react-native-side-menu",
   "peerDependencies": {
-    "react-native": ">= 0.9.0 || 0.11.0-rc"
+    "react-native": ">= 0.9.0"
   }
 }
