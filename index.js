@@ -180,51 +180,57 @@ class SideMenu extends Component {
    * Open menu
    * @return {Void}
    */
-  openMenu() {
-    const openOffset = this.menuPositionMultiplier() *
-      (this.props.openMenuOffset || openMenuOffset);
+   openMenu() {
+     if (!this.isOpen) {
+       const openOffset = this.menuPositionMultiplier() *
+         (this.props.openMenuOffset || openMenuOffset);
 
-    this.props
-      .animationFunction(this.state.left, openOffset)
-      .start();
+       this.props
+         .animationFunction(this.state.left, openOffset)
+         .start((finished) => {
+           if (finished) {
+             this.isOpen = true;
 
-    this.prevLeft = openOffset;
+             this.prevLeft = openOffset;
 
-    if (!this.isOpen) {
-      this.isOpen = true;
-      this.props.onChange(this.isOpen);
+             // Force update to make the overlay appear (if touchToClose is set)
+             if (this.props.touchToClose) {
+               this.forceUpdate();
+             }
 
-      // Force update to make the overlay appear (if touchToClose is set)
-      if (this.props.touchToClose) {
-        this.forceUpdate();
-      }
-    }
-  }
+             this.props.onChange(this.isOpen);
+           }
+         });
+     }
+   }
 
-  /**
-   * Close menu
-   * @return {Void}
-   */
-  closeMenu() {
-    const closeOffset = this.menuPositionMultiplier() *
-      (this.props.hiddenMenuOffset || hiddenMenuOffset);
+   /**
+    * Close menu
+    * @return {Void}
+    */
+   closeMenu() {
+     if (this.isOpen) {
+       const closeOffset = this.menuPositionMultiplier() *
+         (this.props.hiddenMenuOffset || hiddenMenuOffset);
 
-    this.props
-      .animationFunction(this.state.left, closeOffset)
-      .start();
+       this.props
+         .animationFunction(this.state.left, closeOffset)
+         .start((finished) => {
+           if (finished) {
+             this.prevLeft = closeOffset;
 
-    this.prevLeft = closeOffset;
+             this.isOpen = false;
 
-    if (this.isOpen) {
-      this.isOpen = false;
-      this.props.onChange(this.isOpen);
+             // Force update to make the overlay disappear (if touchToClose is set)
+             if (this.props.touchToClose) {
+               this.forceUpdate();
+             }
 
-      // Force update to make the overlay disappear (if touchToClose is set)
-      if (this.props.touchToClose) {
-        this.forceUpdate();
-      }
-    }
-  }
+             this.props.onChange(this.isOpen);
+           }
+         });
+     }
+   }
 
   /**
    * Toggle menu
