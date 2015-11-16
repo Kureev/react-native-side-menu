@@ -144,9 +144,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderMove(e: Object, gestureState: Object) {
-    if (this.menuPositionMultiplier() *
-      (this.state.left.__getValue() + gestureState.dx ) >= 0 ) {
-
+    if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
       this.state.left.setValue(this.prevLeft + gestureState.dx);
     }
   }
