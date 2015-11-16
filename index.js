@@ -292,7 +292,7 @@ class SideMenu extends Component {
     if (this.state.shouldRenderMenu) {
       menu = <View style={[
           styles.menu,
-          {width: this.props.openOffset || openMenuOffset},
+          {width: this.props.openMenuOffset || openMenuOffset},
           {height},
         ]}>{this.props.menu}</View>;
     }
