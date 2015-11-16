@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "react-native": "^0.14.0",
-    "react-native-side-menu": "Kureev/react-native-side-menu#master"
+    "react-native-side-menu": "github:react-native-fellowship/react-native-side-menu#master"
   }
 }
