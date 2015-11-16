@@ -11,13 +11,6 @@ const {
 } = React;
 
 /**
- * Default open menu offset. Describes a size of the amount you can
- * move content view from the left and release without opening it
- * @type {Number}
- */
-const openMenuOffset = deviceScreen.width * 2 / 3;
-
-/**
  * Content view offset in the `hidden` state
  * @type {Number}
  */
@@ -181,8 +174,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu() {
-    const openOffset = this.menuPositionMultiplier() *
-      (this.props.openMenuOffset || openMenuOffset);
+    const openOffset = this.menuPositionMultiplier() * this.props.openMenuOffset;
 
     this.props
       .animationFunction(this.state.left, openOffset)
@@ -318,6 +310,7 @@ SideMenu.propTypes = {
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
   touchToClose: React.PropTypes.bool,
+  openMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
@@ -329,6 +322,7 @@ SideMenu.defaultProps = {
   toleranceX: 10,
   edgeHitWidth: 60,
   touchToClose: false,
+  openMenuOffset: deviceScreen.width * 2 / 3;
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
   animationStyle: (value) => {
