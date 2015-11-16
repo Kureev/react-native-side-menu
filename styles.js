@@ -1,6 +1,6 @@
-var React = require('react-native');
+const React = require('react-native');
 
-var {
+const {
   StyleSheet,
 } = React;
 
@@ -30,6 +30,6 @@ module.exports = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: 'transparent',
+  },
 });
