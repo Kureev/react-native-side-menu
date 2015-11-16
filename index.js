@@ -81,18 +81,13 @@ class SideMenu extends Component {
     });
   }
 
+
+
   componentDidMount() {
     this.setState({
       shouldRenderMenu: true,
     });
-  }
 
-  /**
-   * Open the menu if defaultOpen is set to true
-   * @return {Void}
-   */
-
-  componentDidMount() {
     if (this.props.defaultOpen) {
       this.openMenu();
     }
