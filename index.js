@@ -34,7 +34,7 @@ class SideMenu extends Component {
      * Current state of the menu, whether it is open or not
      * @type {Boolean}
      */
-    this.isOpen = false;
+    this.isOpen = props.isOpen;
 
     /**
      * Default left offset for content view
@@ -66,6 +66,12 @@ class SideMenu extends Component {
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
     });
+  }
+  
+  componentWillReceiveProps(props) {
+    if (this.isOpen !== props.isOpen) {
+      this.toggleMenu();
+    }
   }
 
   componentDidMount() {

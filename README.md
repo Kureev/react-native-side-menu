@@ -90,6 +90,7 @@ Button.contextTypes = {
 
 ### Component props
 - `menu` (React.Component) - Menu component
+- `isOpen` (Boolean) - Props driven control over menu open state
 - `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width.
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 - `edgeHitWidth` (Number) - Edge distance on content view to open side menu
