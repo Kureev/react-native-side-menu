@@ -242,13 +242,38 @@ class SideMenu extends Component {
 
     return (
       <Animated.View
-        style={[styles.frontView, { width, height, }, this.props.animationStyle(this.state.left), ]}
+        style={[styles.frontView, { width, height, },
+          this.props.animationStyle(this.state.left, this.interpolateToPercentage(this.state.left)),]}
         ref={(sideMenu) => this.sideMenu = sideMenu}
         {...this.responder.panHandlers}>
         {this.props.children}
         {overlay}
       </Animated.View>
     );
+  }
+
+  /**
+   * Returns the property interpolated
+   * on a scale from 0 to 100
+   *
+   * @param prop {Animated.Value}
+   * @returns {Animated.Value}
+   */
+  interpolateToPercentage(prop) {
+    if (this.menuPositionMultiplier() > 0) {
+      return prop.interpolate({
+        inputRange : [0, this.props.openMenuOffset - this.props.hiddenMenuOffset],
+        outputRange: [0, 100]
+      });
+    } else {
+      // When the menu is on the right, the whole interpolation reverses
+      // in order to maintain the 0 to 100 scale intact. Again, the client
+      // should only care about the open ratio, not about directions.
+      return prop.interpolate({
+        inputRange : [this.props.hiddenMenuOffset - this.props.openMenuOffset, 0],
+        outputRange: [100, 0]
+      });
+    }
   }
 
   /**
@@ -280,7 +305,14 @@ class SideMenu extends Component {
      * If menu is ready to be rendered
      */
     if (this.state.shouldRenderMenu) {
-      menu = <View style={styles.menu}>{this.props.menu}</View>;
+      let menuProps = {
+        openPercentage: this.interpolateToPercentage(this.state.left)
+      };
+
+      // Attach the openPercentage Prop to the given menu
+      menu = <View style={styles.menu}>
+        {React.cloneElement(this.props.menu, menuProps)}
+      </View>;
     }
 
     return (
