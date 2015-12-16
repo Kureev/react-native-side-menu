@@ -61,7 +61,7 @@ Managing menu state works thru the exposed `menuActions`. To access `menuActions
 
 Usage example:
 ```javascript
-class Button extends Component {
+class Button extends React.Component {
   handlePress(e) {
     this.context.menuActions.toggle();
     if (this.props.onPress) {
