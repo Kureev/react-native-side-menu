@@ -299,6 +299,7 @@ SideMenu.propTypes = {
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   defaultOpen: React.PropTypes.bool,
+  isOpen: React.PropTypes.bool,
 };
 
 SideMenu.defaultProps = {
@@ -327,6 +328,7 @@ SideMenu.defaultProps = {
     );
   },
   defaultOpen: false,
+  isOpen: false,
 };
 
 module.exports = SideMenu;
