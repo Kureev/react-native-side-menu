@@ -44,7 +44,8 @@ class SideMenu extends Component {
     this.prevLeft = 0;
 
     this.state = {
-      shouldRenderMenu: false,
+      width: deviceScreen.width,
+      height: deviceScreen.height,
       left: new Animated.Value(0),
     };
   }
@@ -67,7 +68,7 @@ class SideMenu extends Component {
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
     });
   }
-  
+
   componentWillReceiveProps(props) {
     if (this.isOpen !== props.isOpen) {
       this.toggleMenu();
@@ -75,11 +76,6 @@ class SideMenu extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        shouldRenderMenu: true,
-      });
-    }, 500);
     if (this.props.defaultOpen) {
       this.openMenu();
     }
@@ -275,14 +271,7 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   render() {
-    let menu = null;
-
-    /**
-     * If menu is ready to be rendered
-     */
-    if (this.state.shouldRenderMenu) {
-      menu = <View style={styles.menu}>{this.props.menu}</View>;
-    }
+    const menu = <View style={styles.menu}>{this.props.menu}</View>;
 
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
