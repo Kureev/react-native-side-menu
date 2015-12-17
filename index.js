@@ -75,10 +75,11 @@ class SideMenu extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      shouldRenderMenu: true,
-    });
-
+    setTimeout(() => {
+      this.setState({
+        shouldRenderMenu: true,
+      });
+    }, 500);
     if (this.props.defaultOpen) {
       this.openMenu();
     }
