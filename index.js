@@ -48,6 +48,14 @@ class SideMenu extends Component {
       height: deviceScreen.height,
       left: new Animated.Value(0),
     };
+
+    if (props.defaultOpen) {
+      console.warn(
+        '[react-native-side-menu] defaultOpen has been deprecated and will stop'
+        + ' working in next release. Use isOpen={true|false} instead.'
+      );
+      this.isOpen = props.defaultOpen;
+    }
   }
 
   getChildContext() {
@@ -72,12 +80,6 @@ class SideMenu extends Component {
   componentWillReceiveProps(props) {
     if (this.isOpen !== props.isOpen) {
       this.toggleMenu();
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.defaultOpen) {
-      this.openMenu();
     }
   }
 
@@ -298,7 +300,7 @@ SideMenu.propTypes = {
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
-  defaultOpen: React.PropTypes.bool,
+  isOpen: React.PropTypes.bool,
 };
 
 SideMenu.defaultProps = {
@@ -326,7 +328,7 @@ SideMenu.defaultProps = {
       }
     );
   },
-  defaultOpen: false,
+  isOpen: false,
 };
 
 module.exports = SideMenu;
