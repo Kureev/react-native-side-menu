@@ -52,7 +52,7 @@ class SideMenu extends Component {
     if (props.defaultOpen) {
       console.warn(
         '[react-native-side-menu] defaultOpen has been deprecated and will stop'
-        + ` working in next release. Use isOpen={true|false} instead.`
+        + ' working in next release. Use isOpen={true|false} instead.'
       );
       this.isOpen = props.defaultOpen;
     }
@@ -81,14 +81,6 @@ class SideMenu extends Component {
     if (this.isOpen !== props.isOpen) {
       this.toggleMenu();
     }
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        shouldRenderMenu: true,
-      });
-    }, 500);
   }
 
   /**
