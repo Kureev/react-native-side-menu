@@ -94,9 +94,10 @@ class SideMenu extends Component {
       }
 
       const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
-          gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
-          gestureState.moveX < this.props.edgeHitWidth;
-      const swipingToOpen = (this.menuPositionMultiplier() * gestureState.dx) > 0;
+        gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
+        gestureState.moveX < this.props.edgeHitWidth;
+
+      const swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
       return withinEdgeHitWidth && touchMoved && swipingToOpen;
     }
 
