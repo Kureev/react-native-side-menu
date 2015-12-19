@@ -211,10 +211,6 @@ class SideMenu extends Component {
   }
 }
 
-SideMenu.childContextTypes = {
-  menuActions: React.PropTypes.object.isRequired,
-};
-
 SideMenu.propTypes = {
   edgeHitWidth: React.PropTypes.number,
   toleranceX: React.PropTypes.number,
