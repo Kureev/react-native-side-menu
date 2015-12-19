@@ -30,11 +30,6 @@ function shouldOpenMenu(dx: Number) {
 class SideMenu extends Component {
   constructor(props) {
     super(props);
-    /**
-     * Current state of the menu, whether it is open or not
-     * @type {Boolean}
-     */
-    this.isOpen = props.isOpen;
 
     /**
      * Default left offset for content view
@@ -47,20 +42,6 @@ class SideMenu extends Component {
       width: deviceScreen.width,
       height: deviceScreen.height,
       left: new Animated.Value(0),
-    };
-
-    if (props.defaultOpen) {
-      console.warn(
-        '[react-native-side-menu] defaultOpen has been deprecated and will stop'
-        + ' working in next release. Use isOpen={true|false} instead.'
-      );
-      this.isOpen = props.defaultOpen;
-    }
-  }
-
-  getChildContext() {
-    return {
-      menuActions: this.getMenuActions(),
     };
   }
 
@@ -78,8 +59,8 @@ class SideMenu extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (this.isOpen !== props.isOpen) {
-      this.toggleMenu();
+    if (this.props.isOpen !== props.isOpen) {
+      this.toggleMenu(this.props.isOpen);
     }
   }
 
@@ -108,7 +89,7 @@ class SideMenu extends Component {
 
       const touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
 
-      if (this.isOpen) {
+      if (this.props.isOpen) {
         return touchMoved;
       }
 
@@ -146,11 +127,7 @@ class SideMenu extends Component {
     const shouldOpen = this.menuPositionMultiplier() *
       (currentLeft + gestureState.dx);
 
-    if (shouldOpenMenu(shouldOpen)) {
-      this.openMenu();
-    } else {
-      this.closeMenu();
-    }
+    this.toggleMenu(shouldOpenMenu(shouldOpen));
   }
 
   /**
@@ -161,64 +138,26 @@ class SideMenu extends Component {
     return this.props.menuPosition === 'right' ? -1 : 1;
   }
 
-  /**
-   * Open menu
-   * @return {Void}
-   */
-  openMenu() {
-    const openOffset = this.menuPositionMultiplier() *
-      this.props.openMenuOffset;
+  moveLeft(offset) {
+    const newOffset = this.menuPositionMultiplier() * offset;
 
     this.props
-      .animationFunction(this.state.left, openOffset)
+      .animationFunction(this.state.left, newOffset)
       .start();
 
-    this.prevLeft = openOffset;
-
-    if (!this.isOpen) {
-      this.isOpen = true;
-      this.props.onChange(this.isOpen);
-
-      // Force update to make the overlay appear (if touchToClose is set)
-      if (this.props.touchToClose) {
-        this.forceUpdate();
-      }
-    }
-  }
-
-  /**
-   * Close menu
-   * @return {Void}
-   */
-  closeMenu() {
-    const closeOffset = this.menuPositionMultiplier() * this.props.hiddenMenuOffset;
-
-    this.props
-      .animationFunction(this.state.left, closeOffset)
-      .start();
-
-    this.prevLeft = closeOffset;
-
-    if (this.isOpen) {
-      this.isOpen = false;
-      this.props.onChange(this.isOpen);
-
-      // Force update to make the overlay disappear (if touchToClose is set)
-      if (this.props.touchToClose) {
-        this.forceUpdate();
-      }
-    }
+    this.prevLeft = newOffset;
   }
 
   /**
    * Toggle menu
    * @return {Void}
    */
-  toggleMenu() {
-    if (this.isOpen) {
-      this.closeMenu();
-    } else {
-      this.openMenu();
+  toggleMenu(isOpen) {
+    const { hiddenMenuOffset, openMenuOffset, } = this.props;
+    moveLeft(isOpen ?  hiddenMenuOffset : openMenuOffset);
+
+    if (this.props.touchToClose) {
+      this.forceUpdate();
     }
   }
 
@@ -229,9 +168,9 @@ class SideMenu extends Component {
   getContentView() {
     let overlay = null;
 
-    if (this.isOpen && this.props.touchToClose) {
+    if (this.props.isOpen && this.props.touchToClose) {
       overlay = (
-        <TouchableWithoutFeedback onPress={this.closeMenu.bind(this)}>
+        <TouchableWithoutFeedback onPress={() => toggleMenu(true)}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -248,19 +187,6 @@ class SideMenu extends Component {
         {overlay}
       </Animated.View>
     );
-  }
-
-  /**
-   * Get menu actions to expose it to
-   * menu and children components
-   * @return {Object} Public API methods
-   */
-  getMenuActions() {
-    return {
-      close: this.closeMenu.bind(this),
-      toggle: this.toggleMenu.bind(this),
-      open: this.openMenu.bind(this),
-    };
   }
 
   onLayoutChange(e) {
