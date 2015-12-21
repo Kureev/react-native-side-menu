@@ -37,6 +37,7 @@ class SideMenu extends Component {
      * @type {Number}
      */
     this.prevLeft = 0;
+    this.isOpen = props.isOpen;
 
     this.state = {
       width: deviceScreen.width,
@@ -59,8 +60,8 @@ class SideMenu extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (this.props.isOpen !== props.isOpen) {
-      this.toggleMenu(this.props.isOpen);
+    if (this.isOpen !== props.isOpen) {
+      this.toggleMenu(this.isOpen);
     }
   }
 
@@ -89,7 +90,7 @@ class SideMenu extends Component {
 
       const touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
 
-      if (this.props.isOpen) {
+      if (this.isOpen) {
         return touchMoved;
       }
 
@@ -123,10 +124,8 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderEnd(e: Object, gestureState: Object) {
-    const currentLeft = this.state.left.__getValue();
-
     const shouldOpen = this.menuPositionMultiplier() *
-      (currentLeft + gestureState.dx);
+      (this.state.left.__getValue() + gestureState.dx);
 
     this.toggleMenu(shouldOpenMenu(shouldOpen));
   }
@@ -155,7 +154,8 @@ class SideMenu extends Component {
    */
   toggleMenu(isOpen) {
     const { hiddenMenuOffset, openMenuOffset, } = this.props;
-    moveLeft(isOpen ?  hiddenMenuOffset : openMenuOffset);
+    moveLeft(isOpen ? hiddenMenuOffset : openMenuOffset);
+    this.isOpen = !isOpen;
 
     if (this.props.touchToClose) {
       this.forceUpdate();
@@ -169,7 +169,7 @@ class SideMenu extends Component {
   getContentView() {
     let overlay = null;
 
-    if (this.props.isOpen && this.props.touchToClose) {
+    if (this.isOpen && this.props.touchToClose) {
       overlay = (
         <TouchableWithoutFeedback onPress={() => toggleMenu(true)}>
           <View style={styles.overlay} />
@@ -178,12 +178,15 @@ class SideMenu extends Component {
     }
 
     const { width, height, } = this.state;
+    const ref = (sideMenu) => this.sideMenu = sideMenu;
+    const style = [
+      styles.frontView,
+      { width, height, },
+      this.props.animationStyle(this.state.left),
+    ];
 
     return (
-      <Animated.View
-        style={[styles.frontView, { width, height, }, this.props.animationStyle(this.state.left), ]}
-        ref={(sideMenu) => this.sideMenu = sideMenu}
-        {...this.responder.panHandlers}>
+      <Animated.View style={style} ref={ref} {...this.responder.panHandlers}>
         {this.props.children}
         {overlay}
       </Animated.View>
