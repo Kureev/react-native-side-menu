@@ -67,7 +67,6 @@ class Application extends React.Component {
   - `value` you should use to specify the final value of `prop`
 - `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
   - `value` you should use at the place you need current value of animated parameter (left offset of content view)
-- `touchToClose` (Bool) - Allows for touching the partially hidden view to close the menu. Defaults to `false`
 
 ### Questions?
 Feel free to contact me in [twitter](https://twitter.com/kureevalexey) or [create an issue](https://github.com/Kureev/react-native-side-menu/issues/new)
