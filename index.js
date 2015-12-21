@@ -61,7 +61,7 @@ class SideMenu extends Component {
 
   componentWillReceiveProps(props) {
     if (this.isOpen !== props.isOpen) {
-      this.toggleMenu(this.isOpen);
+      this.openMenu(props.isOpen);
     }
   }
 
@@ -124,10 +124,10 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderEnd(e: Object, gestureState: Object) {
-    const shouldOpen = this.menuPositionMultiplier() *
+    const offsetLeft = this.menuPositionMultiplier() *
       (this.state.left.__getValue() + gestureState.dx);
 
-    this.toggleMenu(shouldOpenMenu(shouldOpen));
+    this.openMenu(shouldOpenMenu(offsetLeft));
   }
 
   /**
@@ -152,14 +152,13 @@ class SideMenu extends Component {
    * Toggle menu
    * @return {Void}
    */
-  toggleMenu(isOpen) {
+  openMenu(isOpen) {
     const { hiddenMenuOffset, openMenuOffset, } = this.props;
-    moveLeft(isOpen ? hiddenMenuOffset : openMenuOffset);
-    this.isOpen = !isOpen;
+    this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
+    this.isOpen = isOpen;
 
-    if (this.props.touchToClose) {
-      this.forceUpdate();
-    }
+    this.forceUpdate();
+    this.props.onChange(isOpen);
   }
 
   /**
@@ -169,9 +168,9 @@ class SideMenu extends Component {
   getContentView() {
     let overlay = null;
 
-    if (this.isOpen && this.props.touchToClose) {
+    if (this.isOpen) {
       overlay = (
-        <TouchableWithoutFeedback onPress={() => toggleMenu(true)}>
+        <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -220,7 +219,6 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
-  touchToClose: React.PropTypes.bool,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
@@ -233,7 +231,6 @@ SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   edgeHitWidth: 60,
-  touchToClose: false,
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
