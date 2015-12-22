@@ -6,22 +6,16 @@ const {
   StyleSheet,
   Text,
   View,
+  Image,
   TouchableOpacity,
-  Component
+  Component,
 } = React;
 
 const styles = StyleSheet.create({
   button: {
     position: 'absolute',
-    bottom: 50,
-    backgroundColor: 'red',
-    borderRadius: 20,
-  },
-  button2: {
-    position: 'absolute',
-    bottom: 20,
-    backgroundColor: 'red',
-    borderRadius: 20,
+    top: 20,
+    padding: 10,
   },
   caption: {
     fontSize: 20,
@@ -48,7 +42,6 @@ const styles = StyleSheet.create({
 
 class Button extends Component {
   handlePress(e) {
-    this.context.menuActions.toggle();
     if (this.props.onPress) {
       this.props.onPress(e);
     }
@@ -65,39 +58,27 @@ class Button extends Component {
   }
 }
 
-Button.contextTypes = {
-  menuActions: React.PropTypes.object.isRequired
-};
-
-class Basic extends Component {
-  constructor(props, ctx) {
-    super(props, ctx);
-
-    this.state = {
-      touchToClose: false,
-    };
+module.exports = class Basic extends Component {
+  state = {
+    isOpen: false,
   }
 
-  handleOpenWithTouchToClose() {
+  toggle() {
     this.setState({
-      touchToClose: true,
+      isOpen: !this.state.isOpen,
     });
   }
 
-  handleChange(isOpen) {
-    if (!isOpen) {
-      this.setState({
-        touchToClose: false,
-      });
-    }
+  updateMenuState(isOpen) {
+    this.setState({ isOpen, });
   }
 
   render() {
     return (
       <SideMenu
         menu={<Menu />}
-        touchToClose={this.state.touchToClose}
-        onChange={this.handleChange.bind(this)}>
+        isOpen={this.state.isOpen}
+        onChange={(isOpen) => this.updateMenuState(isOpen)}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!
@@ -110,16 +91,11 @@ class Basic extends Component {
             Cmd+Control+Z for dev menu
           </Text>
         </View>
-        <Button style={styles.button}>
-          Toggle menu
-        </Button>
-        <Button style={styles.button2}
-          onPress={this.handleOpenWithTouchToClose.bind(this)}>
-          Open menu (Overlay Closes)
+        <Button style={styles.button} onPress={() => this.toggle()}>
+          <Image
+            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: 32, height: 32, }} />
         </Button>
       </SideMenu>
     );
   }
-}
-
-module.exports = Basic;
+};
