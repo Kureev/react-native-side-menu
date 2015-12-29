@@ -42,7 +42,9 @@ class SideMenu extends Component {
     this.state = {
       width: deviceScreen.width,
       height: deviceScreen.height,
-      left: new Animated.Value(0),
+      left: new Animated.Value(
+        props.isOpen ? props.openMenuOffset : hiddenMenuOffset
+      ),
     };
   }
 
