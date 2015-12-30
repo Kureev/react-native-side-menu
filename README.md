@@ -55,7 +55,7 @@ class Application extends React.Component {
 - `isOpen` (Boolean) - Props driven control over menu open state
 - `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
-- `edgeHitWidth` (Number) - Edge distance on content view to open side menu
+- `edgeHitWidth` (Number) - Edge distance on content view to open side menu, defaults to 60
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
