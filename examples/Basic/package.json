@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "react-native": "^0.17.0",
-    "react-native-side-menu": "github:react-native-fellowship/react-native-side-menu#feature/deprecate-menu-actions"
+    "react-native-side-menu": "^0.17.2"
   }
 }

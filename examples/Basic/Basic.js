@@ -61,7 +61,7 @@ class Button extends Component {
 module.exports = class Basic extends Component {
   state = {
     isOpen: false,
-  }
+  };
 
   toggle() {
     this.setState({
