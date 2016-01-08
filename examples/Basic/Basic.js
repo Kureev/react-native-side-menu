@@ -69,7 +69,13 @@ module.exports = class Basic extends Component {
     });
   }
 
-  updateMenuState(isOpen) {
+  toggleMenu() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  handleMenuSwipe(isOpen) {
     this.setState({ isOpen, });
   }
 
@@ -78,7 +84,8 @@ module.exports = class Basic extends Component {
       <SideMenu
         menu={<Menu />}
         isOpen={this.state.isOpen}
-        onChange={(isOpen) => this.updateMenuState(isOpen)}>
+        onSwipe={isOpen => this.handleMenuSwipe(isOpen)}
+        onBackDropPressed={() => this.toggleMenu()}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!

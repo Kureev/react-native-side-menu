@@ -37,7 +37,6 @@ class SideMenu extends Component {
      * @type {Number}
      */
     this.prevLeft = 0;
-    this.isOpen = props.isOpen;
 
     this.state = {
       width: deviceScreen.width,
@@ -61,24 +60,18 @@ class SideMenu extends Component {
     });
   }
 
-  componentWillReceiveProps(props) {
-    if (this.isOpen !== props.isOpen) {
-      this.openMenu(props.isOpen);
-    }
+  componentWillReceiveProps(newProps) {
+    const { isOpen, hiddenMenuOffset, openMenuOffset, } = newProps;
+    this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
   }
 
   /**
-   * Determines if gestures are enabled, based off of disableGestures prop
+   * Determines if gestures are enabled, based off the presence of gesture handler
    * @return {Boolean}
    */
   gesturesAreEnabled() {
-    let { disableGestures, } = this.props;
-
-    if (typeof disableGestures === 'function') {
-      return !disableGestures();
-    }
-
-    return !disableGestures;
+    const { onSwipe, } = this.props;
+    return !!this.props.onSwipe;
   }
 
   /**
@@ -92,7 +85,7 @@ class SideMenu extends Component {
 
       const touchMoved = x > this.props.toleranceX && y < this.props.toleranceY;
 
-      if (this.isOpen) {
+      if (this.props.isOpen) {
         return touchMoved;
       }
 
@@ -129,7 +122,7 @@ class SideMenu extends Component {
     const offsetLeft = this.menuPositionMultiplier() *
       (this.state.left.__getValue() + gestureState.dx);
 
-    this.openMenu(shouldOpenMenu(offsetLeft));
+    this.props.onSwipe(shouldOpenMenu(offsetLeft));
   }
 
   /**
@@ -151,28 +144,15 @@ class SideMenu extends Component {
   }
 
   /**
-   * Toggle menu
-   * @return {Void}
-   */
-  openMenu(isOpen) {
-    const { hiddenMenuOffset, openMenuOffset, } = this.props;
-    this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
-    this.isOpen = isOpen;
-
-    this.forceUpdate();
-    this.props.onChange(isOpen);
-  }
-
-  /**
    * Get content view. This view will be rendered over menu
    * @return {React.Component}
    */
   getContentView() {
     let overlay = null;
 
-    if (this.isOpen) {
+    if (this.props.isOpen) {
       overlay = (
-        <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
+        <TouchableWithoutFeedback onPress={() => this.props.onBackDropPressed()}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -220,10 +200,10 @@ SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
-  onChange: React.PropTypes.func,
+  onBackDropPressed: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
+  onSwipe: React.PropTypes.func,
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
@@ -236,7 +216,7 @@ SideMenu.defaultProps = {
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
-  onChange: () => {},
+  onBackDropPressed: () => {},
   animationStyle: (value) => {
     return {
       transform: [{
