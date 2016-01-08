@@ -152,7 +152,7 @@ class SideMenu extends Component {
 
     if (this.props.isOpen) {
       overlay = (
-        <TouchableWithoutFeedback onPress={() => this.props.onBackDropPressed()}>
+        <TouchableWithoutFeedback onPress={() => this.props.onContentPress()}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -200,7 +200,7 @@ SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
-  onBackDropPressed: React.PropTypes.func,
+  onContentPress: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   onSwipe: React.PropTypes.func,
@@ -216,7 +216,7 @@ SideMenu.defaultProps = {
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
-  onBackDropPressed: () => {},
+  onContentPress: () => {},
   animationStyle: (value) => {
     return {
       transform: [{
