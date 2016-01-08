@@ -69,7 +69,7 @@ module.exports = class Basic extends Component {
     });
   }
 
-  handleMenuSwipe(isOpen) {
+  updateMenuState(isOpen) {
     this.setState({ isOpen, });
   }
 
@@ -78,7 +78,7 @@ module.exports = class Basic extends Component {
       <SideMenu
         menu={<Menu />}
         isOpen={this.state.isOpen}
-        onSwipe={isOpen => this.handleMenuSwipe(isOpen)}
+        onSwipe={isOpen => this.updateMenuState(isOpen)}
         onContentPress={() => this.toggle()}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
