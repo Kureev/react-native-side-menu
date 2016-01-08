@@ -22,6 +22,9 @@ class ContentView extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <TouchableOpacity onPress={this.props.onMenuButtonPress}>  
+          <Text>Open menu</Text>
+        </TouchableOpacity>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -38,12 +41,26 @@ class ContentView extends React.Component {
 }
 
 class Application extends React.Component {
+  state = {
+    isOpen: false,
+  };
+
+  closeMenu() {
+    this.setState({ isOpen: false });
+  }
+
+  toggleMenu() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
+
   render() {
-    const menu = <Menu navigator={navigator}/>;
+    const menu = <Menu navigator={navigator} />;
 
     return (
-      <SideMenu menu={menu}>
-        <ContentView/>
+      <SideMenu
+        menu={menu}
+        onContentPress={() => this.closeMenu()}>
+        <ContentView onMenuButtonPress={() => this.toggleMenu()}/>
       </SideMenu>
     );
   }
