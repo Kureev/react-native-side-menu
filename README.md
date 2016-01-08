@@ -58,9 +58,9 @@ class Application extends React.Component {
 - `edgeHitWidth` (Number) - Edge distance on content view to open side menu, defaults to 60
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
-- `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
+- `onSwipe` (Function) - Function that handles gestures, receives boolean argument indicating whether menu should be opened or not based on the drag. When not defined, gestures are disabled
 - `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details
-- `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument
+- `onContentPress` (Function) - Function that handles content press. Typically you would set isOpen to false inside it (see examples/Basic.js). When not present, content is accessible when menu is opened and there's no `touchToClose` behavior
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 - `animationFunction` (Function -> Object) - Function that accept 2 arguments (prop, value) and return an object:
   - `prop` you should use at the place you specify parameter to animate
