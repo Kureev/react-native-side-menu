@@ -59,8 +59,8 @@ class Application extends React.Component {
 - `toleranceX` (Number) - X axis tolerance
 - `toleranceY` (Number) - Y axis tolerance
 - `onSwipe` (Function) - Function that handles gestures, receives boolean argument indicating whether menu should be opened or not based on the drag. When not defined, gestures are disabled
-- `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details
-- `onContentPress` (Function) - Function that handles content press. Typically you would set isOpen to false inside it (see examples/Basic.js). When not present, content is accessible when menu is opened and there's no `touchToClose` behavior
+- `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details. Typically you would like to set `isOpen` value to the passed argument (see examples/Basic.js)
+- `onContentPress` (Function) - Function that handles content press when menu is opened. Typically you would set isOpen to false inside it (see examples/Basic.js). When not present, content is accessible when menu is opened and there's no `touchToClose` behavior
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 - `animationFunction` (Function -> Object) - Function that accept 2 arguments (prop, value) and return an object:
   - `prop` you should use at the place you specify parameter to animate
