@@ -1,6 +1,6 @@
 const React = require('react-native');
-const Dimensions = require('Dimensions');
 const {
+  Dimensions,
   StyleSheet,
   ScrollView,
   View,

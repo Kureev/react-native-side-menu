@@ -1,5 +1,5 @@
 const React = require('react-native');
-const SideMenu = require('react-native-side-menu');
+const SideMenu = require('../../');
 const Menu = require('./Menu');
 
 const {
