@@ -69,7 +69,7 @@ class SideMenu extends Component {
    * Determines if gestures are enabled, based off the presence of gesture handler
    * @return {Boolean}
    */
-  gesturesAreEnabled() {
+  areGesturesEnabled() {
     const { onSwipe, } = this.props;
     return !!this.props.onSwipe;
   }
@@ -79,7 +79,7 @@ class SideMenu extends Component {
    * @return {Boolean}
    */
   handleMoveShouldSetPanResponder(e: Object, gestureState: Object) {
-    if (this.gesturesAreEnabled()) {
+    if (this.areGesturesEnabled()) {
       const x = Math.round(Math.abs(gestureState.dx));
       const y = Math.round(Math.abs(gestureState.dy));
 
