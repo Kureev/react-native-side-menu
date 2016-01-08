@@ -200,7 +200,7 @@ SideMenu.propTypes = {
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
-  onContentPress: React.PropTypes.func,
+  onContentPress: React.PropTypes.func.isRequired,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   onSwipe: React.PropTypes.func,
@@ -216,7 +216,6 @@ SideMenu.defaultProps = {
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
-  onContentPress: () => {},
   animationStyle: (value) => {
     return {
       transform: [{
