@@ -23,7 +23,11 @@ const barrierForward = deviceScreen.width / 4;
  * @param  {Number} dx Gesture offset from the left side of the window
  * @return {Boolean}
  */
-function shouldOpenMenu(dx: Number) {
+function shouldOpenMenu(dx: Number, vx: Number, velocityThreshold: Number = null) {
+  if (velocityThreshold !== null && Math.abs(vx) > velocityThreshold) {
+    return vx > 0;
+  }
+
   return dx > barrierForward;
 }
 
@@ -129,7 +133,7 @@ class SideMenu extends Component {
     const offsetLeft = this.menuPositionMultiplier() *
       (this.state.left.__getValue() + gestureState.dx);
 
-    this.openMenu(shouldOpenMenu(offsetLeft));
+    this.openMenu(shouldOpenMenu(offsetLeft, gestureState.vx, this.props.velocityThreshold), gestureState.vx);
   }
 
   /**
@@ -140,11 +144,11 @@ class SideMenu extends Component {
     return this.props.menuPosition === 'right' ? -1 : 1;
   }
 
-  moveLeft(offset) {
+  moveLeft(offset, velocity = null) {
     const newOffset = this.menuPositionMultiplier() * offset;
 
     this.props
-      .animationFunction(this.state.left, newOffset)
+      .animationFunction(this.state.left, newOffset, velocity)
       .start();
 
     this.prevLeft = newOffset;
@@ -154,9 +158,9 @@ class SideMenu extends Component {
    * Toggle menu
    * @return {Void}
    */
-  openMenu(isOpen) {
+  openMenu(isOpen, velocity = null) {
     const { hiddenMenuOffset, openMenuOffset, } = this.props;
-    this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
+    this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset, velocity);
     this.isOpen = isOpen;
 
     this.forceUpdate();
@@ -227,6 +231,7 @@ SideMenu.propTypes = {
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
+  velocityThreshold: React.PropTypes.number,
 };
 
 SideMenu.defaultProps = {
@@ -244,12 +249,13 @@ SideMenu.defaultProps = {
       }, ],
     };
   },
-  animationFunction: (prop, value) => {
+  animationFunction: (prop, value, velocity = null) => {
     return Animated.spring(
       prop,
       {
         toValue: value,
         friction: 8,
+        velocity,
       }
     );
   },
