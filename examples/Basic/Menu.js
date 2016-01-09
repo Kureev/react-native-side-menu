@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 module.exports = class Menu extends Component {
   render() {
     return (
-      <ScrollView style={styles.menu}>
+      <ScrollView scrollsToTop={false} style={styles.menu}>
         <View style={styles.avatarContainer}>
           <Image
             style={styles.avatar}
