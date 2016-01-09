@@ -114,11 +114,11 @@ class SideMenu extends Component {
    * @return {Void}
    */
   handlePanResponderMove(e: Object, gestureState: Object) {
-    if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {      
-      var newLeft = this.prevLeft + gestureState.dx;
+    if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
+      let newLeft = this.prevLeft + gestureState.dx;
 
-      if( this.props.disableOvershoot && newLeft > this.props.openMenuOffset ) {
-        newLeft = this.props.openMenuOffset
+      if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
+        newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
       }
 
       this.state.left.setValue(newLeft);
@@ -233,7 +233,7 @@ SideMenu.propTypes = {
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
-  disableOvershoot: React.PropTypes.bool
+  bounceBackOnOverdraw: React.PropTypes.bool,
 };
 
 SideMenu.defaultProps = {
@@ -261,7 +261,7 @@ SideMenu.defaultProps = {
     );
   },
   isOpen: false,
-  disableOvershoot: false
+  bounceBackOnOverdraw: true,
 };
 
 module.exports = SideMenu;
