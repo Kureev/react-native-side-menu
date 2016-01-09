@@ -72,7 +72,7 @@ class Application extends React.Component {
 
 #### ScrollView does not scroll to top on status bar press
 
-This is related to the iOS way of handling `scrollsToTop`. When there are multiple ScrollViews with that property enabled in the same `<View>` - it will stop working. Simply set `scrollsToTop={false}` on your ScrollView inside `Menu` component to get the other one (in your Content component) working.
+On iPhone, the scroll-to-top gesture has no effect if there is more than one scroll view on-screen that has scrollsToTop set to true. Since it defaults to `true` in ReactNative, you have to set `scrollsToTop={false}` on your ScrollView inside `Menu` component in order to get it working as desired.
 
 ### Questions?
 Feel free to contact me in [twitter](https://twitter.com/kureevalexey) or [create an issue](https://github.com/Kureev/react-native-side-menu/issues/new)
