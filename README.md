@@ -68,5 +68,11 @@ class Application extends React.Component {
 - `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
   - `value` you should use at the place you need current value of animated parameter (left offset of content view)
 
+### FAQ
+
+#### ScrollView does not scroll to top on status bar press
+
+This is related to the iOS way of handling `scrollsToTop`. When there are multiple ScrollViews with that property enabled in the same in the same `<View>` - it will stop working. Simply set `scrollsToTop={false}` on your `Menu` component.
+
 ### Questions?
 Feel free to contact me in [twitter](https://twitter.com/kureevalexey) or [create an issue](https://github.com/Kureev/react-native-side-menu/issues/new)
