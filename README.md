@@ -67,6 +67,7 @@ class Application extends React.Component {
   - `value` you should use to specify the final value of `prop`
 - `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
   - `value` you should use at the place you need current value of animated parameter (left offset of content view)
+- `bounceBackOnOverdraw` - when true, content view will bounce back to `openMenuOffset` when dragged further, defaults to true
 
 ### FAQ
 
