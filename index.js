@@ -1,3 +1,4 @@
+//@noflow
 const styles = require('./styles');
 const React = require('react-native');
 const { Dimensions, Animated, } = React;
