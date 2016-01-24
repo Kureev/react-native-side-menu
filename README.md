@@ -80,6 +80,7 @@ var Menu = React.createClass({
 - `animation` (spring|linear|easeInOut) - Type of slide animation. Default is "linear".
 - `openMenuOffset` (Number) - Content view left margin if menu is opened
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
+- `color` (String) - This change the background color of the side menu
 
 *In progress*
 

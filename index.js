@@ -175,7 +175,7 @@ var SideMenu = React.createClass({
    */
   render: function() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor : this.props.color}]}>
         {this.getMenuView()}
         {this.getContentView()}
       </View>
