@@ -180,7 +180,7 @@ class SideMenu extends Component {
     if (this.isOpen) {
       overlay = (
         <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
-          <View style={styles.overlay} />
+          <View style={[styles.overlay, {backgroundColor: this.props.overlayBackground}]} />
         </TouchableWithoutFeedback>
       );
     }
@@ -235,6 +235,7 @@ SideMenu.propTypes = {
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
   bounceBackOnOverdraw: React.PropTypes.bool,
+  overlayBackground: React.PropTypes.string,
 };
 
 SideMenu.defaultProps = {
@@ -263,6 +264,7 @@ SideMenu.defaultProps = {
   },
   isOpen: false,
   bounceBackOnOverdraw: true,
+  overlayBackground: 'transparent'
 };
 
 module.exports = SideMenu;
