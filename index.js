@@ -211,7 +211,7 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   render() {
-    const menu = <View style={styles.menu}>{this.props.menu}</View>;
+    const menu = <View style={[styles.menu, { right: deviceScreen.width - this.props.openMenuOffset }]}>{this.props.menu}</View>;
 
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
