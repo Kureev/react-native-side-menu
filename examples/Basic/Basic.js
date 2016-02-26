@@ -61,6 +61,7 @@ class Button extends Component {
 module.exports = class Basic extends Component {
   state = {
     isOpen: false,
+    selectedItem: 'About',
   };
 
   toggle() {
@@ -73,10 +74,19 @@ module.exports = class Basic extends Component {
     this.setState({ isOpen, });
   }
 
+  onMenuItemSelected = (item) => {
+    this.setState({
+      isOpen: false,
+      selectedItem: item,
+    });
+  }
+
   render() {
+    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+
     return (
       <SideMenu
-        menu={<Menu />}
+        menu={menu}
         isOpen={this.state.isOpen}
         onChange={(isOpen) => this.updateMenuState(isOpen)}>
         <View style={styles.container}>
@@ -89,6 +99,9 @@ module.exports = class Basic extends Component {
           <Text style={styles.instructions}>
             Press Cmd+R to reload,{'\n'}
             Cmd+Control+Z for dev menu
+          </Text>
+          <Text style={styles.instructions}>
+            Current selected menu item is: {this.state.selectedItem}
           </Text>
         </View>
         <Button style={styles.button} onPress={() => this.toggle()}>
