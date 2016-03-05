@@ -1,7 +1,7 @@
-//@noflow
+// @noflow
 const styles = require('./styles');
 const React = require('react-native');
-const { Dimensions, Animated, } = React;
+const {Dimensions, Animated} = React;
 const deviceScreen = Dimensions.get('window');
 
 const {
@@ -32,11 +32,6 @@ class SideMenu extends Component {
   constructor(props) {
     super(props);
 
-    /**
-     * Default left offset for content view
-     * @todo Check if it's possible to avoid using `prevLeft`
-     * @type {Number}
-     */
     this.prevLeft = 0;
     this.isOpen = props.isOpen;
 
@@ -73,7 +68,7 @@ class SideMenu extends Component {
    * @return {Boolean}
    */
   gesturesAreEnabled() {
-    let { disableGestures, } = this.props;
+    let {disableGestures} = this.props;
 
     if (typeof disableGestures === 'function') {
       return !disableGestures();
@@ -117,8 +112,9 @@ class SideMenu extends Component {
   handlePanResponderMove(e: Object, gestureState: Object) {
     if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
       let newLeft = this.prevLeft + gestureState.dx;
+      const shouldOpen = Math.abs(newLeft) > this.props.openMenuOffset;
 
-      if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
+      if (!this.props.bounceBackOnOverdraw && shouldOpen) {
         newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
       }
 
@@ -162,7 +158,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu(isOpen) {
-    const { hiddenMenuOffset, openMenuOffset, } = this.props;
+    const {hiddenMenuOffset, openMenuOffset} = this.props;
     this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
     this.isOpen = isOpen;
 
@@ -185,11 +181,11 @@ class SideMenu extends Component {
       );
     }
 
-    const { width, height, } = this.state;
+    const {width, height} = this.state;
     const ref = (sideMenu) => this.sideMenu = sideMenu;
     const style = [
       styles.frontView,
-      { width, height, },
+      {width, height},
       this.props.animationStyle(this.state.left),
     ];
 
@@ -202,8 +198,8 @@ class SideMenu extends Component {
   }
 
   onLayoutChange(e) {
-    const { width, height, } = e.nativeEvent.layout;
-    this.setState({ width, height, });
+    const {width, height} = e.nativeEvent.layout;
+    this.setState({width, height});
   }
 
   /**
@@ -212,13 +208,27 @@ class SideMenu extends Component {
    */
   render() {
     const menu = <View style={styles.menu}>{this.props.menu}</View>;
-
-    return (
-      <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
+    let content = (
+      <View
+        style={styles.container}
+        onLayout={this.onLayoutChange.bind(this)}>
         {menu}
         {this.getContentView()}
       </View>
     );
+
+    if (this.props.showOnTop) {
+      content = (
+        <View
+          style={styles.container}
+          onLayout={this.onLayoutChange.bind(this)}>
+          {this.getContentView()}
+          {menu}
+        </View>
+      );
+    }
+
+    return content;
   }
 }
 
@@ -226,15 +236,19 @@ SideMenu.propTypes = {
   edgeHitWidth: React.PropTypes.number,
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
+  menuPosition: React.PropTypes.oneOf(['left', 'right']),
   onChange: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
   bounceBackOnOverdraw: React.PropTypes.bool,
+  showOnTop: React.PropTypes.bool,
+  disableGestures: React.PropTypes.oneOfType([
+    React.PropTypes.func,
+    React.PropTypes.bool,
+  ]),
 };
 
 SideMenu.defaultProps = {
@@ -245,23 +259,15 @@ SideMenu.defaultProps = {
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
-  animationStyle: (value) => {
-    return {
-      transform: [{
-        translateX: value,
-      }, ],
-    };
-  },
+  animationStyle: (value) => ({transform: [{translateX: value}]}),
   animationFunction: (prop, value) => {
-    return Animated.spring(
-      prop,
-      {
-        toValue: value,
-        friction: 8,
-      }
-    );
+    return Animated.spring(prop, {
+      toValue: value,
+      friction: 8,
+    });
   },
   isOpen: false,
+  showOnTop: false,
   bounceBackOnOverdraw: true,
 };
 
