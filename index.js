@@ -88,6 +88,13 @@ class SideMenu extends Component {
    */
   handleMoveShouldSetPanResponder(e: Object, gestureState: Object) {
     if (this.gesturesAreEnabled()) {
+      var rootId = e['dispatchMarker'];
+      var elemsToSkip = 0;
+      this.skippedElements.forEach((elem, index, arr)=> {
+        if (rootId.indexOf(elem) > -1) elemsToSkip++;
+      });
+      if (elemsToSkip) return false;
+
       const x = Math.round(Math.abs(gestureState.dx));
       const y = Math.round(Math.abs(gestureState.dy));
 
@@ -240,7 +247,7 @@ SideMenu.propTypes = {
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
-  edgeHitWidth: 60,
+  edgeHitWidth: deviceScreen.width,
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
