@@ -106,7 +106,7 @@ module.exports = class Basic extends Component {
             Current selected menu item is: {this.state.selectedItem}
           </Text>
           <Text
-            ref={(ref)=> {if (ref !== null) this.skippedElements.push(ref._reactInternalInstance._rootNodeID);}}
+            ref={(ref)=> { if (ref && this.skippedElements && this.skippedElements.indexOf(ref._reactInternalInstance._rootNodeID) == -1) this.skippedElements.push(ref._reactInternalInstance._rootNodeID);}}
             style={[styles.instructions, {borderWidth: 1, marginTop: 30}]}>
             And this is an example of element (TEXT element to be honest), which
             will not respond to any swipes to show the menu back. It should, because
