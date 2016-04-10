@@ -1,4 +1,3 @@
-//@noflow
 const styles = require('./styles');
 const React = require('react-native');
 const { Dimensions, Animated, } = React;
@@ -102,7 +101,12 @@ class SideMenu extends Component {
         gestureState.moveX < this.props.edgeHitWidth;
 
       const swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
-      return withinEdgeHitWidth && touchMoved && swipingToOpen;
+      if(withinEdgeHitWidth && touchMoved && swipingToOpen) {
+        this.props.onStartOpen();
+        return true;
+      } else {
+        return false;
+      }
     }
 
     return false;
@@ -211,7 +215,7 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   render() {
-    const menu = <View style={[styles.menu, {right: deviceScreen.width - this.props.openMenuOffset}]}>{this.props.menu}</View>;
+    const menu = <View style={styles.menu}>{this.props.menu}</View>;
 
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
@@ -228,6 +232,7 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
+  onStartOpen: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
@@ -245,6 +250,7 @@ SideMenu.defaultProps = {
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
+  onStartOpen: () => {},
   animationStyle: (value) => {
     return {
       transform: [{
