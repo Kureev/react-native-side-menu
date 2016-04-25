@@ -40,11 +40,13 @@ class SideMenu extends Component {
     this.prevLeft = 0;
     this.isOpen = props.isOpen;
 
+    const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1
+
     this.state = {
       width: deviceScreen.width,
       height: deviceScreen.height,
       left: new Animated.Value(
-        props.isOpen ? props.openMenuOffset : props.hiddenMenuOffset
+        props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset
       ),
     };
   }
@@ -211,7 +213,12 @@ class SideMenu extends Component {
    * @return {React.Component}
    */
   render() {
-    const menu = <View style={styles.menu}>{this.props.menu}</View>;
+
+    const boundryStyle = this.props.menuPosition == 'right' ?
+      {left: deviceScreen.width - this.props.openMenuOffset} :
+      {right: deviceScreen.width - this.props.openMenuOffset} ;
+      
+    const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
