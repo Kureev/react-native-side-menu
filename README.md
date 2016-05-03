@@ -54,6 +54,7 @@ class Application extends React.Component {
 - `menu` (React.Component) - Menu component
 - `isOpen` (Boolean) - Props driven control over menu open state
 - `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width
+- `maxDraggingOffset` (Number) - Maximum dragging possible in addiction to the menu size, default 0 that means that the user can drag only until the full menu is shown, to change if a different behaviour is wanted
 - `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
 - `edgeHitWidth` (Number) - Edge distance on content view to open side menu, defaults to 60
 - `toleranceX` (Number) - X axis tolerance
