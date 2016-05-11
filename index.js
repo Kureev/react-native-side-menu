@@ -11,10 +11,6 @@ const {
   TouchableWithoutFeedback,
 } = ReactNative;
 
-const {
-  Component,
-} = React;
-
 /**
  * Size of the amount you can move content view in the opened menu state and
  * release without menu closing
@@ -32,7 +28,7 @@ function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
-class SideMenu extends Component {
+class SideMenu extends React.Component {
   constructor(props) {
     super(props);
 
