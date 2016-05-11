@@ -1,13 +1,17 @@
 //@noflow
 const styles = require('./styles');
-const React = require('react-native');
-const { Dimensions, Animated, } = React;
+const ReactNative = require('react-native');
+const React = require('react');
+const { Dimensions, Animated, } = ReactNative;
 const deviceScreen = Dimensions.get('window');
 
 const {
   PanResponder,
   View,
   TouchableWithoutFeedback,
+} = ReactNative;
+
+const {
   Component,
 } = React;
 
@@ -217,7 +221,7 @@ class SideMenu extends Component {
     const boundryStyle = this.props.menuPosition == 'right' ?
       {left: deviceScreen.width - this.props.openMenuOffset} :
       {right: deviceScreen.width - this.props.openMenuOffset} ;
-      
+
     const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
     return (

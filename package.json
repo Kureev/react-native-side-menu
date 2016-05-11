@@ -17,6 +17,7 @@
     "sidebar"
   ],
   "devDependencies": {
+    "react": "^15.0.2",
     "react-native": "^0.17.0"
   },
   "author": "Alexey Kureev <kureev-mail@ya.ru> (https://github.com/Kureev)",
