@@ -1,15 +1,15 @@
 //@noflow
 const styles = require('./styles');
-const React = require('react-native');
-const { Dimensions, Animated, } = React;
+const ReactNative = require('react-native');
+const React = require('react');
+const { Dimensions, Animated, } = ReactNative;
 const deviceScreen = Dimensions.get('window');
 
 const {
   PanResponder,
   View,
   TouchableWithoutFeedback,
-  Component,
-} = React;
+} = ReactNative;
 
 /**
  * Size of the amount you can move content view in the opened menu state and
@@ -28,7 +28,7 @@ function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
-class SideMenu extends Component {
+class SideMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -217,7 +217,7 @@ class SideMenu extends Component {
     const boundryStyle = this.props.menuPosition == 'right' ?
       {left: deviceScreen.width - this.props.openMenuOffset} :
       {right: deviceScreen.width - this.props.openMenuOffset} ;
-      
+
     const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
     return (
