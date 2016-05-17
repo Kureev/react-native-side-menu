@@ -38,7 +38,7 @@ class SideMenu extends React.Component {
      * @type {Number}
      */
     this.prevLeft = 0;
-    this.isOpen = props.isOpen;
+    this.isOpen = !!props.isOpen;
 
     const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1
 
@@ -65,7 +65,7 @@ class SideMenu extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (this.isOpen !== props.isOpen) {
+    if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen) {
       this.openMenu(props.isOpen);
     }
   }
@@ -268,7 +268,6 @@ SideMenu.defaultProps = {
       }
     );
   },
-  isOpen: false,
   bounceBackOnOverdraw: true,
 };
 
