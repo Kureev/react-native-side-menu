@@ -62,11 +62,12 @@ class Application extends React.Component {
 - `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details
 - `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
-- `animationFunction` (Function -> Object) - Function that accept 2 arguments (prop, value) and return an object:
+- `animationFunction` (Function -> Object) - Function that accepts 2 arguments (prop, value) and return an object:
   - `prop` you should use at the place you specify parameter to animate
   - `value` you should use to specify the final value of `prop`
-- `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
+- `animationStyle` (Function -> Object) - Function that accepts the arguments `(value: Animated.Value, maxValue: number)` and return an object:
   - `value` you should use at the place you need current value of animated parameter (left offset of content view)
+- `overlayAnimationStyle` (Function -> Object) - Function that accepts the arguments `(value: Animated.Value, maxValue: number)` and returns style properties for the content view overlay: useful for doing fade animations as the menu opens
 - `bounceBackOnOverdraw` - when true, content view will bounce back to `openMenuOffset` when dragged further, defaults to true
 
 ### FAQ

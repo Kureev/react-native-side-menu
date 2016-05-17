@@ -177,22 +177,24 @@ class SideMenu extends React.Component {
    * @return {React.Component}
    */
   getContentView() {
-    let overlay = null;
-
-    if (this.isOpen) {
-      overlay = (
-        <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
-          <View style={styles.overlay} />
-        </TouchableWithoutFeedback>
-      );
-    }
+    const overlay = (
+      <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
+        <Animated.View
+          style={[
+            styles.overlay,
+            this.props.overlayAnimationStyle(this.state.left, this.props.openMenuOffset)
+          ]}
+          pointerEvents={this.isOpen ? 'auto' : 'none'}
+        />
+      </TouchableWithoutFeedback>
+    );
 
     const { width, height, } = this.state;
     const ref = (sideMenu) => this.sideMenu = sideMenu;
     const style = [
       styles.frontView,
       { width, height, },
-      this.props.animationStyle(this.state.left),
+      this.props.animationStyle(this.state.left, this.props.openMenuOffset),
     ];
 
     return (
@@ -235,6 +237,8 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
+  animationStyle: React.PropTypes.func,
+  overlayAnimationStyle: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
@@ -252,13 +256,14 @@ SideMenu.defaultProps = {
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
-  animationStyle: (value) => {
+  animationStyle: (value, maxValue) => {
     return {
       transform: [{
         translateX: value,
       }, ],
     };
   },
+  overlayAnimationStyle: (value, maxValue) => ({}),
   animationFunction: (prop, value) => {
     return Animated.spring(
       prop,
