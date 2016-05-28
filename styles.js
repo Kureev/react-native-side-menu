@@ -4,20 +4,23 @@ const {
   StyleSheet,
 } = React;
 
+const absoluteStretch = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+};
+
 module.exports = StyleSheet.create({
   container: {
-    flex: 1,
+    ...absoluteStretch,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   menu: {
     flex: 1,
     backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
+    ...absoluteStretch,
   },
   frontView: {
     flex: 1,
@@ -27,11 +30,7 @@ module.exports = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    ...absoluteStretch,
     backgroundColor: 'transparent',
   },
 });
