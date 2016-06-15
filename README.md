@@ -11,7 +11,7 @@
 
 ### Installation
 ```bash
-npm install react-native-side-menu
+npm install react-native-side-menu --save
 ```
 
 ### Usage example
