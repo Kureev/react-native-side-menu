@@ -123,7 +123,7 @@ class SideMenu extends React.Component {
       if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
         newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
       }
-
+      this.props.onMove(newLeft);
       this.state.left.setValue(newLeft);
     }
   }
@@ -151,7 +151,6 @@ class SideMenu extends React.Component {
 
   moveLeft(offset) {
     const newOffset = this.menuPositionMultiplier() * offset;
-
     this.props
       .animationFunction(this.state.left, newOffset)
       .start();
@@ -181,7 +180,7 @@ class SideMenu extends React.Component {
 
     if (this.isOpen) {
       overlay = (
-        <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
+        <TouchableWithoutFeedback onPress={() => this.openMenu(false) }>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -215,15 +214,15 @@ class SideMenu extends React.Component {
   render() {
 
     const boundryStyle = this.props.menuPosition == 'right' ?
-      {left: deviceScreen.width - this.props.openMenuOffset} :
-      {right: deviceScreen.width - this.props.openMenuOffset} ;
+      { left: deviceScreen.width - this.props.openMenuOffset } :
+      { right: deviceScreen.width - this.props.openMenuOffset };
 
     const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
     return (
-      <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
+      <View style={styles.container} onLayout={this.onLayoutChange.bind(this) }>
         {menu}
-        {this.getContentView()}
+        {this.getContentView() }
       </View>
     );
   }
@@ -233,11 +232,12 @@ SideMenu.propTypes = {
   edgeHitWidth: React.PropTypes.number,
   toleranceX: React.PropTypes.number,
   toleranceY: React.PropTypes.number,
-  menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
+  menuPosition: React.PropTypes.oneOf(['left', 'right',]),
   onChange: React.PropTypes.func,
+  onMove: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
+  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool,]),
   animationFunction: React.PropTypes.func,
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
@@ -250,13 +250,14 @@ SideMenu.defaultProps = {
   edgeHitWidth: 60,
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
+  onMove: () => { },
   onStartShouldSetResponderCapture: () => true,
-  onChange: () => {},
+  onChange: () => { },
   animationStyle: (value) => {
     return {
       transform: [{
         translateX: value,
-      }, ],
+      },],
     };
   },
   animationFunction: (prop, value) => {
