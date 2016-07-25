@@ -152,6 +152,7 @@ class SideMenu extends React.Component {
 
   moveLeft(offset) {
     const newOffset = this.menuPositionMultiplier() * offset;
+
     this.props
       .animationFunction(this.state.left, newOffset)
       .start();
@@ -216,7 +217,7 @@ class SideMenu extends React.Component {
 
     const boundryStyle = this.props.menuPosition == 'right' ?
       {left: deviceScreen.width - this.props.openMenuOffset} :
-      {right: deviceScreen.width - this.props.openMenuOffset};
+      {right: deviceScreen.width - this.props.openMenuOffset} ;
 
     const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
@@ -258,7 +259,7 @@ SideMenu.defaultProps = {
     return {
       transform: [{
         translateX: value,
-      },],
+      }, ],
     };
   },
   animationFunction: (prop, value) => {
