@@ -1,7 +1,6 @@
 //@noflow
 const styles = require('./styles');
 const ReactNative = require('react-native');
-const React = require('react');
 const { Dimensions, Animated, } = ReactNative;
 const deviceScreen = Dimensions.get('window');
 
@@ -9,8 +8,10 @@ const {
   PanResponder,
   View,
   TouchableWithoutFeedback,
+  InteractionManager
 } = ReactNative;
 
+import React, {Component} from 'react'
 /**
  * Size of the amount you can move content view in the opened menu state and
  * release without menu closing
@@ -28,7 +29,7 @@ function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
-class SideMenu extends React.Component {
+class SideMenu extends Component {
   constructor(props) {
     super(props);
 
@@ -151,6 +152,7 @@ class SideMenu extends React.Component {
   }
 
   moveLeft(offset) {
+
     const newOffset = this.menuPositionMultiplier() * offset;
 
     this.props
@@ -166,10 +168,11 @@ class SideMenu extends React.Component {
    */
   openMenu(isOpen) {
     const { hiddenMenuOffset, openMenuOffset, } = this.props;
+    var handle = InteractionManager.createInteractionHandle();
     this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
     this.isOpen = isOpen;
-
     this.forceUpdate();
+    InteractionManager.clearInteractionHandle(handle);
     this.props.onChange(isOpen);
   }
 
@@ -272,7 +275,7 @@ SideMenu.defaultProps = {
     );
   },
   isOpen: false,
-  bounceBackOnOverdraw: true,
+  bounceBackOnOverdraw: false,
 };
 
 module.exports = SideMenu;
