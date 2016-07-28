@@ -124,6 +124,7 @@ class SideMenu extends React.Component {
         newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
       }
 
+      this.props.onMove(newLeft);
       this.state.left.setValue(newLeft);
     }
   }
@@ -235,6 +236,7 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
+  onMove: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
@@ -250,6 +252,7 @@ SideMenu.defaultProps = {
   edgeHitWidth: 60,
   openMenuOffset: deviceScreen.width * 2 / 3,
   hiddenMenuOffset: 0,
+  onMove: () => {},
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
   animationStyle: (value) => {
