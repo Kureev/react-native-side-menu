@@ -1,5 +1,5 @@
-const React = require('react-native');
-const SideMenu = require('../../');
+const React = require('react');
+const SideMenu = require('react-native-side-menu');
 const Menu = require('./Menu');
 
 const {
@@ -8,8 +8,8 @@ const {
   View,
   Image,
   TouchableOpacity,
-  Component,
-} = React;
+} = require('react-native');
+const { Component } = React;
 
 const styles = StyleSheet.create({
   button: {
@@ -106,7 +106,7 @@ module.exports = class Basic extends Component {
         </View>
         <Button style={styles.button} onPress={() => this.toggle()}>
           <Image
-            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: 32, height: 32, }} />
+            source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
         </Button>
       </SideMenu>
     );
