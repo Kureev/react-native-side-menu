@@ -132,7 +132,8 @@ class SideMenu extends React.Component {
 
       if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
         newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
-
+      }
+      
       this.props.onMove(newLeft);
       this.state.left.setValue(newLeft);
     }
