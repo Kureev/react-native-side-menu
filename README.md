@@ -11,7 +11,7 @@
 
 ### Installation
 ```bash
-npm install react-native-side-menu
+npm install react-native-side-menu --save
 ```
 
 ### Usage example
@@ -62,6 +62,7 @@ class Application extends React.Component {
 - `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
 - `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details
 - `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument
+- `onMove` (Function) - Callback on menu move. Is passed `left` as an argument
 - `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
 - `animationFunction` (Function -> Object) - Function that accept 2 arguments (prop, value) and return an object:
   - `prop` you should use at the place you specify parameter to animate

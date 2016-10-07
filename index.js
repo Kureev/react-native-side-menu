@@ -1,15 +1,15 @@
 //@noflow
 const styles = require('./styles');
-const React = require('react-native');
-const { Dimensions, Animated, } = React;
+const ReactNative = require('react-native');
+const React = require('react');
+const { Dimensions, Animated, } = ReactNative;
 const deviceScreen = Dimensions.get('window');
 
 const {
   PanResponder,
   View,
   TouchableWithoutFeedback,
-  Component,
-} = React;
+} = ReactNative;
 
 /**
  * Size of the amount you can move content view in the opened menu state and
@@ -28,7 +28,7 @@ function shouldOpenMenu(dx: Number) {
   return dx > barrierForward;
 }
 
-class SideMenu extends Component {
+class SideMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,13 +38,19 @@ class SideMenu extends Component {
      * @type {Number}
      */
     this.prevLeft = 0;
-    this.isOpen = props.isOpen;
+    this.isOpen = !!props.isOpen;
 
     const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1
+    const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
+    const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
 
     this.state = {
       width: deviceScreen.width,
       height: deviceScreen.height,
+      openOffsetMenuPercentage: openOffsetMenuPercentage,
+      openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+      hiddenMenuOffsetPercentage: hiddenMenuOffsetPercentage,
+      hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
       left: new Animated.Value(
         props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset
       ),
@@ -65,7 +71,7 @@ class SideMenu extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (this.isOpen !== props.isOpen) {
+    if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen) {
       this.openMenu(props.isOpen);
     }
   }
@@ -126,8 +132,8 @@ class SideMenu extends Component {
 
       if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
         newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
-      }
 
+      this.props.onMove(newLeft);
       this.state.left.setValue(newLeft);
     }
   }
@@ -168,7 +174,7 @@ class SideMenu extends Component {
    * @return {Void}
    */
   openMenu(isOpen) {
-    const { hiddenMenuOffset, openMenuOffset, } = this.props;
+    const { hiddenMenuOffset, openMenuOffset, } = this.state;
     this.moveLeft(isOpen ? openMenuOffset : hiddenMenuOffset);
     this.isOpen = isOpen;
 
@@ -209,7 +215,9 @@ class SideMenu extends Component {
 
   onLayoutChange(e) {
     const { width, height, } = e.nativeEvent.layout;
-    this.setState({ width, height, });
+    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
+    const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
+    this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
   }
 
   /**
@@ -219,9 +227,9 @@ class SideMenu extends Component {
   render() {
 
     const boundryStyle = this.props.menuPosition == 'right' ?
-      {left: deviceScreen.width - this.props.openMenuOffset} :
-      {right: deviceScreen.width - this.props.openMenuOffset} ;
-      
+      {left: this.state.width - this.state.openMenuOffset} :
+      {right: this.state.width - this.state.openMenuOffset} ;
+
     const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
 
     return (
@@ -239,6 +247,7 @@ SideMenu.propTypes = {
   toleranceY: React.PropTypes.number,
   menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
   onChange: React.PropTypes.func,
+  onMove: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
   maxDraggingOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
@@ -256,6 +265,7 @@ SideMenu.defaultProps = {
   openMenuOffset: deviceScreen.width * 2 / 3,
   maxDraggingOffset: 0,
   hiddenMenuOffset: 0,
+  onMove: () => {},
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
   animationStyle: (value) => {
@@ -274,7 +284,6 @@ SideMenu.defaultProps = {
       }
     );
   },
-  isOpen: false,
   bounceBackOnOverdraw: true,
 };
 

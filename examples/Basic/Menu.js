@@ -1,4 +1,4 @@
-const React = require('react-native');
+const React = require('react');
 const {
   Dimensions,
   StyleSheet,
@@ -6,11 +6,11 @@ const {
   View,
   Image,
   Text,
-  Component,
-} = React;
+} = require('react-native');
+const { Component } = React;
 
 const window = Dimensions.get('window');
-const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
+const uri = 'https://pickaface.net/gallery/avatar/Opi51c74d0125fd4.png';
 
 const styles = StyleSheet.create({
   menu: {
