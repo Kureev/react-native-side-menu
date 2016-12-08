@@ -216,9 +216,11 @@ class SideMenu extends React.Component {
 
   onLayoutChange(e) {
     const { width, height, } = e.nativeEvent.layout;
-    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
+
+    const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
+    const openMenuOffset = width * openOffsetMenuPercentage;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
-    this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
+    this.setState({ width, height, openMenuOffset, hiddenMenuOffset, openOffsetMenuPercentage });
   }
 
   /**
