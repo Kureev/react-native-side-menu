@@ -126,10 +126,14 @@ class SideMenu extends React.Component {
     if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
       let newLeft = this.prevLeft + gestureState.dx;
 
-      if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.state.openMenuOffset) {
-        newLeft = this.menuPositionMultiplier() * this.state.openMenuOffset;
+      if (newLeft > this.props.openMenuOffset + this.props.maxDraggingOffset) {
+        newLeft = this.props.openMenuOffset + this.props.maxDraggingOffset;
       }
 
+      if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.props.openMenuOffset) {
+        newLeft = this.menuPositionMultiplier() * this.props.openMenuOffset;
+      }
+      
       this.props.onMove(newLeft);
       this.state.left.setValue(newLeft);
     }
@@ -212,9 +216,10 @@ class SideMenu extends React.Component {
 
   onLayoutChange(e) {
     const { width, height, } = e.nativeEvent.layout;
-    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
+    const openMenuOffset = this.props.openMenuOffset === undefined ? width * this.state.openOffsetMenuPercentage : this.props.openMenuOffset;
+    const openOffsetMenuPercentage = openMenuOffset * width;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
-    this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
+    this.setState({ width, height, openMenuOffset, hiddenMenuOffset, openOffsetMenuPercentage });
   }
 
   /**
@@ -246,6 +251,7 @@ SideMenu.propTypes = {
   onChange: React.PropTypes.func,
   onMove: React.PropTypes.func,
   openMenuOffset: React.PropTypes.number,
+  maxDraggingOffset: React.PropTypes.number,
   hiddenMenuOffset: React.PropTypes.number,
   disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
   animationFunction: React.PropTypes.func,
@@ -259,6 +265,7 @@ SideMenu.defaultProps = {
   toleranceX: 10,
   edgeHitWidth: 60,
   openMenuOffset: deviceScreen.width * 2 / 3,
+  maxDraggingOffset: 0,
   hiddenMenuOffset: 0,
   onMove: () => {},
   onStartShouldSetResponderCapture: () => true,
