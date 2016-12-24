@@ -39,7 +39,7 @@ class ContentView extends React.Component {
 
 class Application extends React.Component {
   render() {
-    const menu = <Menu navigator={navigator}/>;
+    const menu = <SideMenu navigator={navigator}/>;
 
     return (
       <SideMenu menu={menu}>
