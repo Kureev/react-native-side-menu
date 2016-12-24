@@ -51,24 +51,24 @@ class Application extends React.Component {
 ```
 
 ### Component props
-- `menu` (React.Component) - Menu component
-- `isOpen` (Boolean) - Props driven control over menu open state
-- `openMenuOffset` (Number) - Content view left margin if menu is opened, defaults to 2/3 of device screen width
-- `hiddenMenuOffset` (Number) - Content view left margin if menu is hidden
-- `edgeHitWidth` (Number) - Edge distance on content view to open side menu, defaults to 60
-- `toleranceX` (Number) - X axis tolerance
-- `toleranceY` (Number) - Y axis tolerance
-- `disableGestures` (Bool) - Disable whether the menu can be opened with gestures or not
-- `onStartShouldSetResponderCapture` (Function) - Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details
-- `onChange` (Function) - Callback on menu open/close. Is passed `isOpen` as an argument
-- `onMove` (Function) - Callback on menu move. Is passed `left` as an argument
-- `menuPosition` (String) - either 'left' or 'right', defaults to 'left'
-- `animationFunction` (Function -> Object) - Function that accept 2 arguments (prop, value) and return an object:
-  - `prop` you should use at the place you specify parameter to animate
-  - `value` you should use to specify the final value of `prop`
-- `animationStyle` (Function -> Object) - Function that accept 1 argument (value) and return an object:
-  - `value` you should use at the place you need current value of animated parameter (left offset of content view)
-- `bounceBackOnOverdraw` - when true, content view will bounce back to `openMenuOffset` when dragged further, defaults to true
+
+| prop | default | type | description |
+| ---- | ---- | ----| ---- |
+| menu | inherited | React.Component | Menu component |
+| isOpen |false | Boolean | Props driven control over menu open state |
+| openMenuOffset | 2/3 of device screen width | Number | Content view left margin if menu is opened |
+| hiddenMenuOffset | none | Number | Content view left margin if menu is hidden |
+| edgeHitWidth | none | Number | Edge distance on content view to open side menu, defaults to 60 |
+| toleranceX | none | Number | X axis tolerance |
+| toleranceY | none | Number | Y axis tolerance |
+| disableGestures | false | Bool | Disable whether the menu can be opened with gestures or not |
+| onStartShould <br /> SetResponderCapture | none | Function | Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details |
+| onChange | none | Function | Callback on menu open/close. Is passed isOpen as an argument |
+| onMove | none | Function | Callback on menu move. Is passed left as an argument |
+| menuPosition | left | String | either 'left' or 'right' |
+| animationFunction | none | (Function -> Object) | Function that accept 2 arguments (prop, value) and return an object: <br /> - `prop` you should use at the place you specify parameter to animate <br /> - `value` you should use to specify the final value of prop |
+| animationStyle | none | (Function -> Object) | Function that accept 1 argument (value) and return an object: <br /> - `value` you should use at the place you need current value of animated parameter (left offset of content view) |
+| bounceBackOnOverdraw | true | boolean | when true, content view will bounce back to openMenuOffset when dragged further |
 
 ### FAQ
 
