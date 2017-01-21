@@ -38,7 +38,7 @@ class SideMenu extends React.Component {
      * @type {Number}
      */
     this.prevLeft = 0;
-    this.isOpen = !!props.isOpen;
+    this.isOpen = props.isOpen;
 
     const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1
     const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
@@ -54,6 +54,7 @@ class SideMenu extends React.Component {
       left: new Animated.Value(
         props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset
       ),
+      loading: true
     };
   }
 
@@ -68,10 +69,15 @@ class SideMenu extends React.Component {
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
     });
+    setTimeout(() => {
+      this.setState({
+        loading: false
+       });
+    }, 1500);
   }
 
   componentWillReceiveProps(props) {
-    if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen) {
+    if (this.isOpen !== props.isOpen) {
       this.openMenu(props.isOpen);
     }
   }
@@ -222,13 +228,17 @@ class SideMenu extends React.Component {
    * @return {React.Component}
    */
   render() {
-
+    var menu;
     const boundryStyle = this.props.menuPosition == 'right' ?
       {left: this.state.width - this.state.openMenuOffset} :
       {right: this.state.width - this.state.openMenuOffset} ;
 
-    const menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
-
+    if (this.state.loading){
+      menu = null;
+    }
+    else{
+      menu = <View style={[styles.menu, boundryStyle]}>{this.props.menu}</View>;
+    }
     return (
       <View style={styles.container} onLayout={this.onLayoutChange.bind(this)}>
         {menu}
@@ -279,6 +289,7 @@ SideMenu.defaultProps = {
       }
     );
   },
+  isOpen: false,
   bounceBackOnOverdraw: true,
 };
 
