@@ -71,7 +71,7 @@ class SideMenu extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen) {
+    if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
       this.openMenu(props.isOpen);
     }
   }
@@ -252,6 +252,7 @@ SideMenu.propTypes = {
   onStartShouldSetResponderCapture: React.PropTypes.func,
   isOpen: React.PropTypes.bool,
   bounceBackOnOverdraw: React.PropTypes.bool,
+  autoClosing: React.PropTypes.bool
 };
 
 SideMenu.defaultProps = {
@@ -279,7 +280,9 @@ SideMenu.defaultProps = {
       }
     );
   },
+  isOpen: false,
   bounceBackOnOverdraw: true,
+  autoClosing: true,
 };
 
 module.exports = SideMenu;
