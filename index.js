@@ -266,9 +266,7 @@ SideMenu.defaultProps = {
   onChange: () => {},
   animationStyle: (value) => {
     return {
-      transform: [{
-        translateX: value,
-      }, ],
+      left : value
     };
   },
   animationFunction: (prop, value) => {
