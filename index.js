@@ -55,6 +55,10 @@ class SideMenu extends React.Component {
         props.isOpen ? props.openMenuOffset * initialMenuPositionMultiplier : props.hiddenMenuOffset
       ),
     };
+    
+    //we need to call animationFunction to make sure that user has enough time to add its own 
+    //listeners to Animated api.
+    props.animationFunction(this.state.left, 0);
   }
 
   /**
