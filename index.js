@@ -67,6 +67,7 @@ class SideMenu extends React.Component {
       onMoveShouldSetPanResponder: this.handleMoveShouldSetPanResponder.bind(this),
       onPanResponderMove: this.handlePanResponderMove.bind(this),
       onPanResponderRelease: this.handlePanResponderEnd.bind(this),
+      onPanResponderTerminate: this.handlePanResponderEnd.bind(this),      
     });
   }
 
