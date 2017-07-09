@@ -2,6 +2,7 @@
 const styles = require('./styles');
 const ReactNative = require('react-native');
 const React = require('react');
+const PropTypes = require('prop-types');
 const { Dimensions, Animated, } = ReactNative;
 const deviceScreen = Dimensions.get('window');
 
@@ -240,20 +241,20 @@ class SideMenu extends React.Component {
 }
 
 SideMenu.propTypes = {
-  edgeHitWidth: React.PropTypes.number,
-  toleranceX: React.PropTypes.number,
-  toleranceY: React.PropTypes.number,
-  menuPosition: React.PropTypes.oneOf(['left', 'right', ]),
-  onChange: React.PropTypes.func,
-  onMove: React.PropTypes.func,
-  openMenuOffset: React.PropTypes.number,
-  hiddenMenuOffset: React.PropTypes.number,
-  disableGestures: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool, ]),
-  animationFunction: React.PropTypes.func,
-  onStartShouldSetResponderCapture: React.PropTypes.func,
-  isOpen: React.PropTypes.bool,
-  bounceBackOnOverdraw: React.PropTypes.bool,
-  autoClosing: React.PropTypes.bool
+  edgeHitWidth: PropTypes.number,
+  toleranceX: PropTypes.number,
+  toleranceY: PropTypes.number,
+  menuPosition: PropTypes.oneOf(['left', 'right', ]),
+  onChange: PropTypes.func,
+  onMove: PropTypes.func,
+  openMenuOffset: PropTypes.number,
+  hiddenMenuOffset: PropTypes.number,
+  disableGestures: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, ]),
+  animationFunction: PropTypes.func,
+  onStartShouldSetResponderCapture: PropTypes.func,
+  isOpen: PropTypes.bool,
+  bounceBackOnOverdraw: PropTypes.bool,
+  autoClosing: PropTypes.bool
 };
 
 SideMenu.defaultProps = {
