@@ -18,6 +18,8 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
   },
   menu: {
+    flex: 1,
+    backgroundColor: 'transparent',
     ...absoluteStretch,
   },
   frontView: {
