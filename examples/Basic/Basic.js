@@ -63,6 +63,7 @@ module.exports = class Basic extends Component {
     isOpen: false,
     selectedItem: 'About',
   };
+  skippedElements = [];
 
   toggle() {
     this.setState({
@@ -88,7 +89,8 @@ module.exports = class Basic extends Component {
       <SideMenu
         menu={menu}
         isOpen={this.state.isOpen}
-        onChange={(isOpen) => this.updateMenuState(isOpen)}>
+        onChange={(isOpen) => this.updateMenuState(isOpen)}
+        ref={(ref)=> {if (ref !== null) ref.skippedElements = this.skippedElements;}}>
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!
@@ -102,6 +104,14 @@ module.exports = class Basic extends Component {
           </Text>
           <Text style={styles.instructions}>
             Current selected menu item is: {this.state.selectedItem}
+          </Text>
+          <Text
+            ref={(ref)=> { if (ref && this.skippedElements && this.skippedElements.indexOf(ref._reactInternalInstance._rootNodeID) == -1) this.skippedElements.push(ref._reactInternalInstance._rootNodeID);}}
+            style={[styles.instructions, {borderWidth: 1, marginTop: 30}]}>
+            And this is an example of element (TEXT element to be honest), which
+            will not respond to any swipes to show the menu back. It should, because
+            `props.edgeHitWidth` is set to `deviceScreen.width`, but it won't :) Sometimes
+            it may be really usefull, for example, in horizontal scroll views.
           </Text>
         </View>
         <Button style={styles.button} onPress={() => this.toggle()}>
