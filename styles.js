@@ -26,6 +26,7 @@ module.exports = StyleSheet.create({
     left: 0,
     top: 0,
     backgroundColor: 'transparent',
+    overflow: 'hidden'
   },
   overlay: {
     ...absoluteStretch,
