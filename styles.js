@@ -1,18 +1,16 @@
-const React = require('react-native');
+// @flow
 
-const {
-  StyleSheet,
-} = React;
+import { StyleSheet } from 'react-native';
 
 const absoluteStretch = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
 };
 
-module.exports = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     ...absoluteStretch,
     justifyContent: 'center',
@@ -26,7 +24,7 @@ module.exports = StyleSheet.create({
     left: 0,
     top: 0,
     backgroundColor: 'transparent',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   overlay: {
     ...absoluteStretch,
