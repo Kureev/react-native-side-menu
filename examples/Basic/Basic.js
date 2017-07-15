@@ -1,15 +1,15 @@
-const React = require('react');
-const SideMenu = require('react-native-side-menu');
-const Menu = require('./Menu');
-
-const {
+import React, { Component } from 'react';
+import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity,
-} = require('react-native');
-const { Component } = React;
+} from 'react-native';
+import SideMenu from 'react-native-side-menu';
+import Menu from './Menu';
+
+const image = require('./assets/menu.png');
 
 const styles = StyleSheet.create({
   button: {
@@ -40,29 +40,17 @@ const styles = StyleSheet.create({
   },
 });
 
-class Button extends Component {
-  handlePress(e) {
-    if (this.props.onPress) {
-      this.props.onPress(e);
-    }
-  }
+export default class Basic extends Component {
+  constructor(props) {
+    super(props);
 
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={this.handlePress.bind(this)}
-        style={this.props.style}>
-        <Text>{this.props.children}</Text>
-      </TouchableOpacity>
-    );
-  }
-}
+    this.toggle = this.toggle.bind(this);
 
-module.exports = class Basic extends Component {
-  state = {
-    isOpen: false,
-    selectedItem: 'About',
-  };
+    this.state = {
+      isOpen: false,
+      selectedItem: 'About',
+    };
+  }
 
   toggle() {
     this.setState({
@@ -71,15 +59,14 @@ module.exports = class Basic extends Component {
   }
 
   updateMenuState(isOpen) {
-    this.setState({ isOpen, });
+    this.setState({ isOpen });
   }
 
-  onMenuItemSelected = (item) => {
+  onMenuItemSelected = item =>
     this.setState({
       isOpen: false,
       selectedItem: item,
     });
-  }
 
   render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
@@ -88,7 +75,8 @@ module.exports = class Basic extends Component {
       <SideMenu
         menu={menu}
         isOpen={this.state.isOpen}
-        onChange={(isOpen) => this.updateMenuState(isOpen)}>
+        onChange={isOpen => this.updateMenuState(isOpen)}
+      >
         <View style={styles.container}>
           <Text style={styles.welcome}>
             Welcome to React Native!
@@ -104,11 +92,16 @@ module.exports = class Basic extends Component {
             Current selected menu item is: {this.state.selectedItem}
           </Text>
         </View>
-        <Button style={styles.button} onPress={() => this.toggle()}>
+        <TouchableOpacity
+          onPress={this.toggle}
+          style={styles.button}
+        >
           <Image
-            source={require('./assets/menu.png')} style={{width: 32, height: 32}} />
-        </Button>
+            source={image}
+            style={{ width: 32, height: 32 }}
+          />
+        </TouchableOpacity>
       </SideMenu>
     );
   }
-};
+}

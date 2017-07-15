@@ -1,5 +1,5 @@
-const React = require('react-native');
-const { AppRegistry, } = React;
-const Basic = require('./Basic');
+import { AppRegistry } from 'react-native';
+
+import Basic from './Basic';
 
 AppRegistry.registerComponent('Basic', () => Basic);

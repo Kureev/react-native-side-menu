@@ -9,13 +9,13 @@
 
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/sort-comp": [1, {
-      order: [
-        'type-annotations',
-        'static-methods',
-        'lifecycle',
-        'everything-else',
-        'render',
-      ],
+      "order": [
+        "type-annotations",
+        "static-methods",
+        "lifecycle",
+        "everything-else",
+        "render"
+      ]
     }]
   }
 }
