@@ -4,7 +4,7 @@
   "description": "Simple customizable component to create side menu",
   "main": "build/index.js",
   "scripts": {
-    "build": "babel index.js > build/index.js"
+    "build": "babel index.js > build/index.js && babel styles.js > build/styles.js"
   },
   "repository": {
     "type": "git",
