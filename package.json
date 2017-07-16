@@ -4,7 +4,7 @@
   "description": "Simple customizable component to create side menu",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel index.js > build/index.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-preset-flow": "^6.23.0",
+    "babel-preset-react-native": "^2.1.0",
     "eslint": "3",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-plugin-flowtype": "^2.35.0",
