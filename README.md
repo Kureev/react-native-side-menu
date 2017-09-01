@@ -65,6 +65,7 @@ class Application extends React.Component {
 | onStartShould <br /> SetResponderCapture | none | Function | Function that accepts event as an argument and specify if side-menu should react on the touch or not. Check https://facebook.github.io/react-native/docs/gesture-responder-system.html for more details |
 | onChange | none | Function | Callback on menu open/close. Is passed isOpen as an argument |
 | onMove | none | Function | Callback on menu move. Is passed left as an argument |
+| onSliding | none | Function | Callback when menu is sliding. It returns a decimal from 0 to 1 which represents the percentage of menu offset between hiddenMenuOffset and openMenuOffset.|
 | menuPosition | left | String | either 'left' or 'right' |
 | animationFunction | none | (Function -> Object) | Function that accept 2 arguments (prop, value) and return an object: <br /> - `prop` you should use at the place you specify parameter to animate <br /> - `value` you should use to specify the final value of prop |
 | animationStyle | none | (Function -> Object) | Function that accept 1 argument (value) and return an object: <br /> - `value` you should use at the place you need current value of animated parameter (left offset of content view) |
