@@ -20,6 +20,7 @@ type Props = {
   menuPosition: 'left' | 'right',
   onChange: Function,
   onMove: Function,
+  onSliding: Function,
   openMenuOffset: number,
   hiddenMenuOffset: number,
   disableGestures: Function | bool,
@@ -98,6 +99,8 @@ export default class SideMenu extends React.Component {
       hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
       left,
     };
+
+    this.state.left.addListener(({value}) => this.props.onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
   }
 
   componentWillMount(): void {
@@ -285,6 +288,7 @@ SideMenu.defaultProps = {
   onMove: () => {},
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},
+  onSliding: () => {},
   animationStyle: value => ({
     transform: [{
       translateX: value,
