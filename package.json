@@ -4,8 +4,8 @@
   "description": "Simple customizable component to create side menu",
   "main": "build/index.js",
   "scripts": {
-    "build": "babel index.js > build/index.js && babel styles.js > build/styles.js",
-    "prepublish": "babel index.js > build/index.js && babel styles.js > build/styles.js"
+    "build": "./build.sh",
+    "prepublish": "./build.sh"
   },
   "repository": {
     "type": "git",
