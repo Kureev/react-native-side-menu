@@ -27,6 +27,7 @@ type Props = {
   animationFunction: Function,
   onStartShouldSetResponderCapture: Function,
   isOpen: bool,
+  overlayStyle: View.propTypes.style,
   bounceBackOnOverdraw: bool,
   autoClosing: bool
 };
@@ -136,7 +137,7 @@ export default class SideMenu extends React.Component {
     if (this.isOpen) {
       overlay = (
         <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
-          <View style={styles.overlay} />
+          <View style={[styles.overlay, this.props.overlayStyle]} />
         </TouchableWithoutFeedback>
       );
     }
