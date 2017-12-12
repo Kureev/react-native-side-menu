@@ -1,17 +1,9 @@
 // @flow
 
 import React from 'react';
-import {
-  PanResponder,
-  View,
-  Dimensions,
-  Animated,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {Animated, Dimensions, PanResponder, TouchableWithoutFeedback, View} from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
-
-type WindowDimensions = { width: number, height: number };
 
 type Props = {
   edgeHitWidth: number,
@@ -48,12 +40,11 @@ type State = {
   hiddenMenuOffsetPercentage: number,
   hiddenMenuOffset: number,
   left: Animated.Value,
+  barrierForward: number
 };
 
-const deviceScreen: WindowDimensions = Dimensions.get('window');
-const barrierForward: number = deviceScreen.width / 4;
 
-function shouldOpenMenu(dx: number): boolean {
+function shouldOpenMenu(dx: number, barrierForward: number): boolean {
   return dx > barrierForward;
 }
 
@@ -71,12 +62,14 @@ export default class SideMenu extends React.Component {
   constructor(props: Props) {
     super(props);
 
+    const { width, height } = Dimensions.get('window');
+
     this.prevLeft = 0;
     this.isOpen = !!props.isOpen;
 
     const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
-    const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
-    const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
+    const openOffsetMenuPercentage = props.openMenuOffset / width;
+    const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / width;
     const left: Animated.Value = new Animated.Value(
       props.isOpen
         ? props.openMenuOffset * initialMenuPositionMultiplier
@@ -91,13 +84,14 @@ export default class SideMenu extends React.Component {
     this.onPanResponderTerminate = this.handlePanResponderEnd.bind(this);
 
     this.state = {
-      width: deviceScreen.width,
-      height: deviceScreen.height,
+      width,
+      height,
       openOffsetMenuPercentage,
-      openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+      openMenuOffset: width * openOffsetMenuPercentage,
       hiddenMenuOffsetPercentage,
-      hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
+      hiddenMenuOffset: width * hiddenMenuOffsetPercentage,
       left,
+      barrierForward: width / 4,
     };
 
     this.state.left.addListener(({value}) => this.props.onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
@@ -188,7 +182,7 @@ export default class SideMenu extends React.Component {
     const offsetLeft = this.menuPositionMultiplier() *
       (this.state.left.__getValue() + gestureState.dx);
 
-    this.openMenu(shouldOpenMenu(offsetLeft));
+    this.openMenu(shouldOpenMenu(offsetLeft, this.state.barrierForward));
   }
 
   handleMoveShouldSetPanResponder(e: any, gestureState: any): boolean {
@@ -203,7 +197,7 @@ export default class SideMenu extends React.Component {
       }
 
       const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
-        gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
+        gestureState.moveX > (this.state.width - this.props.edgeHitWidth) :
         gestureState.moveX < this.props.edgeHitWidth;
 
       const swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
@@ -275,13 +269,15 @@ SideMenu.propTypes = {
   autoClosing: PropTypes.bool,
 };
 
+const initialDeviceScreen = Dimensions.get('window');
+
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   edgeHitWidth: 60,
   children: null,
   menu: null,
-  openMenuOffset: deviceScreen.width * (2 / 3),
+  openMenuOffset: initialDeviceScreen.width * (2 / 3),
   disableGestures: false,
   menuPosition: 'left',
   hiddenMenuOffset: 0,
