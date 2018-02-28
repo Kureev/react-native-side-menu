@@ -25,6 +25,7 @@ type Props = {
   hiddenMenuOffset: number,
   disableGestures: Function | bool,
   animationFunction: Function,
+  onAnimationComplete: Function,
   onStartShouldSetResponderCapture: Function,
   isOpen: bool,
   bounceBackOnOverdraw: bool,
@@ -162,7 +163,7 @@ export default class SideMenu extends React.Component {
 
     this.props
       .animationFunction(this.state.left, newOffset)
-      .start();
+      .start(this.props.onAnimationComplete);
 
     this.prevLeft = newOffset;
   }
@@ -269,6 +270,7 @@ SideMenu.propTypes = {
   animationStyle: PropTypes.func,
   disableGestures: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   animationFunction: PropTypes.func,
+  onAnimationComplete: PropTypes.func,
   onStartShouldSetResponderCapture: PropTypes.func,
   isOpen: PropTypes.bool,
   bounceBackOnOverdraw: PropTypes.bool,
@@ -298,6 +300,7 @@ SideMenu.defaultProps = {
     toValue: value,
     friction: 8,
   }),
+  onAnimationComplete: () => {},
   isOpen: false,
   bounceBackOnOverdraw: true,
   autoClosing: true,
