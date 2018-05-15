@@ -1,9 +1,17 @@
 // @flow
 
 import React from 'react';
-import {Animated, Dimensions, PanResponder, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  PanResponder,
+  View,
+  Dimensions,
+  Animated,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
+
+type WindowDimensions = { width: number, height: number };
 
 type Props = {
   edgeHitWidth: number,
@@ -62,7 +70,7 @@ export default class SideMenu extends React.Component {
   constructor(props: Props) {
     super(props);
 
-    const { width, height } = Dimensions.get('window');
+    const { width, height }: WindowDimensions = Dimensions.get('window');
 
     this.prevLeft = 0;
     this.isOpen = !!props.isOpen;
@@ -269,15 +277,13 @@ SideMenu.propTypes = {
   autoClosing: PropTypes.bool,
 };
 
-const initialDeviceScreen = Dimensions.get('window');
-
 SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   edgeHitWidth: 60,
   children: null,
   menu: null,
-  openMenuOffset: initialDeviceScreen.width * (2 / 3),
+  openMenuOffset: Dimensions.get('window').width * (2 / 3),
   disableGestures: false,
   menuPosition: 'left',
   hiddenMenuOffset: 0,
