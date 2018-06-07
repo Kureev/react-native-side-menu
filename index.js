@@ -82,7 +82,7 @@ export default class SideMenu extends React.Component {
       isOpen,
       onStartShouldSetResponderCapture,
       openMenuOffset = deviceScreen.width * DEFAULT_MULTIPLIER, // optional
-    } = this.props;
+    } = props;
     const initialMenuPositionMultiplier = menuPosition === 'right' ? -1 : 1;
     const openOffsetMenuPercentage = openMenuOffset / deviceScreen.width;
     const hiddenMenuOffsetPercentage = hiddenMenuOffset / deviceScreen.width;
@@ -107,7 +107,8 @@ export default class SideMenu extends React.Component {
       left,
     };
 
-    this.state.left.addListener(({ value }) => onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
+    this.state.left.addListener(({ value }) =>
+      onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
   }
 
   componentWillMount(): void {
@@ -255,10 +256,11 @@ export default class SideMenu extends React.Component {
   }
 
   render(): React.Element<void, void> {
-    const boundryStyle = this.props.menuPosition === 'right' ?
-      { left: this.state.width - this.state.openMenuOffset } :
-      { right: this.state.width - this.state.openMenuOffset };
-
+    const { menuPosition } = this.props;
+    const position = this.state.width - this.state.openMenuOffset;
+    const boundryStyle = menuPosition === 'right' ?
+      { left: position } :
+      { right: position };
     const menu = (
       <View style={[styles.menu, boundryStyle]}>
         {this.props.menu}
@@ -319,6 +321,7 @@ SideMenu.defaultProps = {
   animationFunction: (prop, value) => Animated.spring(prop, {
     toValue: value,
     friction: 8,
+    useNativeDriver: true,
   }),
   onAnimationComplete: () => {},
   isOpen: false,

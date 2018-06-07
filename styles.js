@@ -17,8 +17,10 @@ export default StyleSheet.create({
   },
   menu: {
     ...absoluteStretch,
+    zIndex: 0,
   },
   frontView: {
+    zIndex: 1,
     flex: 1,
     position: 'absolute',
     left: 0,
