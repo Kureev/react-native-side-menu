@@ -18,7 +18,7 @@ type Props = {
   edgeHitWidth: number,
   toleranceX: number,
   toleranceY: number,
-  menuPosition: 'left' | 'right',
+  menuPosition: 'left' | 'right' | 'start' | 'end',
   onChange: Function,
   onMove: Function,
   onSliding: Function,
@@ -59,28 +59,41 @@ function shouldOpenMenu(dx: number): boolean {
   return dx > barrierForward;
 }
 
-// Returns `true` is menu is positioned `left` or `start`, false otherwise.
+// returns `true` is menu is positioned `left` or `start`, false otherwise.
 function isMenuPositionedAtStartOfViewport(menuPosition: string): boolean {
   return menuPosition === 'left' || menuPosition === 'start';
 }
 
 function getTranslateXValue(direction: string, offset: number, left: Animated.Value): Animated.AnimatedInterpolation {
   const start = isMenuPositionedAtStartOfViewport(direction);
+  const isOpen = this.isOpen;
+
   let outputRange;
+  let inputRange;
   if ((start && I18nManager.isRTL) || (!start && !I18nManager.isRTL)) {
-    console.log('here');
-    outputRange = [-offset, 0];
+    if (!isOpen) {
+      outputRange = [0, -offset];
+      inputRange = [-offset, 0];
+    }
+    else {
+      outputRange = [-offset, 0]; 
+      inputRange = [0, offset];
+    }
   } else {
-    console.log('there');
-    outputRange = [offset, 0];
+    if (!isOpen) {
+      outputRange = [0, offset];
+      inputRange = [0, offset];
+    }
+    else {
+      outputRange = [offset, 0]; 
+      inputRange = [0, offset];
+    }
   }
 
-  console.log(start, offset);
-
   const drawerTranslateX = left.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, -20],
-      // extrapolate: 'clamp',
+      inputRange,
+      outputRange,
+      extrapolate: 'clamp',
   });
   return drawerTranslateX;
 }
@@ -102,7 +115,8 @@ export default class SideMenu extends React.Component {
     this.prevLeft = 0;
     this.isOpen = !!props.isOpen;
 
-    const initialMenuPositionMultiplier = isMenuPositionedAtStartOfViewport(props.menuPosition);
+    const start = isMenuPositionedAtStartOfViewport(props.menuPosition);
+    const initialMenuPositionMultiplier = (start) ? 1 : -1;
     const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
     const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
     const left: Animated.Value = new Animated.Value(
@@ -171,8 +185,6 @@ export default class SideMenu extends React.Component {
 
     const { width, height, left, hiddenMenuOffset, openMenuOffset } = this.state; 
     const offset = this.isOpen ? openMenuOffset : hiddenMenuOffset;
-    
-    console.log('menu', this.props.menuPosition, 'offset', offset);
 
     const tranlsationValue = getTranslateXValue(this.props.menuPosition, offset, left);
 
