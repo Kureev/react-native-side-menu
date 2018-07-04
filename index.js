@@ -98,7 +98,7 @@ export default class SideMenu extends React.Component {
     const left: Animated.Value = new Animated.Value(
       props.isOpen
         ? props.openMenuOffset * initialMenuPositionMultiplier
-        : props.hiddenMenuOffset,
+        : props.hiddenMenuOffset * initialMenuPositionMultiplier
     );
 
     this.onLayoutChange = this.onLayoutChange.bind(this);
