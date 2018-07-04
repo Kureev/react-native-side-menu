@@ -7,6 +7,7 @@ import {
   Dimensions,
   Animated,
   TouchableWithoutFeedback,
+  I18nManager,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
@@ -17,7 +18,7 @@ type Props = {
   edgeHitWidth: number,
   toleranceX: number,
   toleranceY: number,
-  menuPosition: 'left' | 'right',
+  menuPosition: 'left' | 'right' | 'start' | 'end',
   onChange: Function,
   onMove: Function,
   onSliding: Function,
@@ -58,6 +59,22 @@ function shouldOpenMenu(dx: number): boolean {
   return dx > barrierForward;
 }
 
+// returns `true` is menu is positioned `left` or `start`, false otherwise.
+function isMenuPositionedAtStartOfViewport(menuPosition: string): boolean {
+  return menuPosition === 'left' || menuPosition === 'start';
+}
+
+// return 1 multiplier if menu position is `start|left` AND
+// LTR or `end|right` AND RTL, return -1 otherwise.
+function menuPositionMultiplier(menuPosition) {
+    const start = isMenuPositionedAtStartOfViewport(menuPosition);
+    if ((start && !I18nManager.isRTL) || (!start && I18nManager.isRTL)) {
+      return 1;
+    } else {
+      return -1;
+    }
+} 
+
 export default class SideMenu extends React.Component {
   onLayoutChange: Function;
   onStartShouldSetResponderCapture: Function;
@@ -75,13 +92,13 @@ export default class SideMenu extends React.Component {
     this.prevLeft = 0;
     this.isOpen = !!props.isOpen;
 
-    const initialMenuPositionMultiplier = props.menuPosition === 'right' ? -1 : 1;
+    const initialMenuPositionMultiplier = menuPositionMultiplier(props.menuPosition);
     const openOffsetMenuPercentage = props.openMenuOffset / deviceScreen.width;
     const hiddenMenuOffsetPercentage = props.hiddenMenuOffset / deviceScreen.width;
     const left: Animated.Value = new Animated.Value(
       props.isOpen
         ? props.openMenuOffset * initialMenuPositionMultiplier
-        : props.hiddenMenuOffset,
+        : props.hiddenMenuOffset * initialMenuPositionMultiplier
     );
 
     this.onLayoutChange = this.onLayoutChange.bind(this);
@@ -142,12 +159,12 @@ export default class SideMenu extends React.Component {
       );
     }
 
-    const { width, height } = this.state;
+    const { width, height, left } = this.state; 
     const ref = sideMenu => (this.sideMenu = sideMenu);
     const style = [
       styles.frontView,
-      { width, height },
-      this.props.animationStyle(this.state.left),
+      { width, height, },
+      this.props.animationStyle(left),
     ];
 
     return (
@@ -159,7 +176,7 @@ export default class SideMenu extends React.Component {
   }
 
   moveLeft(offset: number) {
-    const newOffset = this.menuPositionMultiplier() * offset;
+    const newOffset = menuPositionMultiplier(this.props.menuPosition) * offset;
 
     this.props
       .animationFunction(this.state.left, newOffset)
@@ -168,16 +185,12 @@ export default class SideMenu extends React.Component {
     this.prevLeft = newOffset;
   }
 
-  menuPositionMultiplier(): -1 | 1 {
-    return this.props.menuPosition === 'right' ? -1 : 1;
-  }
-
   handlePanResponderMove(e: Object, gestureState: Object) {
-    if (this.state.left.__getValue() * this.menuPositionMultiplier() >= 0) {
+    if (this.state.left.__getValue() * menuPositionMultiplier(this.props.menuPosition) >= 0) {
       let newLeft = this.prevLeft + gestureState.dx;
 
       if (!this.props.bounceBackOnOverdraw && Math.abs(newLeft) > this.state.openMenuOffset) {
-        newLeft = this.menuPositionMultiplier() * this.state.openMenuOffset;
+        newLeft = menuPositionMultiplier(this.props.menuPosition) * this.state.openMenuOffset;
       }
 
       this.props.onMove(newLeft);
@@ -186,7 +199,7 @@ export default class SideMenu extends React.Component {
   }
 
   handlePanResponderEnd(e: Object, gestureState: Object) {
-    const offsetLeft = this.menuPositionMultiplier() *
+    const offsetLeft = menuPositionMultiplier(this.props.menuPosition) *
       (this.state.left.__getValue() + gestureState.dx);
 
     this.openMenu(shouldOpenMenu(offsetLeft));
@@ -203,11 +216,13 @@ export default class SideMenu extends React.Component {
         return touchMoved;
       }
 
-      const withinEdgeHitWidth = this.props.menuPosition === 'right' ?
+      const start = isMenuPositionedAtStartOfViewport(this.props.menuPosition);
+      // If `right|end` OR `left|start` and RTL then calculate edgeHitWidth using screen width.
+      const withinEdgeHitWidth = (!start || (start && I18nManager.isRTL)) ?
         gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
         gestureState.moveX < this.props.edgeHitWidth;
 
-      const swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
+      const swipingToOpen = menuPositionMultiplier(this.props.menuPosition) * gestureState.dx > 0;
       return withinEdgeHitWidth && touchMoved && swipingToOpen;
     }
 
@@ -233,10 +248,22 @@ export default class SideMenu extends React.Component {
     return !disableGestures;
   }
 
+  getBoundryStyleByDirection(): Object {
+    const boundryEdge = this.state.width - this.state.openMenuOffset;
+    const start = isMenuPositionedAtStartOfViewport(this.props.menuPosition);
+    // If the RTL setting matches the menuPosition prop
+    // value, then return start and end values which are 
+    // responsive to RTL direction for menu boundry.
+    if (start) {
+      return { start: 0, end: boundryEdge };
+    }
+    else {
+      return { end: 0, start: boundryEdge }; 
+    }
+  }
+
   render(): React.Element<void, void> {
-    const boundryStyle = this.props.menuPosition === 'right' ?
-      { left: this.state.width - this.state.openMenuOffset } :
-      { right: this.state.width - this.state.openMenuOffset };
+    const boundryStyle = this.getBoundryStyleByDirection();
 
     const menu = (
       <View style={[styles.menu, boundryStyle]}>
@@ -260,7 +287,7 @@ SideMenu.propTypes = {
   edgeHitWidth: PropTypes.number,
   toleranceX: PropTypes.number,
   toleranceY: PropTypes.number,
-  menuPosition: PropTypes.oneOf(['left', 'right']),
+  menuPosition: PropTypes.oneOf(['left', 'right', 'start', 'end']),
   onChange: PropTypes.func,
   onMove: PropTypes.func,
   children: PropTypes.node,
