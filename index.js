@@ -117,6 +117,16 @@ export default class SideMenu extends React.Component {
   componentWillReceiveProps(props: Props): void {
     if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
       this.openMenu(props.isOpen);
+    } else {
+      const { openMenuOffset, hiddenMenuOffset } = props
+      // if openMenuOffset or hiddenMenuOffset has changed
+      if ((this.state.openMenuOffset != openMenuOffset) || (this.state.hiddenMenuOffset != hiddenMenuOffset)) {
+        this.setState({
+          ...this.state,
+          openMenuOffset, hiddenMenuOffset
+        })
+        this.moveLeft(this.isOpen ? openMenuOffset : hiddenMenuOffset)
+      }
     }
   }
 
