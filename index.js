@@ -134,15 +134,45 @@ export default class SideMenu extends React.Component {
   componentWillReceiveProps(props: Props): void {
     if (typeof props.isOpen !== 'undefined' && this.isOpen !== props.isOpen && (props.autoClosing || this.isOpen === false)) {
       this.openMenu(props.isOpen);
+    } else {
+      // This below code is taken from an Open PR into React Native Side Menu.
+      // See https://github.com/react-native-community/react-native-side-menu/pull/356/commits/89bb710a8a2458db4b8163c94d81d38fb9c95927
+      const { openMenuOffset, hiddenMenuOffset } = props;
+      // if openMenuOffset or hiddenMenuOffset has changed
+      if ((this.state.openMenuOffset != openMenuOffset) || (this.state.hiddenMenuOffset != hiddenMenuOffset)) {
+        this.setState({
+          ...this.state,
+          openMenuOffset, hiddenMenuOffset
+        });
+        this.moveLeft(this.isOpen ? openMenuOffset : hiddenMenuOffset);
+      }
     }
   }
 
   onLayoutChange(e: Event) {
-    const { width, height } = e.nativeEvent.layout;
-    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
-    const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
-    this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
+    // This below code is taken from an Open PR into React Native Side Menu.  
+    // https://github.com/react-native-community/react-native-side-menu/pull/343/commits/1bf58bc701a560b3d5221dff762e6730641b16fd
+    const sizes = e.nativeEvent.layout;
+    this.changeOffset(sizes);
   }
+
+  changeOffset = ({ width, height }) => {
+    const {
+      openMenuOffset = width * DEFAULT_MULTIPLIER,
+      hiddenMenuOffset,
+    } = this.props;
+    const openOffsetMenuPercentage = openMenuOffset / width;
+    const hiddenMenuOffsetPercentage = hiddenMenuOffset / width;
+    this.setState({
+      width,
+      height,
+      openMenuOffset,
+      hiddenMenuOffset,
+      openOffsetMenuPercentage,
+      hiddenMenuOffsetPercentage,
+    });
+    this.moveLeft(this.isOpen ? openMenuOffset : hiddenMenuOffset);
+  }	
 
   /**
    * Get content view. This view will be rendered over menu
@@ -219,7 +249,7 @@ export default class SideMenu extends React.Component {
       const start = isMenuPositionedAtStartOfViewport(this.props.menuPosition);
       // If `right|end` OR `left|start` and RTL then calculate edgeHitWidth using screen width.
       const withinEdgeHitWidth = (!start || (start && I18nManager.isRTL)) ?
-        gestureState.moveX > (deviceScreen.width - this.props.edgeHitWidth) :
+        gestureState.moveX > (this.state.width - this.props.edgeHitWidth) :
         gestureState.moveX < this.props.edgeHitWidth;
 
       const swipingToOpen = menuPositionMultiplier(this.props.menuPosition) * gestureState.dx > 0;
