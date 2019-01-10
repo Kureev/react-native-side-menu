@@ -29,7 +29,9 @@ type Props = {
   onStartShouldSetResponderCapture: Function,
   isOpen: bool,
   bounceBackOnOverdraw: bool,
-  autoClosing: bool
+  autoClosing: bool,
+  closeByClickingOnContent: bool,
+  fixedMenuOffset: bool
 };
 
 type Event = {
@@ -101,7 +103,7 @@ export default class SideMenu extends React.Component {
       left,
     };
 
-    this.state.left.addListener(({value}) => this.props.onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
+    this.state.left.addListener(({ value }) => props.onSliding(Math.abs((value - this.state.hiddenMenuOffset) / (this.state.openMenuOffset - this.state.hiddenMenuOffset))));
   }
 
   componentWillMount(): void {
@@ -124,7 +126,11 @@ export default class SideMenu extends React.Component {
     const { width, height } = e.nativeEvent.layout;
     const openMenuOffset = width * this.state.openOffsetMenuPercentage;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
-    this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
+    if (this.props.fixedMenuOffset === true) {
+      this.setState({ width, height, hiddenMenuOffset });
+    } else {
+      this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
+    }
   }
 
   /**
@@ -134,7 +140,7 @@ export default class SideMenu extends React.Component {
   getContentView() {
     let overlay: React.Element<void, void> = null;
 
-    if (this.isOpen) {
+    if (this.props.closeByClickingOnContent && this.isOpen) {
       overlay = (
         <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
           <View style={styles.overlay} />
@@ -275,6 +281,9 @@ SideMenu.propTypes = {
   isOpen: PropTypes.bool,
   bounceBackOnOverdraw: PropTypes.bool,
   autoClosing: PropTypes.bool,
+  closeByClickingOnContent: PropTypes.bool,
+  onSliding: PropTypes.func,
+  fixedMenuOffset: PropTypes.bool,
 };
 
 SideMenu.defaultProps = {
@@ -304,4 +313,6 @@ SideMenu.defaultProps = {
   isOpen: false,
   bounceBackOnOverdraw: true,
   autoClosing: true,
+  closeByClickingOnContent: true,
+  fixedMenuOffset: false,
 };
