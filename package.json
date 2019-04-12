@@ -2,7 +2,7 @@
   "name": "react-native-side-menu",
   "version": "1.1.3",
   "description": "Simple customizable component to create side menu",
-  "main": "build/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "./build.sh",
     "prepublish": "./build.sh"
