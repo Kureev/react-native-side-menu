@@ -12,7 +12,7 @@ const absoluteStretch = {
 
 export default StyleSheet.create({
   container: {
-    ...absoluteStretch,
+    flex: 1,
     justifyContent: 'center',
   },
   menu: {
