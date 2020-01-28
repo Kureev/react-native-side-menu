@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Basic extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
