@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   Animated,
+  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -121,8 +122,12 @@ export default class SideMenu extends React.Component {
   }
 
   onLayoutChange(e: Event) {
+    const { openMenuOffset: openMenuOffsetPrev } = this.props;
+    const isWeb = Platform.OS === 'web';
     const { width, height } = e.nativeEvent.layout;
-    const openMenuOffset = width * this.state.openOffsetMenuPercentage;
+    const openMenuOffset = isWeb
+      ? openMenuOffsetPrev
+      : width * this.state.openOffsetMenuPercentage;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
     this.setState({ width, height, openMenuOffset, hiddenMenuOffset });
   }
