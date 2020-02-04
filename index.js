@@ -6,7 +6,6 @@ import {
   View,
   Dimensions,
   Animated,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -30,7 +29,8 @@ type Props = {
   onStartShouldSetResponderCapture: Function,
   isOpen: bool,
   bounceBackOnOverdraw: bool,
-  autoClosing: bool
+  autoClosing: bool,
+  openMenuOffsetPrev: number
 };
 
 type Event = {
@@ -96,7 +96,9 @@ export default class SideMenu extends React.Component {
       width: deviceScreen.width,
       height: deviceScreen.height,
       openOffsetMenuPercentage,
-      openMenuOffset: deviceScreen.width * openOffsetMenuPercentage,
+      openMenuOffset: props.openMenuOffset > 1
+        ? props.openMenuOffset
+        : deviceScreen.width * openOffsetMenuPercentage,
       hiddenMenuOffsetPercentage,
       hiddenMenuOffset: deviceScreen.width * hiddenMenuOffsetPercentage,
       left,
@@ -122,10 +124,9 @@ export default class SideMenu extends React.Component {
   }
 
   onLayoutChange(e: Event) {
-    const { openMenuOffset: openMenuOffsetPrev } = this.props;
-    const isWeb = Platform.OS === 'web';
+    const { openMenuOffset: openMenuOffsetPrev} = this.props;
     const { width, height } = e.nativeEvent.layout;
-    const openMenuOffset = isWeb
+    const openMenuOffset = openMenuOffsetPrev > 1
       ? openMenuOffsetPrev
       : width * this.state.openOffsetMenuPercentage;
     const hiddenMenuOffset = width * this.state.hiddenMenuOffsetPercentage;
