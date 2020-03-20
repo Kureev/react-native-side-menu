@@ -6,7 +6,7 @@
   "scripts": {
     "build": "./build.sh",
     "prepublish": "./build.sh",
-    "prepare": "./build.sh"
+    "prepare": "babel index.js > build/index.js && babel styles.js > build/styles.js"
   },
   "repository": {
     "type": "git",
