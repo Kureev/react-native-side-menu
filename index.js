@@ -246,7 +246,7 @@ export default class SideMenu extends React.Component {
 
     return (
       <View
-        style={styles.container}
+        style={[styles.container, this.props.containerStyle]}
         onLayout={this.onLayoutChange}
       >
         {menu}
