@@ -136,7 +136,13 @@ export default class SideMenu extends React.Component {
 
     if (this.isOpen) {
       overlay = (
-        <TouchableWithoutFeedback onPress={() => this.openMenu(false)}>
+        <TouchableWithoutFeedback onPress={() => {
+          if (this.props.externalToggle) {
+            this.props.externalToggle();
+          }
+          this.openMenu(false);
+        }}
+        >
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
       );
@@ -275,6 +281,7 @@ SideMenu.propTypes = {
   isOpen: PropTypes.bool,
   bounceBackOnOverdraw: PropTypes.bool,
   autoClosing: PropTypes.bool,
+  externalToggle: PropTypes.func,
 };
 
 SideMenu.defaultProps = {
@@ -305,4 +312,5 @@ SideMenu.defaultProps = {
   isOpen: false,
   bounceBackOnOverdraw: true,
   autoClosing: true,
+  externalToggle: () => {},
 };
