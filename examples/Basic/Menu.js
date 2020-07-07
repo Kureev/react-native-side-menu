@@ -42,28 +42,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Menu({ onItemSelected }) {
+export default function Menu({onItemSelected}) {
   return (
     <ScrollView scrollsToTop={false} style={styles.menu}>
       <View style={styles.avatarContainer}>
-        <Image
-          style={styles.avatar}
-          source={{ uri }}
-        />
+        <Image style={styles.avatar} source={{uri}} />
         <Text style={styles.name}>Your name</Text>
       </View>
 
-      <Text
-        onPress={() => onItemSelected('About')}
-        style={styles.item}
-      >
+      <Text onPress={() => onItemSelected('About')} style={styles.item}>
         About
       </Text>
 
-      <Text
-        onPress={() => onItemSelected('Contacts')}
-        style={styles.item}
-      >
+      <Text onPress={() => onItemSelected('Contacts')} style={styles.item}>
         Contacts
       </Text>
     </ScrollView>
