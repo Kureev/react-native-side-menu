@@ -4,3 +4,5 @@ node_modules
 **/.DS_Store
 .idea
 build
+.eslintcache
+yarn-error.log

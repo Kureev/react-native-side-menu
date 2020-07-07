@@ -1,0 +1,24 @@
+name: CI
+on: push
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node-version: [10.18.1]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn
+      - run: yarn lint
+      - run: yarn build
