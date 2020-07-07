@@ -6,7 +6,8 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "./build.sh",
-    "prepublish": "./build.sh"
+    "prepublish": "./build.sh",
+    "type-check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
+    "@types/react-native": "^0.62.17",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-preset-flow": "^6.23.0",
@@ -40,6 +42,7 @@
     "eslint-plugin-react": "^7.1.0",
     "flow-bin": "0.49",
     "react": "16.0.0-alpha.12",
-    "react-native": "^0.46.3"
+    "react-native": "^0.46.3",
+    "typescript": "^3.9.6"
   }
 }
