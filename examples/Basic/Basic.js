@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -60,10 +60,10 @@ export default class Basic extends Component {
   }
 
   updateMenuState(isOpen) {
-    this.setState({ isOpen });
+    this.setState({isOpen});
   }
 
-  onMenuItemSelected = item =>
+  onMenuItemSelected = (item) =>
     this.setState({
       isOpen: false,
       selectedItem: item,
@@ -77,12 +77,9 @@ export default class Basic extends Component {
         <SideMenu
           menu={menu}
           isOpen={this.state.isOpen}
-          onChange={isOpen => this.updateMenuState(isOpen)}
-        >
+          onChange={(isOpen) => this.updateMenuState(isOpen)}>
           <View style={styles.container}>
-            <Text style={styles.welcome}>
-              Welcome to React Native!
-            </Text>
+            <Text style={styles.welcome}>Welcome to React Native!</Text>
             <Text style={styles.instructions}>
               To get started, edit index.ios.js
             </Text>
@@ -94,14 +91,8 @@ export default class Basic extends Component {
               Current selected menu item is: {this.state.selectedItem}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={this.toggle}
-            style={styles.button}
-          >
-            <Image
-              source={image}
-              style={{ width: 32, height: 32 }}
-            />
+          <TouchableOpacity onPress={this.toggle} style={styles.button}>
+            <Image source={image} style={{width: 32, height: 32}} />
           </TouchableOpacity>
         </SideMenu>
       </SafeAreaView>
